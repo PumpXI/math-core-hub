@@ -8,7 +8,7 @@ import { Protected } from "@/components/auth/Protected";
 import { CreditCard, Mail, User as UserIcon, Calendar } from "lucide-react";
 
 export const Route = createFileRoute("/account")({
-  head: () => ({ meta: [{ title: "Mi cuenta — MathCore" }] }),
+  head: () => ({ meta: [{ title: "Mi cuenta — STEMLab" }] }),
   component: () => (
     <Protected>
       <AccountPage />

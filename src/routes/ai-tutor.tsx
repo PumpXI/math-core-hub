@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Protected } from "@/components/auth/Protected";
 
 export const Route = createFileRoute("/ai-tutor")({
-  head: () => ({ meta: [{ title: "Tutor IA — MathCore" }, { name: "description", content: "Conversa con el tutor de matemáticas con IA." }] }),
+  head: () => ({ meta: [{ title: "Tutor IA — STEMLab" }, { name: "description", content: "Conversa con el tutor de matemáticas con IA." }] }),
   component: () => (<Protected><AITutor /></Protected>),
 });
 
@@ -31,7 +31,7 @@ function AITutor() {
       <AppNavbar />
       <div className="flex-1 mx-auto w-full max-w-[1400px] flex">
         <aside className="hidden md:flex w-72 shrink-0 flex-col border-r border-border/40 bg-sidebar/50 backdrop-blur p-4">
-          <Button className="bg-grad-primary text-white hover:opacity-90 mb-4">
+          <Button className="bg-[#15803D] hover:bg-[#166534] text-white mb-4">
             <Plus className="mr-2 h-4 w-4" /> Nueva conversación
           </Button>
           <div className="text-xs uppercase tracking-wider text-muted-foreground px-1 mb-2">Historial</div>

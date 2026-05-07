@@ -4,7 +4,7 @@ import { SiteNavbar } from "@/components/site/SiteNavbar";
 import { clerkAppearance } from "@/lib/clerkAppearance";
 
 export const Route = createFileRoute("/register")({
-  head: () => ({ meta: [{ title: "Crear cuenta — MathCore" }] }),
+  head: () => ({ meta: [{ title: "Crear cuenta — STEMLab" }] }),
   component: RegisterPage,
 });
 
