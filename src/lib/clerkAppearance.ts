@@ -1,26 +1,26 @@
-// Shared Clerk appearance to match STEMLab dark theme.
+// Shared Clerk appearance to match STEMLab light theme.
 export const clerkAppearance = {
   variables: {
-    colorPrimary: "#4f8ef7",
-    colorBackground: "#0f0f1a",
-    colorInputBackground: "#171728",
-    colorInputText: "#ffffff",
-    colorText: "#ffffff",
-    colorTextSecondary: "#a0a0b8",
-    colorNeutral: "#ffffff",
+    colorPrimary: "#15803D",
+    colorBackground: "#FFFFFF",
+    colorInputBackground: "#F8F9FA",
+    colorInputText: "#1A1A2E",
+    colorText: "#1A1A2E",
+    colorTextSecondary: "#6B7280",
+    colorNeutral: "#1A1A2E",
     borderRadius: "0.75rem",
     fontFamily: "Inter, system-ui, sans-serif",
   },
   elements: {
     rootBox: "w-full",
-    card: "bg-card/80 backdrop-blur-xl border border-border shadow-2xl",
+    card: "bg-white border border-border shadow-xl",
     headerTitle: "text-foreground",
     headerSubtitle: "text-muted-foreground",
     socialButtonsBlockButton:
-      "bg-background border border-border text-foreground hover:bg-accent",
+      "bg-white border border-border text-foreground hover:bg-muted",
     formButtonPrimary:
-      "bg-gradient-to-r from-[#4f8ef7] to-[#7c5cbf] hover:opacity-90 text-white",
-    footerActionLink: "text-[#4f8ef7] hover:text-[#7c5cbf]",
+      "bg-[#15803D] hover:bg-[#166534] text-white",
+    footerActionLink: "text-[#15803D] hover:text-[#166534]",
     formFieldInput: "bg-input border-border text-foreground",
     dividerLine: "bg-border",
     dividerText: "text-muted-foreground",
