@@ -19,7 +19,7 @@ export const Route = createFileRoute("/course/$courseSlug/$topicSlug")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.topic.title ?? "Tema"} — MathCore` },
+      { title: `${loaderData?.topic.title ?? "Tema"} — STEMLab` },
       { name: "description", content: loaderData?.topic.description ?? "" },
     ],
   }),
@@ -27,7 +27,8 @@ export const Route = createFileRoute("/course/$courseSlug/$topicSlug")({
 });
 
 function TopicPage() {
-  const { course, topic } = Route.useLoaderData();
+  const { course, topic } = Route.useLoaderData() as { course: import("@/lib/courses").Course; topic: import("@/lib/courses").Topic };
+  const accent = course.slug === "precalculo" ? "data-[state=active]:bg-amber-500 data-[state=active]:text-white" : "data-[state=active]:bg-[#15803D] data-[state=active]:text-white";
   return (
     <div className="min-h-screen">
       <AppNavbar />
@@ -47,14 +48,14 @@ function TopicPage() {
 
           <Tabs defaultValue="teoria" className="w-full">
             <TabsList className="grid grid-cols-4 max-w-2xl">
-              <TabsTrigger value="teoria">Teoría</TabsTrigger>
-              <TabsTrigger value="ejemplos">Ejemplos</TabsTrigger>
-              <TabsTrigger value="ejercicios">Ejercicios</TabsTrigger>
-              <TabsTrigger value="tutor">Tutor IA</TabsTrigger>
+              <TabsTrigger value="teoria" className={accent}>Teoría</TabsTrigger>
+              <TabsTrigger value="ejemplos" className={accent}>Ejemplos</TabsTrigger>
+              <TabsTrigger value="ejercicios" className={accent}>Ejercicios</TabsTrigger>
+              <TabsTrigger value="tutor" className={accent}>Tutor IA</TabsTrigger>
             </TabsList>
 
             <TabsContent value="teoria" className="mt-6 space-y-6">
-              <article className="glass rounded-2xl p-6 md:p-8 prose prose-invert max-w-none">
+              <article className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm prose max-w-none">
                 <h2 className="text-2xl font-semibold mb-3">Concepto de límite</h2>
                 <p className="text-muted-foreground">
                   Decimos que el límite de <em>f(x)</em> cuando <em>x</em> tiende a <em>a</em> es <em>L</em>, escrito
@@ -137,7 +138,7 @@ function ExerciseRow({ index, e, s }: { index: number; e: string; s: string }) {
 
 export function ChatBox({ topicTitle, compact = false }: { topicTitle?: string; compact?: boolean }) {
   const [messages, setMessages] = useState([
-    { role: "ai", text: `¡Hola! Soy tu tutor MathCore. ¿Qué quieres practicar de ${topicTitle ?? "este tema"}?` },
+    { role: "ai", text: `¡Hola! Soy tu tutor STEMLab. ¿Qué quieres practicar de ${topicTitle ?? "este tema"}?` },
   ]);
   const [input, setInput] = useState("");
 
