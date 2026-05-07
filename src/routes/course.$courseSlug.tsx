@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { AppNavbar } from "@/components/app/AppNavbar";
 import { AppSidebar } from "@/components/app/AppSidebar";
-import { getCourse, getCourseTopics, type Topic } from "@/lib/courses";
+import { getCourse, getCourseTopics, type Topic, type Module } from "@/lib/courses";
 import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CircleCheck, CircleDot, Circle, ArrowRight } from "lucide-react";
