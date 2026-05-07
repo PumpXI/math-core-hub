@@ -7,8 +7,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { ClerkProvider } from "@clerk/clerk-react";
+import { clerkAppearance } from "@/lib/clerkAppearance";
 
 import appCss from "../styles.css?url";
+
+const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY as string | undefined;
 
 function NotFoundComponent() {
   return (
@@ -111,9 +115,26 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
+  if (!CLERK_PUBLISHABLE_KEY) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <div className="flex min-h-screen items-center justify-center bg-background px-4">
+          <div className="max-w-md text-center space-y-3">
+            <h1 className="text-xl font-semibold">Falta configurar Clerk</h1>
+            <p className="text-sm text-muted-foreground">
+              Define <code>VITE_CLERK_PUBLISHABLE_KEY</code> en el archivo <code>.env</code> con tu publishable key del dashboard de Clerk y recarga.
+            </p>
+          </div>
+        </div>
+      </QueryClientProvider>
+    );
+  }
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <Outlet />
-    </QueryClientProvider>
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} appearance={clerkAppearance}>
+      <QueryClientProvider client={queryClient}>
+        <Outlet />
+      </QueryClientProvider>
+    </ClerkProvider>
   );
 }

@@ -6,10 +6,11 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { courses } from "@/lib/courses";
 import { ArrowRight, PlayCircle } from "lucide-react";
+import { Protected } from "@/components/auth/Protected";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — MathCore" }, { name: "description", content: "Tu panel de aprendizaje en MathCore." }] }),
-  component: Dashboard,
+  component: () => (<Protected><Dashboard /></Protected>),
 });
 
 function Dashboard() {

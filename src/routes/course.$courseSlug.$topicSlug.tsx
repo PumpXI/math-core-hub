@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, ChevronDown, ChevronUp } from "lucide-react";
+import { Protected } from "@/components/auth/Protected";
 
 export const Route = createFileRoute("/course/$courseSlug/$topicSlug")({
   loader: ({ params }) => {
@@ -22,7 +23,7 @@ export const Route = createFileRoute("/course/$courseSlug/$topicSlug")({
       { name: "description", content: loaderData?.topic.description ?? "" },
     ],
   }),
-  component: TopicPage,
+  component: () => (<Protected><TopicPage /></Protected>),
 });
 
 function TopicPage() {
