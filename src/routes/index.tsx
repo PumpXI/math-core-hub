@@ -4,15 +4,15 @@ import { SiteNavbar } from "@/components/site/SiteNavbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { BookOpen, Bot, PencilRuler, ArrowRight, Check, Sparkles, Sigma } from "lucide-react";
-import { courses } from "@/lib/courses";
+import { BookOpen, Bot, PencilRuler, ArrowRight, Check, Sparkles, FlaskConical } from "lucide-react";
+import { courses, getCourseTopics } from "@/lib/courses";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MathCore — Matemáticas universitarias con tutor IA" },
-      { name: "description", content: "Aprende Precálculo, Cálculo 1 y Cálculo 2 con teoría clara, ejercicios interactivos y un tutor IA disponible 24/7." },
-      { property: "og:title", content: "MathCore — Matemáticas universitarias con tutor IA" },
+      { title: "STEMLab — Matemáticas universitarias con tutor IA" },
+      { name: "description", content: "Aprende Precálculo y Cálculo 1 con teoría clara, ejercicios interactivos y un tutor IA disponible 24/7." },
+      { property: "og:title", content: "STEMLab — Matemáticas universitarias con tutor IA" },
       { property: "og:description", content: "Plataforma educativa para estudiantes universitarios de Costa Rica y Latinoamérica." },
     ],
   }),
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/")({
 function Landing() {
   useReveal();
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <SiteNavbar />
       <Hero />
       <Features />
@@ -39,8 +39,8 @@ function Hero() {
     <section className="relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 pt-20 pb-24 grid gap-12 lg:grid-cols-2 lg:items-center">
         <div className="reveal">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-3 py-1 text-xs text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5 text-primary" /> Nuevo · Tutor IA con razonamiento paso a paso
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
+            <Sparkles className="h-3.5 w-3.5 text-[#15803D]" /> Nuevo · Tutor IA con razonamiento paso a paso
           </span>
           <h1 className="mt-5 text-5xl sm:text-6xl font-bold tracking-tight leading-[1.05]">
             Domina las matemáticas <span className="text-grad-primary">universitarias</span>
@@ -49,10 +49,10 @@ function Hero() {
             Teoría didáctica, ejemplos resueltos y un tutor con IA disponible 24/7. Diseñado para estudiantes de Costa Rica y Latinoamérica.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="bg-grad-primary text-white hover:opacity-90 glow">
-              <Link to="/dashboard">Comenzar gratis <ArrowRight className="ml-1 h-4 w-4" /></Link>
+            <Button asChild size="lg" className="bg-[#15803D] hover:bg-[#166534] text-white glow">
+              <Link to="/register">Comenzar gratis <ArrowRight className="ml-1 h-4 w-4" /></Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-border/70">
+            <Button asChild size="lg" variant="outline">
               <Link to="/ai-tutor">Ver demo</Link>
             </Button>
           </div>
@@ -64,27 +64,26 @@ function Hero() {
         </div>
 
         <div className="reveal relative">
-          <div className="glass rounded-3xl p-6 glow animate-float">
+          <div className="rounded-3xl bg-card border border-border p-6 shadow-xl animate-float">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <div className="flex items-center gap-2">
-                <Sigma className="h-4 w-4 text-primary" /> Cálculo 1 · Límites
+                <FlaskConical className="h-4 w-4 text-[#15803D]" /> Cálculo 1 · Límites
               </div>
               <span>Tutor IA</span>
             </div>
             <div className="mt-4 space-y-3 text-sm">
-              <div className="rounded-2xl bg-muted/50 p-3 max-w-[85%]">
+              <div className="rounded-2xl bg-muted p-3 max-w-[85%]">
                 ¿Cómo resuelvo lim<sub>x→0</sub> sin(x)/x?
               </div>
-              <div className="rounded-2xl bg-grad-primary text-white p-3 max-w-[90%] ml-auto">
+              <div className="rounded-2xl bg-[#15803D] text-white p-3 max-w-[90%] ml-auto">
                 Es un límite notable: vale 1. Te lo demuestro con el teorema del emparedado…
               </div>
-              <div className="rounded-2xl bg-muted/50 p-3 max-w-[60%]">¡Gracias! 🙌</div>
+              <div className="rounded-2xl bg-muted p-3 max-w-[60%]">¡Gracias! 🙌</div>
             </div>
             <div className="mt-5 rounded-2xl border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
               f(x) = sin(x)/x · gráfica interactiva
             </div>
           </div>
-          <div className="absolute -inset-10 -z-10 bg-grad-primary opacity-20 blur-3xl rounded-full" />
         </div>
       </div>
     </section>
@@ -98,10 +97,10 @@ function Features() {
     { icon: PencilRuler, title: "Ejercicios interactivos", desc: "Practica con problemas curados por nivel y recibe retroalimentación inmediata." },
   ];
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20">
-      <div className="grid gap-6 md:grid-cols-3">
+    <section className="surface-alt py-20">
+      <div className="mx-auto max-w-7xl px-6 grid gap-6 md:grid-cols-3">
         {items.map(({ icon: Icon, title, desc }) => (
-          <Card key={title} className="reveal glass border-border/60">
+          <Card key={title} className="reveal border-border shadow-sm">
             <CardHeader>
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-grad-primary glow">
                 <Icon className="h-5 w-5 text-white" />
@@ -118,7 +117,7 @@ function Features() {
 
 function HowItWorks() {
   const steps = [
-    { n: "01", t: "Elige tu curso", d: "Precálculo, Cálculo 1 o Cálculo 2 según tu nivel actual." },
+    { n: "01", t: "Elige tu curso", d: "Precálculo o Cálculo 1 según tu nivel actual." },
     { n: "02", t: "Aprende con teoría y ejemplos", d: "Lecciones cortas con ejemplos resueltos y gráficas interactivas." },
     { n: "03", t: "Practica con el tutor IA", d: "Resuelve ejercicios y pregúntale al tutor cuando te trabes." },
   ];
@@ -130,7 +129,7 @@ function HowItWorks() {
       </div>
       <div className="mt-12 grid gap-6 md:grid-cols-3">
         {steps.map((s) => (
-          <div key={s.n} className="reveal glass rounded-2xl p-6">
+          <div key={s.n} className="reveal rounded-2xl border border-border bg-card p-6 shadow-sm">
             <div className="text-grad-primary text-3xl font-bold">{s.n}</div>
             <h3 className="mt-3 text-lg font-semibold">{s.t}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
@@ -143,29 +142,42 @@ function HowItWorks() {
 
 function CoursesSection() {
   return (
-    <section id="cursos" className="mx-auto max-w-7xl px-6 py-20">
-      <div className="reveal flex items-end justify-between flex-wrap gap-4">
-        <div>
-          <h2 className="text-4xl font-bold tracking-tight">Cursos disponibles</h2>
-          <p className="mt-2 text-muted-foreground">Diseñados con el currículo universitario costarricense y latinoamericano.</p>
+    <section id="cursos" className="surface-alt py-20">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="reveal flex items-end justify-between flex-wrap gap-4">
+          <div>
+            <h2 className="text-4xl font-bold tracking-tight">Cursos disponibles</h2>
+            <p className="mt-2 text-muted-foreground">Diseñados con el currículo universitario costarricense.</p>
+          </div>
+          <Button asChild variant="ghost"><Link to="/dashboard">Ver todos <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
         </div>
-        <Button asChild variant="ghost"><Link to="/dashboard">Ver todos <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
-      </div>
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
-        {courses.map((c) => (
-          <Card key={c.slug} className="reveal glass border-border/60 hover:border-primary/50 transition-colors">
-            <CardHeader>
-              <div className="text-xs text-primary uppercase tracking-wider">{c.short}</div>
-              <CardTitle className="mt-1 text-2xl">{c.name}</CardTitle>
-              <CardDescription>{c.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button asChild variant="outline" className="w-full">
-                <Link to="/course/$courseSlug" params={{ courseSlug: c.slug }}>Explorar curso</Link>
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+        <div className="mt-10 grid gap-6 md:grid-cols-2 max-w-4xl">
+          {courses.map((c) => {
+            const accent = c.slug === "precalculo" ? "border-t-amber-500" : "border-t-green-600";
+            const btnColor = c.slug === "precalculo"
+              ? "bg-amber-500 hover:bg-amber-600 text-white"
+              : "bg-[#15803D] hover:bg-[#166534] text-white";
+            return (
+              <Card key={c.slug} className={`reveal border-t-4 ${accent} bg-card shadow-sm hover:shadow-md transition-shadow`}>
+                <CardHeader>
+                  <div className={`text-xs uppercase tracking-wider font-semibold ${c.color.text}`}>
+                    {c.code} · {c.short}
+                  </div>
+                  <CardTitle className="mt-1 text-2xl">{c.name}</CardTitle>
+                  <CardDescription>{c.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="text-xs text-muted-foreground">
+                    {getCourseTopics(c).length} temas · {c.modules.length} módulos
+                  </div>
+                  <Button asChild className={`w-full ${btnColor}`}>
+                    <Link to="/course/$courseSlug" params={{ courseSlug: c.slug }}>Explorar curso</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
@@ -173,7 +185,7 @@ function CoursesSection() {
 
 function Pricing() {
   const plans = [
-    { name: "Plan Mensual", price: "₡8.900", per: "/mes", highlight: false, features: ["Acceso a los 3 cursos", "Tutor IA ilimitado", "Ejercicios con retroalimentación", "Cancela cuando quieras"] },
+    { name: "Plan Mensual", price: "₡8.900", per: "/mes", highlight: false, features: ["Acceso a Precálculo y Cálculo 1", "Tutor IA ilimitado", "Ejercicios con retroalimentación", "Cancela cuando quieras"] },
     { name: "Plan Anual", price: "₡71.000", per: "/año", highlight: true, badge: "Ahorra 33%", features: ["Todo lo del Plan Mensual", "2 sesiones grupales al mes", "Acceso anticipado a nuevos cursos", "Certificado de finalización"] },
   ];
   return (
@@ -184,9 +196,9 @@ function Pricing() {
       </div>
       <div className="mt-12 grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
         {plans.map((p) => (
-          <Card key={p.name} className={`reveal relative ${p.highlight ? "border-primary glow bg-grad-primary/5" : "glass border-border/60"}`}>
+          <Card key={p.name} className={`reveal relative bg-card shadow-sm ${p.highlight ? "border-2 border-[#15803D] glow" : "border-border"}`}>
             {p.badge && (
-              <span className="absolute -top-3 right-6 rounded-full bg-grad-primary px-3 py-1 text-xs text-white">{p.badge}</span>
+              <span className="absolute -top-3 right-6 rounded-full bg-[#15803D] px-3 py-1 text-xs text-white">{p.badge}</span>
             )}
             <CardHeader>
               <CardTitle>{p.name}</CardTitle>
@@ -199,12 +211,12 @@ function Pricing() {
               <ul className="space-y-2 text-sm">
                 {p.features.map((f) => (
                   <li key={f} className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-primary" /> {f}
+                    <Check className="h-4 w-4 text-[#15803D]" /> {f}
                   </li>
                 ))}
               </ul>
-              <Button asChild className={`w-full ${p.highlight ? "bg-grad-primary text-white hover:opacity-90" : ""}`} variant={p.highlight ? "default" : "outline"}>
-                <Link to="/dashboard">Suscribirme</Link>
+              <Button asChild className={`w-full ${p.highlight ? "bg-[#15803D] hover:bg-[#166534] text-white" : ""}`} variant={p.highlight ? "default" : "outline"}>
+                <Link to="/register">Suscribirme</Link>
               </Button>
             </CardContent>
           </Card>
