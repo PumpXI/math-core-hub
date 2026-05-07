@@ -6,10 +6,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { courses } from "@/lib/courses";
 import { Plus, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Protected } from "@/components/auth/Protected";
 
 export const Route = createFileRoute("/ai-tutor")({
   head: () => ({ meta: [{ title: "Tutor IA — MathCore" }, { name: "description", content: "Conversa con el tutor de matemáticas con IA." }] }),
-  component: AITutor,
+  component: () => (<Protected><AITutor /></Protected>),
 });
 
 const history = [
