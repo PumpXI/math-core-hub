@@ -8,7 +8,7 @@ import { Protected } from "@/components/auth/Protected";
 import { CreditCard, Mail, User as UserIcon, Calendar } from "lucide-react";
 
 export const Route = createFileRoute("/account")({
-  head: () => ({ meta: [{ title: "Mi cuenta — MathCore" }] }),
+  head: () => ({ meta: [{ title: "Mi cuenta — STEMLab" }] }),
   component: () => (
     <Protected>
       <AccountPage />
@@ -38,7 +38,7 @@ function AccountPage() {
         <Card className="glass">
           <CardHeader>
             <CardTitle>Perfil</CardTitle>
-            <CardDescription>Información de tu cuenta MathCore</CardDescription>
+            <CardDescription>Información de tu cuenta STEMLab</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center gap-4">
@@ -67,7 +67,7 @@ function AccountPage() {
           <CardHeader className="flex flex-row items-start justify-between gap-4">
             <div>
               <CardTitle>Suscripción</CardTitle>
-              <CardDescription>Tu plan actual en MathCore</CardDescription>
+              <CardDescription>Tu plan actual en STEMLab</CardDescription>
             </div>
             <Badge variant={subscription.active ? "default" : "secondary"} className="bg-grad-primary text-white">
               {subscription.active ? "Activa" : "Inactiva"}
@@ -79,7 +79,7 @@ function AccountPage() {
                 <CreditCard className="h-5 w-5 text-primary" />
                 <div>
                   <p className="text-xs text-muted-foreground">Plan</p>
-                  <p className="font-medium">MathCore {subscription.plan}</p>
+                  <p className="font-medium">STEMLab {subscription.plan}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 rounded-lg border border-border/60 p-4">

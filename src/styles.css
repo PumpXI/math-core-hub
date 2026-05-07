@@ -43,58 +43,55 @@
 :root {
   --radius: 0.75rem;
 
-  /* MathCore dark theme */
-  --background: oklch(0.16 0.03 280);
-  --foreground: oklch(0.97 0.01 270);
+  /* STEMLab light theme */
+  --background: oklch(1 0 0);                     /* #FFFFFF */
+  --foreground: oklch(0.18 0.03 270);             /* #1A1A2E */
 
-  --card: oklch(0.20 0.03 280);
-  --card-foreground: oklch(0.97 0.01 270);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.03 270);
 
-  --popover: oklch(0.20 0.03 280);
-  --popover-foreground: oklch(0.97 0.01 270);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.03 270);
 
-  --primary: oklch(0.68 0.18 260);            /* electric blue #4f8ef7 */
+  /* Brand accent: green-700 (#15803D) */
+  --primary: oklch(0.53 0.15 150);
   --primary-foreground: oklch(0.99 0 0);
 
-  --secondary: oklch(0.55 0.20 300);          /* violet #7c5cbf */
-  --secondary-foreground: oklch(0.99 0 0);
+  /* Secondary: amber for highlights */
+  --secondary: oklch(0.78 0.16 80);               /* #EAB308 */
+  --secondary-foreground: oklch(0.18 0.03 270);
 
-  --muted: oklch(0.24 0.03 280);
-  --muted-foreground: oklch(0.72 0.03 280);
+  --muted: oklch(0.97 0.005 270);                 /* #F8F9FA */
+  --muted-foreground: oklch(0.45 0.02 270);
 
-  --accent: oklch(0.55 0.20 300);
-  --accent-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.96 0.01 270);
+  --accent-foreground: oklch(0.18 0.03 270);
 
-  --destructive: oklch(0.65 0.22 25);
+  --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.30 0.03 280 / 60%);
-  --input: oklch(0.28 0.03 280);
-  --ring: oklch(0.68 0.18 260);
+  --border: oklch(0.92 0.005 270);                /* #E5E7EB */
+  --input: oklch(0.96 0.005 270);
+  --ring: oklch(0.53 0.15 150);
 
-  --sidebar: oklch(0.18 0.03 280);
-  --sidebar-foreground: oklch(0.97 0.01 270);
-  --sidebar-primary: oklch(0.68 0.18 260);
+  --sidebar: oklch(0.985 0.003 270);
+  --sidebar-foreground: oklch(0.18 0.03 270);
+  --sidebar-primary: oklch(0.53 0.15 150);
   --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.24 0.03 280);
-  --sidebar-accent-foreground: oklch(0.97 0.01 270);
-  --sidebar-border: oklch(0.30 0.03 280 / 60%);
-  --sidebar-ring: oklch(0.68 0.18 260);
+  --sidebar-accent: oklch(0.96 0.005 270);
+  --sidebar-accent-foreground: oklch(0.18 0.03 270);
+  --sidebar-border: oklch(0.92 0.005 270);
+  --sidebar-ring: oklch(0.53 0.15 150);
 
-  --gradient-primary: linear-gradient(135deg, #4f8ef7, #7c5cbf);
-  --gradient-hero: radial-gradient(1200px 600px at 80% -10%, rgba(124,92,191,0.35), transparent 60%),
-                   radial-gradient(900px 500px at -10% 20%, rgba(79,142,247,0.3), transparent 60%);
-  --shadow-glow: 0 10px 40px -10px rgba(79,142,247,0.45);
-}
-
-.dark {
-  --background: oklch(0.16 0.03 280);
-  --foreground: oklch(0.97 0.01 270);
+  --gradient-primary: linear-gradient(135deg, #15803D, #16A34A);
+  --gradient-hero: radial-gradient(1200px 600px at 80% -10%, rgba(22,163,74,0.10), transparent 60%),
+                   radial-gradient(900px 500px at -10% 20%, rgba(234,179,8,0.10), transparent 60%);
+  --shadow-glow: 0 10px 40px -15px rgba(22, 163, 74, 0.30);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
-  html, body { background-color: #0f0f1a; color: var(--color-foreground); font-family: var(--font-sans); }
+  html, body { background-color: #FFFFFF; color: var(--color-foreground); font-family: var(--font-sans); }
   body { background-image: var(--gradient-hero); background-attachment: fixed; }
 }
 
@@ -107,10 +104,11 @@
     color: transparent;
   }
   .glow { box-shadow: var(--shadow-glow); }
+  .surface-alt { background-color: #F8F9FA; }
   .glass {
-    background: rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.85);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(0,0,0,0.06);
   }
   .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: translateY(0); }

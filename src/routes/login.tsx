@@ -4,7 +4,7 @@ import { SiteNavbar } from "@/components/site/SiteNavbar";
 import { clerkAppearance } from "@/lib/clerkAppearance";
 
 export const Route = createFileRoute("/login")({
-  head: () => ({ meta: [{ title: "Iniciar sesión — MathCore" }] }),
+  head: () => ({ meta: [{ title: "Iniciar sesión — STEMLab" }] }),
   component: LoginPage,
 });
 
@@ -15,7 +15,7 @@ function LoginPage() {
       <main className="mx-auto flex max-w-md flex-col items-center px-4 py-16">
         <h1 className="text-3xl font-bold tracking-tight mb-2">Bienvenido de vuelta</h1>
         <p className="text-muted-foreground mb-8 text-center">
-          Continúa tu aprendizaje en MathCore
+          Continúa tu aprendizaje en STEMLab
         </p>
         <SignIn
           appearance={clerkAppearance}
