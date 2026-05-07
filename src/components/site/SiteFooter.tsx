@@ -2,7 +2,7 @@ import { Logo } from "./Logo";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border/40 mt-24">
+    <footer className="border-t border-border mt-24 surface-alt">
       <div className="mx-auto max-w-7xl px-6 py-12 grid gap-10 md:grid-cols-4">
         <div className="space-y-3">
           <Logo />
@@ -23,8 +23,8 @@ export function SiteFooter() {
           </div>
         ))}
       </div>
-      <div className="border-t border-border/40 py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} MathCore · Hecho con cariño en Costa Rica 🇨🇷
+      <div className="border-t border-border py-6 text-center text-xs text-muted-foreground">
+        © {new Date().getFullYear()} STEMLab · Hecho con cariño en Costa Rica 🇨🇷
       </div>
     </footer>
   );
