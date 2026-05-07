@@ -1,8 +1,9 @@
+import type { ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { courses, type Topic } from "@/lib/courses";
 import { ChevronRight, CircleCheck, CircleDot, Circle } from "lucide-react";
 
-const statusIcon: Record<Topic["status"], JSX.Element> = {
+const statusIcon: Record<Topic["status"], ReactNode> = {
   "completado": <CircleCheck className="h-3.5 w-3.5 text-green-600" />,
   "en-progreso": <CircleDot className="h-3.5 w-3.5 text-amber-500" />,
   "sin-empezar": <Circle className="h-3.5 w-3.5 text-muted-foreground" />,

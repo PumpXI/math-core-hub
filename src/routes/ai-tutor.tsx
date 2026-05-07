@@ -3,7 +3,7 @@ import { useState } from "react";
 import { AppNavbar } from "@/components/app/AppNavbar";
 import { ChatBox } from "./course.$courseSlug.$topicSlug";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { courses } from "@/lib/courses";
+import { courses, getCourseTopics } from "@/lib/courses";
 import { Plus, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Protected } from "@/components/auth/Protected";
@@ -23,7 +23,7 @@ const history = [
 
 function AITutor() {
   const [topic, setTopic] = useState("calculo-1:limites");
-  const allTopics = courses.flatMap((c) => c.topics.map((t) => ({ id: `${c.slug}:${t.slug}`, label: `${c.name} · ${t.title}` })));
+  const allTopics = courses.flatMap((c) => getCourseTopics(c).map((t) => ({ id: `${c.slug}:${t.slug}`, label: `${c.name} · ${t.title}` })));
   const current = allTopics.find((t) => t.id === topic);
 
   return (
