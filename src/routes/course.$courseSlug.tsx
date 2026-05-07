@@ -30,7 +30,7 @@ const statusMap: Record<Topic["status"], { icon: React.ReactNode; label: string 
 };
 
 function CoursePage() {
-  const { course } = Route.useLoaderData();
+  const { course } = Route.useLoaderData() as { course: import("@/lib/courses").Course };
   const topicCount = getCourseTopics(course).length;
   const accentBtn =
     course.slug === "precalculo"
