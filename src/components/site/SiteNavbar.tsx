@@ -14,10 +14,10 @@ export function SiteNavbar() {
         </nav>
         <div className="flex items-center gap-2">
           <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
-            <Link to="/dashboard">Iniciar sesión</Link>
+            <Link to="/login">Iniciar sesión</Link>
           </Button>
           <Button asChild size="sm" className="bg-grad-primary text-white hover:opacity-90">
-            <Link to="/dashboard">Comenzar gratis</Link>
+            <Link to="/register">Comenzar gratis</Link>
           </Button>
         </div>
       </div>
