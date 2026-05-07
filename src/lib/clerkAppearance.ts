@@ -1,4 +1,4 @@
-// Shared Clerk appearance to match MathCore dark theme.
+// Shared Clerk appearance to match STEMLab dark theme.
 export const clerkAppearance = {
   variables: {
     colorPrimary: "#4f8ef7",
