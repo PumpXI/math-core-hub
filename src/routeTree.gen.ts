@@ -9,12 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AiTutorRouteImport } from './routes/ai-tutor'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as RegisterSplatRouteImport } from './routes/register.$'
+import { Route as LoginSplatRouteImport } from './routes/login.$'
 import { Route as CourseCourseSlugRouteImport } from './routes/course.$courseSlug'
 import { Route as CourseCourseSlugTopicSlugRouteImport } from './routes/course.$courseSlug.$topicSlug'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -25,10 +40,25 @@ const AiTutorRoute = AiTutorRouteImport.update({
   path: '/ai-tutor',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterSplatRoute = RegisterSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => RegisterRoute,
+} as any)
+const LoginSplatRoute = LoginSplatRouteImport.update({
+  id: '/$',
+  path: '/$',
+  getParentRoute: () => LoginRoute,
 } as any)
 const CourseCourseSlugRoute = CourseCourseSlugRouteImport.update({
   id: '/course/$courseSlug',
@@ -44,59 +74,106 @@ const CourseCourseSlugTopicSlugRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/ai-tutor': typeof AiTutorRoute
   '/dashboard': typeof DashboardRoute
+  '/login': typeof LoginRouteWithChildren
+  '/register': typeof RegisterRouteWithChildren
   '/course/$courseSlug': typeof CourseCourseSlugRouteWithChildren
+  '/login/$': typeof LoginSplatRoute
+  '/register/$': typeof RegisterSplatRoute
   '/course/$courseSlug/$topicSlug': typeof CourseCourseSlugTopicSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/ai-tutor': typeof AiTutorRoute
   '/dashboard': typeof DashboardRoute
+  '/login': typeof LoginRouteWithChildren
+  '/register': typeof RegisterRouteWithChildren
   '/course/$courseSlug': typeof CourseCourseSlugRouteWithChildren
+  '/login/$': typeof LoginSplatRoute
+  '/register/$': typeof RegisterSplatRoute
   '/course/$courseSlug/$topicSlug': typeof CourseCourseSlugTopicSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/ai-tutor': typeof AiTutorRoute
   '/dashboard': typeof DashboardRoute
+  '/login': typeof LoginRouteWithChildren
+  '/register': typeof RegisterRouteWithChildren
   '/course/$courseSlug': typeof CourseCourseSlugRouteWithChildren
+  '/login/$': typeof LoginSplatRoute
+  '/register/$': typeof RegisterSplatRoute
   '/course/$courseSlug/$topicSlug': typeof CourseCourseSlugTopicSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/account'
     | '/ai-tutor'
     | '/dashboard'
+    | '/login'
+    | '/register'
     | '/course/$courseSlug'
+    | '/login/$'
+    | '/register/$'
     | '/course/$courseSlug/$topicSlug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/account'
     | '/ai-tutor'
     | '/dashboard'
+    | '/login'
+    | '/register'
     | '/course/$courseSlug'
+    | '/login/$'
+    | '/register/$'
     | '/course/$courseSlug/$topicSlug'
   id:
     | '__root__'
     | '/'
+    | '/account'
     | '/ai-tutor'
     | '/dashboard'
+    | '/login'
+    | '/register'
     | '/course/$courseSlug'
+    | '/login/$'
+    | '/register/$'
     | '/course/$courseSlug/$topicSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountRoute: typeof AccountRoute
   AiTutorRoute: typeof AiTutorRoute
   DashboardRoute: typeof DashboardRoute
+  LoginRoute: typeof LoginRouteWithChildren
+  RegisterRoute: typeof RegisterRouteWithChildren
   CourseCourseSlugRoute: typeof CourseCourseSlugRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -111,12 +188,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiTutorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/register/$': {
+      id: '/register/$'
+      path: '/$'
+      fullPath: '/register/$'
+      preLoaderRoute: typeof RegisterSplatRouteImport
+      parentRoute: typeof RegisterRoute
+    }
+    '/login/$': {
+      id: '/login/$'
+      path: '/$'
+      fullPath: '/login/$'
+      preLoaderRoute: typeof LoginSplatRouteImport
+      parentRoute: typeof LoginRoute
     }
     '/course/$courseSlug': {
       id: '/course/$courseSlug'
@@ -135,6 +233,28 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface LoginRouteChildren {
+  LoginSplatRoute: typeof LoginSplatRoute
+}
+
+const LoginRouteChildren: LoginRouteChildren = {
+  LoginSplatRoute: LoginSplatRoute,
+}
+
+const LoginRouteWithChildren = LoginRoute._addFileChildren(LoginRouteChildren)
+
+interface RegisterRouteChildren {
+  RegisterSplatRoute: typeof RegisterSplatRoute
+}
+
+const RegisterRouteChildren: RegisterRouteChildren = {
+  RegisterSplatRoute: RegisterSplatRoute,
+}
+
+const RegisterRouteWithChildren = RegisterRoute._addFileChildren(
+  RegisterRouteChildren,
+)
+
 interface CourseCourseSlugRouteChildren {
   CourseCourseSlugTopicSlugRoute: typeof CourseCourseSlugTopicSlugRoute
 }
@@ -148,10 +268,23 @@ const CourseCourseSlugRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountRoute: AccountRoute,
   AiTutorRoute: AiTutorRoute,
   DashboardRoute: DashboardRoute,
+  LoginRoute: LoginRouteWithChildren,
+  RegisterRoute: RegisterRouteWithChildren,
   CourseCourseSlugRoute: CourseCourseSlugRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
