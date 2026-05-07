@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { AppNavbar } from "@/components/app/AppNavbar";
 import { AppSidebar } from "@/components/app/AppSidebar";
-import { getCourse } from "@/lib/courses";
+import { getCourse, type Topic } from "@/lib/courses";
 import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CircleCheck, CircleDot, Circle, ArrowRight } from "lucide-react";
@@ -52,7 +52,7 @@ function CoursePage() {
           <section>
             <h2 className="text-xl font-semibold mb-4">Temario</h2>
             <Accordion type="single" collapsible className="space-y-3">
-              {course.topics.map((t, i) => (
+              {course.topics.map((t: Topic, i: number) => (
                 <AccordionItem key={t.slug} value={t.slug} className="glass rounded-xl border border-border/60 px-4">
                   <AccordionTrigger className="hover:no-underline">
                     <div className="flex items-center gap-3 text-left">
