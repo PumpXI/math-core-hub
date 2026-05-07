@@ -9,38 +9,108 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as AiTutorRouteImport } from './routes/ai-tutor'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CourseCourseSlugRouteImport } from './routes/course.$courseSlug'
+import { Route as CourseCourseSlugTopicSlugRouteImport } from './routes/course.$courseSlug.$topicSlug'
 
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiTutorRoute = AiTutorRouteImport.update({
+  id: '/ai-tutor',
+  path: '/ai-tutor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CourseCourseSlugRoute = CourseCourseSlugRouteImport.update({
+  id: '/course/$courseSlug',
+  path: '/course/$courseSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CourseCourseSlugTopicSlugRoute =
+  CourseCourseSlugTopicSlugRouteImport.update({
+    id: '/$topicSlug',
+    path: '/$topicSlug',
+    getParentRoute: () => CourseCourseSlugRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-tutor': typeof AiTutorRoute
+  '/dashboard': typeof DashboardRoute
+  '/course/$courseSlug': typeof CourseCourseSlugRouteWithChildren
+  '/course/$courseSlug/$topicSlug': typeof CourseCourseSlugTopicSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-tutor': typeof AiTutorRoute
+  '/dashboard': typeof DashboardRoute
+  '/course/$courseSlug': typeof CourseCourseSlugRouteWithChildren
+  '/course/$courseSlug/$topicSlug': typeof CourseCourseSlugTopicSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-tutor': typeof AiTutorRoute
+  '/dashboard': typeof DashboardRoute
+  '/course/$courseSlug': typeof CourseCourseSlugRouteWithChildren
+  '/course/$courseSlug/$topicSlug': typeof CourseCourseSlugTopicSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/ai-tutor'
+    | '/dashboard'
+    | '/course/$courseSlug'
+    | '/course/$courseSlug/$topicSlug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/ai-tutor'
+    | '/dashboard'
+    | '/course/$courseSlug'
+    | '/course/$courseSlug/$topicSlug'
+  id:
+    | '__root__'
+    | '/'
+    | '/ai-tutor'
+    | '/dashboard'
+    | '/course/$courseSlug'
+    | '/course/$courseSlug/$topicSlug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiTutorRoute: typeof AiTutorRoute
+  DashboardRoute: typeof DashboardRoute
+  CourseCourseSlugRoute: typeof CourseCourseSlugRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-tutor': {
+      id: '/ai-tutor'
+      path: '/ai-tutor'
+      fullPath: '/ai-tutor'
+      preLoaderRoute: typeof AiTutorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +118,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/course/$courseSlug': {
+      id: '/course/$courseSlug'
+      path: '/course/$courseSlug'
+      fullPath: '/course/$courseSlug'
+      preLoaderRoute: typeof CourseCourseSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/course/$courseSlug/$topicSlug': {
+      id: '/course/$courseSlug/$topicSlug'
+      path: '/$topicSlug'
+      fullPath: '/course/$courseSlug/$topicSlug'
+      preLoaderRoute: typeof CourseCourseSlugTopicSlugRouteImport
+      parentRoute: typeof CourseCourseSlugRoute
+    }
   }
 }
 
+interface CourseCourseSlugRouteChildren {
+  CourseCourseSlugTopicSlugRoute: typeof CourseCourseSlugTopicSlugRoute
+}
+
+const CourseCourseSlugRouteChildren: CourseCourseSlugRouteChildren = {
+  CourseCourseSlugTopicSlugRoute: CourseCourseSlugTopicSlugRoute,
+}
+
+const CourseCourseSlugRouteWithChildren =
+  CourseCourseSlugRoute._addFileChildren(CourseCourseSlugRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiTutorRoute: AiTutorRoute,
+  DashboardRoute: DashboardRoute,
+  CourseCourseSlugRoute: CourseCourseSlugRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
