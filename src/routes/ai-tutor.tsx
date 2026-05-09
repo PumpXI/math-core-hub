@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppNavbar } from "@/components/app/AppNavbar";
-import { ChatBox } from "./course.$courseSlug.$topicSlug";
+import { AITutorChat } from "@/components/topic/AITutorChat";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { courses, getCourseTopics } from "@/lib/courses";
 import { Plus, MessageSquare } from "lucide-react";
@@ -64,7 +64,7 @@ function AITutor() {
             </div>
           </div>
           <div className="flex-1">
-            <ChatBox topicTitle={current?.label} />
+            <AITutorChat topicTitle={current?.label} />
           </div>
         </main>
       </div>
