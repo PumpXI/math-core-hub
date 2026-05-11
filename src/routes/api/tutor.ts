@@ -2,70 +2,112 @@ import { createFileRoute } from "@tanstack/react-router";
 
 type Msg = { role: "user" | "ai"; text: string };
 
+const MODELS = ["gemini-2.0-flash", "gemini-1.5-flash-latest", "gemini-1.5-flash"];
+
+async function callGemini(model: string, apiKey: string, payload: unknown) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  return res;
+}
+
 export const Route = createFileRoute("/api/tutor")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-          return new Response("Missing GEMINI_API_KEY", { status: 500 });
-        }
+        const json = (data: unknown, status = 200) =>
+          new Response(JSON.stringify(data), {
+            status,
+            headers: { "Content-Type": "application/json" },
+          });
 
-        let body: { tema?: string; messages?: Msg[] };
         try {
-          body = await request.json();
-        } catch {
-          return new Response("Invalid JSON", { status: 400 });
-        }
+          const apiKey = process.env.GEMINI_API_KEY;
+          if (!apiKey) {
+            return json({ ok: false, error: "Falta la clave GEMINI_API_KEY en el servidor." });
+          }
 
-        const tema = (body.tema || "Matemáticas universitarias general").toString().slice(0, 200);
-        const messages = Array.isArray(body.messages) ? body.messages.slice(-30) : [];
+          let body: { tema?: string; messages?: Msg[] };
+          try {
+            body = await request.json();
+          } catch {
+            return json({ ok: false, error: "Solicitud inválida." }, 400);
+          }
 
-        const systemPrompt = `Eres STEMLab AI, un tutor especializado en matemáticas universitarias.
-Ayudas a estudiantes de Precálculo y Cálculo 1 de la Universidad de Costa Rica.
+          const tema = (body.tema || "Matemáticas universitarias general").toString().slice(0, 200);
+          const messages = (Array.isArray(body.messages) ? body.messages : []).slice(-30);
 
-Reglas que debes seguir siempre:
-1. Responde ÚNICAMENTE preguntas de matemáticas de Precálculo o Cálculo 1. Si preguntan otra cosa, redirige amablemente hacia matemáticas.
-2. Resuelve siempre paso a paso, explicando el razonamiento de cada paso con claridad.
-3. Usa lenguaje claro y accesible. Si el estudiante se confunde, usa ejemplos más simples o analogías.
-4. Al final de cada explicación, propón un ejercicio similar para que el estudiante practique.
-5. Si el estudiante comete un error, no lo corrijas directamente — guíalo con preguntas para que él mismo lo descubra.
-6. Sé motivador, paciente y amigable. Nunca condescendiente.
+          const systemPrompt = `Eres STEMLab AI, un tutor de matemáticas universitarias para estudiantes de Precálculo y Cálculo 1 de la Universidad de Costa Rica.
+
+Reglas:
+1. Responde solo preguntas de matemáticas (Precálculo o Cálculo 1). Si preguntan otra cosa, redirige amablemente.
+2. Resuelve paso a paso, explicando el razonamiento.
+3. Lenguaje claro y accesible. Usa analogías si el estudiante se confunde.
+4. Al final propón un ejercicio similar para practicar.
+5. Si el estudiante se equivoca, guíalo con preguntas, no des la respuesta directa.
+6. Sé motivador y paciente, nunca condescendiente.
 7. Responde siempre en español.
-8. El tema actual del estudiante es: ${tema}. Prioriza ejemplos relacionados con ese tema.`;
+8. El tema actual es: ${tema}. Prioriza ejemplos sobre ese tema.
+9. Usa LaTeX entre $...$ cuando sea conveniente para fórmulas.`;
 
-        const contents = messages
-          .filter((m) => m && typeof m.text === "string" && m.text.trim().length > 0)
-          .map((m) => ({
-            role: m.role === "user" ? "user" : "model",
-            parts: [{ text: m.text }],
-          }));
+          const contents = messages
+            .filter((m) => m && typeof m.text === "string" && m.text.trim().length > 0)
+            .map((m) => ({
+              role: m.role === "user" ? "user" : "model",
+              parts: [{ text: m.text }],
+            }));
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=${apiKey}`;
-        const upstream = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+          const payload = {
             systemInstruction: { parts: [{ text: systemPrompt }] },
             contents,
-          }),
-        });
+            generationConfig: {
+              temperature: 0.7,
+              topP: 0.95,
+              maxOutputTokens: 2048,
+            },
+          };
 
-        if (!upstream.ok || !upstream.body) {
-          const detail = await upstream.text().catch(() => "");
-          return new Response(`Gemini error ${upstream.status}: ${detail.slice(0, 300)}`, {
-            status: 502,
+          let lastDetail = "";
+          for (const model of MODELS) {
+            const upstream = await callGemini(model, apiKey, payload);
+            if (upstream.ok) {
+              const data = (await upstream.json()) as {
+                candidates?: { content?: { parts?: { text?: string }[] } }[];
+              };
+              const text =
+                data.candidates?.[0]?.content?.parts?.map((p) => p.text ?? "").join("").trim() ?? "";
+              if (!text) {
+                lastDetail = `Modelo ${model} devolvió respuesta vacía.`;
+                continue;
+              }
+              return json({ ok: true, text, model });
+            }
+            lastDetail = `Modelo ${model}: ${upstream.status} ${await upstream
+              .text()
+              .catch(() => "")
+              .then((s) => s.slice(0, 200))}`;
+            console.error("[tutor] gemini upstream failed", lastDetail);
+            // Si es 404 (modelo no encontrado) probamos el siguiente
+            if (upstream.status !== 404 && upstream.status < 500) break;
+          }
+
+          return json({
+            ok: false,
+            error: `No se pudo contactar al modelo. ${lastDetail || "Error desconocido."}`,
           });
+        } catch (err) {
+          console.error("[tutor] handler exception", err);
+          return new Response(
+            JSON.stringify({
+              ok: false,
+              error: err instanceof Error ? err.message : "Error inesperado en el servidor.",
+            }),
+            { status: 200, headers: { "Content-Type": "application/json" } },
+          );
         }
-
-        return new Response(upstream.body, {
-          status: 200,
-          headers: {
-            "Content-Type": "text/event-stream",
-            "Cache-Control": "no-cache, no-transform",
-            Connection: "keep-alive",
-          },
-        });
       },
     },
   },

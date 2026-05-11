@@ -39,53 +39,22 @@ export function AITutorChat({ topicTitle, compact = false }: { topicTitle?: stri
         body: JSON.stringify({ tema, messages: next }),
       });
 
-      if (!res.ok || !res.body) {
-        const detail = await res.text().catch(() => "");
-        throw new Error(`Error ${res.status}: ${detail.slice(0, 200) || "no se pudo conectar con el tutor"}`);
-      }
+      const data = (await res.json().catch(() => ({ ok: false, error: "Respuesta inválida del servidor." }))) as {
+        ok?: boolean;
+        text?: string;
+        error?: string;
+      };
 
-      // Add empty AI bubble that we will fill via streaming
-      setMessages((m) => [...m, { role: "ai", text: "" }]);
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() ?? "";
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (!trimmed.startsWith("data:")) continue;
-          const data = trimmed.slice(5).trim();
-          if (!data || data === "[DONE]") continue;
-          try {
-            const json = JSON.parse(data);
-            const chunk: string = json?.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text ?? "").join("") ?? "";
-            if (chunk) {
-              setMessages((m) => {
-                const copy = [...m];
-                const last = copy[copy.length - 1];
-                if (last && last.role === "ai") copy[copy.length - 1] = { role: "ai", text: last.text + chunk };
-                return copy;
-              });
-            }
-          } catch {
-            // ignore malformed line
-          }
-        }
+      if (!data.ok || !data.text) {
+        const msg = data.error || `Error ${res.status}`;
+        setError(msg);
+        setMessages((m) => [...m, { role: "ai", text: `⚠️ ${msg}` }]);
+      } else {
+        setMessages((m) => [...m, { role: "ai", text: data.text! }]);
       }
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Error desconocido";
+      const msg = e instanceof Error ? e.message : "Error de red";
       setError(msg);
-      setMessages((m) => {
-        const copy = [...m];
-        if (copy[copy.length - 1]?.role === "ai" && copy[copy.length - 1].text === "") copy.pop();
-        return copy;
-      });
     } finally {
       setLoading(false);
     }
@@ -103,18 +72,15 @@ export function AITutorChat({ topicTitle, compact = false }: { topicTitle?: stri
         </Button>
       </div>
 
-
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
         {messages.map((m, i) => (
           <div
             key={i}
             className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${
-              m.role === "user"
-                ? "ml-auto bg-[#15803D] text-white"
-                : "bg-muted text-foreground"
+              m.role === "user" ? "ml-auto bg-[#15803D] text-white" : "bg-muted text-foreground"
             }`}
           >
-            {m.text || (loading && i === messages.length - 1 ? "…" : "")}
+            {m.text}
           </div>
         ))}
         {loading && (
@@ -124,7 +90,7 @@ export function AITutorChat({ topicTitle, compact = false }: { topicTitle?: stri
               <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce" style={{ animationDelay: "120ms" }} />
               <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/60 animate-bounce" style={{ animationDelay: "240ms" }} />
             </span>
-            STEMLab AI está escribiendo…
+            STEMLab AI está pensando…
           </div>
         )}
         {error && (
