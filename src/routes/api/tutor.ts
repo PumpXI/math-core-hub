@@ -2,7 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 
 type Msg = { role: "user" | "ai"; text: string };
 
-const MODELS = ["gemini-2.0-flash", "gemini-1.5-flash-latest", "gemini-1.5-flash"];
+const MODELS = [
+  "gemini-2.0-flash",
+  "gemini-2.0-flash-lite",
+  "gemini-2.5-flash",
+  "gemini-2.5-flash-lite",
+  "gemini-flash-latest",
+];
 
 async function callGemini(model: string, apiKey: string, payload: unknown) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
