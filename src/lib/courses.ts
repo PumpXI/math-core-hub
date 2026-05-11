@@ -137,7 +137,7 @@ export const courses: Course[] = [
     modules: [
       {
         slug: "tema-1",
-        title: "Tema I · Límites y Continuidad",
+        title: "Tema I · Límites",
         topics: [
           t("limites-intuitivo", "Concepto intuitivo de límite y límites laterales", "Aproximaciones y notación.", "en-progreso"),
           t("limites-infinitos", "Límites infinitos y al infinito", "Comportamiento asintótico."),
@@ -147,6 +147,7 @@ export const courses: Course[] = [
           t("continuidad-lateral", "Continuidad por la derecha y por la izquierda", "Casos especiales."),
           t("tipos-discontinuidad", "Tipos de discontinuidad", "Removible, salto e infinita."),
           t("cambios-variable", "Cambios de variable", "Aplicaciones al cálculo de límites."),
+          t("limites-trigonometricos", "Límites trigonométricos", "Técnicas, sustituciones e identidades para límites con funciones trigonométricas.", "en-progreso"),
           t("asintotas-vh", "Asíntotas verticales y horizontales", "Determinación a partir de límites."),
         ],
       },
@@ -164,7 +165,7 @@ export const courses: Course[] = [
           t("derivacion-logaritmica", "Derivación logarítmica", "Productos y potencias complejas."),
           t("derivadas-orden-superior", "Derivadas de orden superior", "Segunda, tercera y n-ésima derivada."),
           t("recta-tangente-normal", "Rectas tangente y normal a una curva", "Ecuaciones y gráficas."),
-          t("razones-cambio", "Razones de cambio (tasas relacionadas)", "Modelado de problemas."),
+          t("razones-cambio", "Razones de cambio", "Modelado de problemas."),
           t("extremos", "Extremos absolutos y relativos", "Definiciones y búsqueda."),
           t("fermat-tve", "Teorema de Fermat y teorema del valor extremo", "Condiciones necesarias."),
           t("monotonia-1ra", "Intervalos de monotonía y criterio de la primera derivada", "Crecimiento y decrecimiento."),

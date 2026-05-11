@@ -80,13 +80,7 @@ export function TopicBody({
                 </div>
               ))}
               {c.formulas.length > 0 && (
-                <div className="space-y-3 pt-2">
-                  {c.formulas.map((f, i) => (
-                    <div key={i} className="rounded-lg bg-muted/50 px-4 py-3 overflow-x-auto">
-                      <BlockMath math={f} />
-                    </div>
-                  ))}
-                </div>
+                <FormulaGrid formulas={c.formulas} />
               )}
               <div className="mt-2 rounded-xl border-l-4 border-[#15803D] bg-green-50 p-4">
                 <div className="flex items-center gap-2 text-sm font-semibold text-[#14532D]">
@@ -152,6 +146,42 @@ export function TopicBody({
         <AITutorChat topicTitle={c?.contextLabel ?? topicTitle} compact />
       </TabsContent>
     </Tabs>
+  );
+}
+
+function FormulaGrid({ formulas }: { formulas: string[] }) {
+  return (
+    <section className="pt-3">
+      <div className="mb-3 flex items-center gap-2">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#15803D]/10 text-[#15803D]">
+          <Sparkles className="h-4 w-4" />
+        </span>
+        <div>
+          <h3 className="text-sm font-semibold text-foreground">Fórmulas clave</h3>
+          <p className="text-xs text-muted-foreground">Ideas esenciales para reconocer patrones.</p>
+        </div>
+      </div>
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {formulas.map((formula, index) => (
+          <div
+            key={index}
+            className="group overflow-hidden rounded-xl border border-green-200/70 border-t-4 border-t-[#15803D] bg-gradient-to-br from-green-50/80 via-white to-emerald-50/60 shadow-sm transition-colors hover:border-green-300"
+          >
+            <div className="flex items-center justify-between gap-2 border-b border-green-100/80 px-3 py-2">
+              <span className="rounded-full bg-[#15803D]/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[#14532D]">
+                Idea {index + 1}
+              </span>
+              <span className="h-1.5 w-1.5 rounded-full bg-[#15803D]/60" />
+            </div>
+            <div className="max-w-full overflow-x-auto px-4 py-4 text-center text-[0.92rem] [scrollbar-width:thin] sm:px-5 [&_.katex-display]:my-0 [&_.katex-display]:min-w-max">
+              <div className="inline-block min-w-full px-3">
+                <BlockMath math={formula} />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
