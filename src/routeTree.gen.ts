@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as RegisterSplatRouteImport } from './routes/register.$'
 import { Route as LoginSplatRouteImport } from './routes/login.$'
 import { Route as CourseCourseSlugRouteImport } from './routes/course.$courseSlug'
+import { Route as ApiTutorRouteImport } from './routes/api/tutor'
 import { Route as CourseCourseSlugTopicSlugRouteImport } from './routes/course.$courseSlug.$topicSlug'
 
 const RegisterRoute = RegisterRouteImport.update({
@@ -65,6 +66,11 @@ const CourseCourseSlugRoute = CourseCourseSlugRouteImport.update({
   path: '/course/$courseSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiTutorRoute = ApiTutorRouteImport.update({
+  id: '/api/tutor',
+  path: '/api/tutor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CourseCourseSlugTopicSlugRoute =
   CourseCourseSlugTopicSlugRouteImport.update({
     id: '/$topicSlug',
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRouteWithChildren
   '/register': typeof RegisterRouteWithChildren
+  '/api/tutor': typeof ApiTutorRoute
   '/course/$courseSlug': typeof CourseCourseSlugRouteWithChildren
   '/login/$': typeof LoginSplatRoute
   '/register/$': typeof RegisterSplatRoute
@@ -91,6 +98,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRouteWithChildren
   '/register': typeof RegisterRouteWithChildren
+  '/api/tutor': typeof ApiTutorRoute
   '/course/$courseSlug': typeof CourseCourseSlugRouteWithChildren
   '/login/$': typeof LoginSplatRoute
   '/register/$': typeof RegisterSplatRoute
@@ -104,6 +112,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRouteWithChildren
   '/register': typeof RegisterRouteWithChildren
+  '/api/tutor': typeof ApiTutorRoute
   '/course/$courseSlug': typeof CourseCourseSlugRouteWithChildren
   '/login/$': typeof LoginSplatRoute
   '/register/$': typeof RegisterSplatRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/api/tutor'
     | '/course/$courseSlug'
     | '/login/$'
     | '/register/$'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/api/tutor'
     | '/course/$courseSlug'
     | '/login/$'
     | '/register/$'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/api/tutor'
     | '/course/$courseSlug'
     | '/login/$'
     | '/register/$'
@@ -155,6 +167,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRouteWithChildren
   RegisterRoute: typeof RegisterRouteWithChildren
+  ApiTutorRoute: typeof ApiTutorRoute
   CourseCourseSlugRoute: typeof CourseCourseSlugRouteWithChildren
 }
 
@@ -223,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CourseCourseSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/tutor': {
+      id: '/api/tutor'
+      path: '/api/tutor'
+      fullPath: '/api/tutor'
+      preLoaderRoute: typeof ApiTutorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/course/$courseSlug/$topicSlug': {
       id: '/course/$courseSlug/$topicSlug'
       path: '/$topicSlug'
@@ -273,6 +293,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRouteWithChildren,
   RegisterRoute: RegisterRouteWithChildren,
+  ApiTutorRoute: ApiTutorRoute,
   CourseCourseSlugRoute: CourseCourseSlugRouteWithChildren,
 }
 export const routeTree = rootRouteImport
