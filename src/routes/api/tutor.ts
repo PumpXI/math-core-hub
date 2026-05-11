@@ -90,8 +90,8 @@ Reglas:
               .catch(() => "")
               .then((s) => s.slice(0, 200))}`;
             console.error("[tutor] gemini upstream failed", lastDetail);
-            // Si es 404 (modelo no encontrado) probamos el siguiente
-            if (upstream.status !== 404 && upstream.status < 500) break;
+            // Reintentar con el siguiente modelo si es 404 (no existe), 429 (cuota) o 5xx
+            if (![404, 429].includes(upstream.status) && upstream.status < 500) break;
           }
 
           return json({
