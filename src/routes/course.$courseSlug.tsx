@@ -1,7 +1,7 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, Outlet, useMatchRoute } from "@tanstack/react-router";
 import { AppNavbar } from "@/components/app/AppNavbar";
 import { AppSidebar } from "@/components/app/AppSidebar";
-import { getCourse, getCourseTopics, type Topic, type Module } from "@/lib/courses";
+import { getCourse, getCourseTopics, type Topic } from "@/lib/courses";
 import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CircleCheck, CircleDot, Circle, ArrowRight } from "lucide-react";
@@ -20,8 +20,20 @@ export const Route = createFileRoute("/course/$courseSlug")({
       { name: "description", content: loaderData?.course.description ?? "" },
     ],
   }),
-  component: () => (<Protected><CoursePage /></Protected>),
+  component: () => (<Protected><CourseLayout /></Protected>),
 });
+
+// Layout que decide si mostrar la página del curso o el tema hijo
+function CourseLayout() {
+  const matchRoute = useMatchRoute();
+  const isTopicPage = matchRoute({ to: "/course/$courseSlug/$topicSlug" });
+
+  // Si estamos en un tema hijo, renderizamos el Outlet directamente
+  if (isTopicPage) return <Outlet />;
+
+  // Si estamos en la página del curso, mostramos el listado
+  return <CoursePage />;
+}
 
 const statusMap: Record<Topic["status"], { icon: React.ReactNode; label: string }> = {
   "completado": { icon: <CircleCheck className="h-4 w-4 text-green-600" />, label: "Completado" },

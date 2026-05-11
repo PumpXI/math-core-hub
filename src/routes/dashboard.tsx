@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useUser } from "@clerk/clerk-react";
 import { AppNavbar } from "@/components/app/AppNavbar";
 import { AppSidebar } from "@/components/app/AppSidebar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -14,6 +15,10 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function Dashboard() {
+  // Obtenemos el usuario actual desde Clerk
+  const { user } = useUser();
+  const nombre = user?.firstName ?? user?.username ?? "estudiante";
+
   return (
     <div className="min-h-screen">
       <AppNavbar />
@@ -21,7 +26,7 @@ function Dashboard() {
         <AppSidebar />
         <main className="flex-1 px-4 sm:px-8 py-8 space-y-10">
           <section>
-            <h1 className="text-3xl font-bold tracking-tight">Hola, María 👋</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Hola, {nombre} 👋</h1>
             <p className="text-muted-foreground mt-1">Sigamos aprendiendo donde lo dejaste.</p>
           </section>
 

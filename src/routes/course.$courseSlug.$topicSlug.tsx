@@ -10,16 +10,27 @@ export const Route = createFileRoute("/course/$courseSlug/$topicSlug")({
   loader: ({ params }) => {
     const course = getCourse(params.courseSlug);
     const topic = getTopic(params.courseSlug, params.topicSlug);
+
     if (!course || !topic) throw notFound();
+
     return { course, topic };
   },
+
   head: ({ loaderData }) => ({
     meta: [
       { title: `${loaderData?.topic.title ?? "Tema"} — STEMLab` },
-      { name: "description", content: loaderData?.topic.description ?? "" },
+      {
+        name: "description",
+        content: loaderData?.topic.description ?? "",
+      },
     ],
   }),
-  component: () => (<Protected><TopicPage /></Protected>),
+
+  component: () => (
+    <Protected>
+      <TopicPage />
+    </Protected>
+  ),
 });
 
 function TopicPage() {
@@ -27,7 +38,9 @@ function TopicPage() {
     course: import("@/lib/courses").Course;
     topic: import("@/lib/courses").Topic;
   };
+
   const content = getTopicContent(course.slug, topic.slug);
+
   const accent =
     course.slug === "precalculo"
       ? "data-[state=active]:bg-amber-500 data-[state=active]:text-white"
@@ -36,22 +49,49 @@ function TopicPage() {
   return (
     <div className="min-h-screen">
       <AppNavbar />
+
       <div className="mx-auto flex max-w-[1400px]">
         <AppSidebar />
+
         <main className="flex-1 px-4 sm:px-8 py-8 space-y-6">
           <nav className="text-xs text-muted-foreground">
-            <Link to="/dashboard" className="hover:text-foreground">Dashboard</Link>
+            <Link
+              to="/dashboard"
+              className="hover:text-foreground"
+            >
+              Dashboard
+            </Link>
+
             {" / "}
-            <Link to="/course/$courseSlug" params={{ courseSlug: course.slug }} className="hover:text-foreground">{course.name}</Link>
-            {" / "}<span className="text-foreground">{topic.title}</span>
+
+            <Link
+              to="/course/$courseSlug"
+              params={{ courseSlug: course.slug }}
+              className="hover:text-foreground"
+            >
+              {course.name}
+            </Link>
+
+            {" / "}
+
+            <span className="text-foreground">
+              {topic.title}
+            </span>
           </nav>
+
           <header>
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{topic.title}</h1>
-            <p className="mt-2 text-muted-foreground">{topic.description}</p>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+              {topic.title}
+            </h1>
+
+            <p className="mt-2 text-muted-foreground">
+              {topic.description}
+            </p>
           </header>
 
           <TopicBody
             courseSlug={course.slug}
+            topicSlug={topic.slug}
             topicTitle={topic.title}
             topicDescription={topic.description}
             content={content}
