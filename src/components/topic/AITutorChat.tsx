@@ -26,36 +26,22 @@ export function AITutorChat({ topicTitle, compact = false }: { topicTitle?: stri
   const send = async () => {
     const text = input.trim();
     if (!text || loading) return;
-    if (!apiKey) {
-      setError("Para activar el tutor IA agrega tu VITE_GEMINI_API_KEY en la configuración del proyecto");
-      return;
-    }
     setError(null);
     const next: Msg[] = [...messages, { role: "user", text }];
     setMessages(next);
     setInput("");
     setLoading(true);
 
-    // Build Gemini contents from history (skip the initial greeting? include for context)
-    const contents = next.map((m) => ({
-      role: m.role === "user" ? "user" : "model",
-      parts: [{ text: m.text }],
-    }));
-
     try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=${apiKey}`;
-      const res = await fetch(url, {
+      const res = await fetch("/api/tutor", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          systemInstruction: { parts: [{ text: SYSTEM_PROMPT(tema) }] },
-          contents,
-        }),
+        body: JSON.stringify({ tema, messages: next }),
       });
 
       if (!res.ok || !res.body) {
         const detail = await res.text().catch(() => "");
-        throw new Error(`Error ${res.status}: ${detail.slice(0, 200) || "no se pudo conectar con Gemini"}`);
+        throw new Error(`Error ${res.status}: ${detail.slice(0, 200) || "no se pudo conectar con el tutor"}`);
       }
 
       // Add empty AI bubble that we will fill via streaming
