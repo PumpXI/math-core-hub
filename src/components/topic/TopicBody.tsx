@@ -4,18 +4,10 @@ import "katex/dist/katex.min.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, BookOpen } from "lucide-react";
+import { ChevronDown, ChevronUp, BookOpen, Construction, Sparkles } from "lucide-react";
 import { AITutorChat } from "./AITutorChat";
+import { GeoGebraEmbed } from "./GeoGebraEmbed";
 import type { TopicContent } from "@/lib/topicContent";
-
-const placeholderContent = (title: string): TopicContent => ({
-  contextLabel: title,
-  theory: ["Contenido en desarrollo — disponible próximamente."],
-  formulas: [],
-  definition: { title: "Definición", body: "Contenido en desarrollo — disponible próximamente." },
-  examples: [],
-  exercises: [],
-});
 
 export function TopicBody({
   courseSlug,
