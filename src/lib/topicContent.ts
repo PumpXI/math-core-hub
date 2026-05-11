@@ -20,6 +20,8 @@ export type TopicContent = {
   definition: { title: string; body: string };
   examples: TopicExample[];
   exercises: TopicExercise[];
+  /** ID público de un material de GeoGebra (geogebra.org/m/<id>) para la visualización dinámica. */
+  geogebraId?: string;
 };
 
 const M = (key: string, c: TopicContent): [string, TopicContent] => [key, c];
