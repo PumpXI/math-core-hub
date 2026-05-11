@@ -20,6 +20,8 @@ export type TopicContent = {
   definition: { title: string; body: string };
   examples: TopicExample[];
   exercises: TopicExercise[];
+  /** ID público de un material de GeoGebra (geogebra.org/m/<id>) para la visualización dinámica. */
+  geogebraId?: string;
 };
 
 const M = (key: string, c: TopicContent): [string, TopicContent] => [key, c];
@@ -600,6 +602,214 @@ export const topicContent: Record<string, TopicContent> = Object.fromEntries([
       { statement: "d/dx ∫₂ˣ (t² + 1) dt", solution: "x² + 1." },
       { statement: "∫₀^(π/2) cos x dx", solution: "sin(π/2) − sin 0 = 1." },
       { statement: "∫₋₁¹ x² dx", solution: "[x³/3] de −1 a 1 = 2/3." },
+    ],
+  }),
+
+  // ---------------- PRECÁLCULO · MÓDULO 0 ----------------
+  M("precalculo:numeros-reales", {
+    contextLabel: "Números reales y sus subconjuntos",
+    geogebraId: "qXAk8senH", // recta numérica interactiva (applet público)
+    theory: [
+      "El conjunto de los números reales $\\mathbb{R}$ se construye por niveles. Los naturales $\\mathbb{N}=\\{0,1,2,\\ldots\\}$ sirven para contar; los enteros $\\mathbb{Z}$ añaden los opuestos; los racionales $\\mathbb{Q}$ son cocientes $a/b$ con $b\\neq 0$.",
+      "Los irracionales $\\mathbb{I}$ son los reales que no pueden escribirse como cociente de enteros (por ejemplo $\\sqrt{2}$, $\\pi$, $e$). Su expansión decimal es infinita y no periódica.",
+      "La unión de racionales e irracionales forma los reales: $\\mathbb{R} = \\mathbb{Q}\\cup\\mathbb{I}$, con $\\mathbb{Q}\\cap\\mathbb{I}=\\varnothing$. Cada real corresponde a un único punto de la recta numérica.",
+      "Las inclusiones son estrictas: $\\mathbb{N}\\subset\\mathbb{Z}\\subset\\mathbb{Q}\\subset\\mathbb{R}$.",
+    ],
+    formulas: [
+      "\\mathbb{N}\\subset\\mathbb{Z}\\subset\\mathbb{Q}\\subset\\mathbb{R}",
+      "\\mathbb{R} = \\mathbb{Q}\\cup\\mathbb{I},\\qquad \\mathbb{Q}\\cap\\mathbb{I}=\\varnothing",
+    ],
+    definition: {
+      title: "Número racional vs irracional",
+      body: "Un número es racional si puede escribirse como a/b con a,b enteros y b ≠ 0; equivalente: su expansión decimal termina o es periódica. Es irracional si su expansión decimal es infinita no periódica.",
+    },
+    examples: [
+      {
+        statement: "Clasifica los números: $-3,\\ 0,\\ \\tfrac{7}{2},\\ \\sqrt{9},\\ \\sqrt{2},\\ \\pi$.",
+        steps: [
+          "$-3\\in\\mathbb{Z}\\subset\\mathbb{Q}\\subset\\mathbb{R}$.",
+          "$0\\in\\mathbb{N}$ (en la convención que incluye 0), $\\mathbb{Z},\\mathbb{Q},\\mathbb{R}$.",
+          "$7/2\\in\\mathbb{Q}\\subset\\mathbb{R}$, no entero.",
+          "$\\sqrt{9}=3\\in\\mathbb{N}$.",
+          "$\\sqrt{2},\\pi\\in\\mathbb{I}\\subset\\mathbb{R}$.",
+        ],
+        conclusion: "Solo $\\sqrt{2}$ y $\\pi$ son irracionales.",
+      },
+      {
+        statement: "Escribe $0.\\overline{3}$ como fracción.",
+        steps: [
+          "Sea $x=0.\\overline{3}$.",
+          "$10x = 3.\\overline{3} = 3 + x$.",
+          "$9x = 3$.",
+        ],
+        conclusion: "$x=1/3$, por lo tanto $0.\\overline{3}\\in\\mathbb{Q}$.",
+      },
+      {
+        statement: "¿Es $\\sqrt{2}+1$ racional o irracional?",
+        steps: [
+          "Si fuera racional, $\\sqrt{2}+1=p/q$ implica $\\sqrt{2}=p/q-1\\in\\mathbb{Q}$.",
+          "Pero $\\sqrt{2}\\notin\\mathbb{Q}$ — contradicción.",
+        ],
+        conclusion: "$\\sqrt{2}+1$ es irracional.",
+      },
+    ],
+    exercises: [
+      { statement: "¿A qué subconjunto pertenece $-\\sqrt{16}$?", solution: "$-\\sqrt{16}=-4\\in\\mathbb{Z}$." },
+      { statement: "Escribe $0.25$ como fracción.", solution: "$1/4\\in\\mathbb{Q}$." },
+      { statement: "Da un irracional entre 1 y 2.", solution: "Por ejemplo $\\sqrt{2}\\approx 1.414$." },
+      { statement: "¿Es $\\pi-\\pi$ irracional?", solution: "No, $\\pi-\\pi=0\\in\\mathbb{N}$." },
+      { statement: "Convierte $0.\\overline{45}$ a fracción.", solution: "$x=0.\\overline{45}\\Rightarrow 99x=45\\Rightarrow x=5/11$." },
+    ],
+  }),
+
+  M("precalculo:propiedades-suma-producto", {
+    contextLabel: "Propiedades de la suma y la multiplicación en R",
+    geogebraId: "ueymxwgr",
+    theory: [
+      "La suma y el producto en $\\mathbb{R}$ son operaciones internas que cumplen propiedades estructurales que justifican toda manipulación algebraica.",
+      "Conmutatividad: $a+b=b+a$ y $a\\cdot b=b\\cdot a$. Asociatividad: $(a+b)+c=a+(b+c)$ y $(ab)c=a(bc)$.",
+      "Existen elementos neutros: $0$ para la suma ($a+0=a$) y $1$ para el producto ($a\\cdot 1=a$). Cada real $a$ tiene opuesto $-a$ y, si $a\\neq 0$, inverso multiplicativo $1/a$.",
+      "La distributividad enlaza ambas operaciones: $a(b+c)=ab+ac$. Es la base de la factorización y del producto de polinomios.",
+    ],
+    formulas: [
+      "a+b=b+a,\\qquad a\\cdot b=b\\cdot a",
+      "a+(-a)=0,\\qquad a\\cdot \\tfrac{1}{a}=1\\;(a\\neq 0)",
+      "a(b+c)=ab+ac",
+    ],
+    definition: {
+      title: "Cuerpo ordenado",
+      body: "El conjunto de los reales con la suma y el producto forma un cuerpo conmutativo: las dos operaciones son asociativas, conmutativas, tienen neutro e inverso (excepto 0 para el producto) y se relacionan por la distributividad.",
+    },
+    examples: [
+      {
+        statement: "Justifica cada paso al simplificar $3(x+2)+5(x-1)$.",
+        steps: [
+          "$3(x+2)=3x+6$ por distributividad.",
+          "$5(x-1)=5x-5$ por distributividad.",
+          "$3x+6+5x-5 = (3x+5x)+(6-5)$ por conmutatividad y asociatividad.",
+          "$=8x+1$.",
+        ],
+        conclusion: "$3(x+2)+5(x-1)=8x+1$.",
+      },
+      {
+        statement: "Demuestra que $a\\cdot 0 = 0$ usando las propiedades.",
+        steps: [
+          "$a\\cdot 0 = a\\cdot(0+0) = a\\cdot 0 + a\\cdot 0$ (distributividad).",
+          "Restando $a\\cdot 0$ a ambos lados (existencia del opuesto).",
+        ],
+        conclusion: "$a\\cdot 0 = 0$.",
+      },
+      {
+        statement: "Halla el inverso multiplicativo de $-\\tfrac{2}{5}$.",
+        steps: ["Buscamos $x$ con $(-2/5)\\cdot x = 1$.", "$x = -5/2$."],
+        conclusion: "El inverso es $-5/2$.",
+      },
+    ],
+    exercises: [
+      { statement: "Simplifica $2(3x-4)+x$ justificando.", solution: "$6x-8+x=7x-8$ (distributividad y agrupación)." },
+      { statement: "¿Cuál es el opuesto de $-7$?", solution: "$+7$, porque $-7+7=0$." },
+      { statement: "¿Tiene 0 inverso multiplicativo?", solution: "No: no existe $x$ con $0\\cdot x=1$." },
+      { statement: "Verifica $(2+3)+4 = 2+(3+4)$.", solution: "Ambos valen 9 — ejemplo de asociatividad." },
+      { statement: "Factoriza $5x+5y$.", solution: "$5(x+y)$ por distributividad." },
+    ],
+  }),
+
+  M("precalculo:orden-en-r", {
+    contextLabel: "Orden en R",
+    geogebraId: "qXAk8senH",
+    theory: [
+      "$\\mathbb{R}$ es un conjunto totalmente ordenado: para cada par $a,b$ se cumple exactamente una de las relaciones $a<b$, $a=b$ o $a>b$ (tricotomía).",
+      "El orden es compatible con las operaciones. Si $a<b$, entonces $a+c<b+c$ para todo $c\\in\\mathbb{R}$. Si además $c>0$, entonces $ac<bc$; si $c<0$, la desigualdad se invierte: $ac>bc$.",
+      "La transitividad afirma que $a<b$ y $b<c$ implican $a<c$. Estas reglas permiten manipular desigualdades como si fueran ecuaciones, salvo el cambio de signo al multiplicar por un negativo.",
+      "Geométricamente, $a<b$ significa que $a$ está a la izquierda de $b$ en la recta real.",
+    ],
+    formulas: [
+      "a<b\\;\\land\\;c>0 \\;\\Rightarrow\\; ac<bc",
+      "a<b\\;\\land\\;c<0 \\;\\Rightarrow\\; ac>bc",
+      "a<b\\;\\land\\;b<c \\;\\Rightarrow\\; a<c",
+    ],
+    definition: {
+      title: "Tricotomía",
+      body: "Para cualesquiera reales a y b se cumple una y solo una de: a < b, a = b, a > b.",
+    },
+    examples: [
+      {
+        statement: "Compara $-\\tfrac{3}{4}$ y $-\\tfrac{2}{3}$.",
+        steps: [
+          "Común denominador 12: $-9/12$ y $-8/12$.",
+          "Como $-9<-8$, entonces $-9/12<-8/12$.",
+        ],
+        conclusion: "$-3/4 < -2/3$.",
+      },
+      {
+        statement: "Si $a<b$, ¿qué pasa con $-2a$ y $-2b$?",
+        steps: ["Multiplicamos por $-2<0$.", "La desigualdad se invierte."],
+        conclusion: "$-2a > -2b$.",
+      },
+      {
+        statement: "Demuestra que si $0<a<b$, entonces $1/a > 1/b$.",
+        steps: [
+          "$a<b$ y $ab>0$.",
+          "Dividimos ambos lados por $ab$ (positivo, no cambia el sentido).",
+          "$a/(ab)<b/(ab)\\Rightarrow 1/b<1/a$.",
+        ],
+        conclusion: "$1/a > 1/b$.",
+      },
+    ],
+    exercises: [
+      { statement: "Ordena $-2,\\ -\\sqrt{2},\\ -1.5$.", solution: "$-2 < -\\sqrt{2}\\approx-1.414$? Cuidado: $-2<-1.5<-\\sqrt{2}$." },
+      { statement: "Si $x<y$, compara $5-x$ y $5-y$.", solution: "$-x>-y\\Rightarrow 5-x>5-y$." },
+      { statement: "¿Es cierto que $a^2\\ge 0$ para todo real?", solution: "Sí, por la regla de signos." },
+      { statement: "Si $a<0<b$, signo de $a/b$.", solution: "Negativo." },
+      { statement: "Compara $\\sqrt{2}$ y $1.5$.", solution: "$\\sqrt{2}\\approx 1.414 < 1.5$." },
+    ],
+  }),
+
+  M("precalculo:desigualdades-intervalos", {
+    contextLabel: "Desigualdades e intervalos",
+    geogebraId: "RHYH3UfF",
+    theory: [
+      "Un intervalo es un subconjunto de $\\mathbb{R}$ formado por todos los reales entre dos extremos. Se denota con paréntesis cuando el extremo se excluye y corchetes cuando se incluye: $(a,b)$, $[a,b]$, $[a,b)$, $(a,b]$.",
+      "Los intervalos infinitos usan $\\pm\\infty$, siempre con paréntesis: $(-\\infty,a]$, $(a,+\\infty)$.",
+      "Resolver una desigualdad lineal sigue las mismas reglas que una ecuación, recordando invertir el sentido al multiplicar o dividir por un negativo. La solución se expresa como intervalo.",
+      "Para desigualdades cuadráticas o racionales, se factoriza, se identifican los puntos críticos donde la expresión vale 0 o no está definida, y se hace una tabla de signos sobre los intervalos resultantes.",
+    ],
+    formulas: [
+      "[a,b]=\\{x\\in\\mathbb{R}:a\\le x\\le b\\}",
+      "(a,b)=\\{x\\in\\mathbb{R}:a<x<b\\}",
+      "ax+b<0\\;(a>0)\\;\\Longleftrightarrow\\; x<-b/a",
+    ],
+    definition: {
+      title: "Conjunto solución",
+      body: "El conjunto solución de una desigualdad es el conjunto de todos los reales que la satisfacen. Suele expresarse como un intervalo o unión de intervalos.",
+    },
+    examples: [
+      {
+        statement: "Resuelve $3x-5 < 7$.",
+        steps: ["Sumamos 5: $3x<12$.", "Dividimos entre 3 (positivo): $x<4$."],
+        conclusion: "$x\\in(-\\infty,4)$.",
+      },
+      {
+        statement: "Resuelve $-2x+1\\ge 5$.",
+        steps: ["Restamos 1: $-2x\\ge 4$.", "Dividimos entre $-2$ (negativo, invierte): $x\\le -2$."],
+        conclusion: "$x\\in(-\\infty,-2]$.",
+      },
+      {
+        statement: "Resuelve $x^2-x-6\\le 0$.",
+        steps: [
+          "Factoriza: $(x-3)(x+2)\\le 0$.",
+          "Ceros: $x=-2$ y $x=3$.",
+          "Tabla de signos: el producto es $\\le 0$ entre las raíces.",
+        ],
+        conclusion: "$x\\in[-2,3]$.",
+      },
+    ],
+    exercises: [
+      { statement: "Resuelve $4x+3>11$.", solution: "$x>2\\Rightarrow(2,+\\infty)$." },
+      { statement: "Resuelve $\\tfrac{1-x}{2}\\le 3$.", solution: "$1-x\\le 6\\Rightarrow x\\ge -5\\Rightarrow[-5,+\\infty)$." },
+      { statement: "Resuelve $x^2 < 9$.", solution: "$-3<x<3\\Rightarrow(-3,3)$." },
+      { statement: "Resuelve $\\tfrac{x-1}{x+2}\\ge 0$.", solution: "Puntos críticos $-2,1$. Solución: $(-\\infty,-2)\\cup[1,+\\infty)$." },
+      { statement: "Expresa $\\{x:-1\\le x<4\\}$ como intervalo.", solution: "$[-1,4)$." },
     ],
   }),
 ] satisfies Array<[string, TopicContent]>);

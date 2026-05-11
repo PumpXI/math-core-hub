@@ -4,21 +4,12 @@ import "katex/dist/katex.min.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, BookOpen } from "lucide-react";
+import { ChevronDown, ChevronUp, BookOpen, Construction, Sparkles } from "lucide-react";
 import { AITutorChat } from "./AITutorChat";
+import { GeoGebraEmbed } from "./GeoGebraEmbed";
 import type { TopicContent } from "@/lib/topicContent";
 
-const placeholderContent = (title: string): TopicContent => ({
-  contextLabel: title,
-  theory: ["Contenido en desarrollo — disponible próximamente."],
-  formulas: [],
-  definition: { title: "Definición", body: "Contenido en desarrollo — disponible próximamente." },
-  examples: [],
-  exercises: [],
-});
-
 export function TopicBody({
-  courseSlug,
   topicTitle,
   topicDescription,
   content,
@@ -30,11 +21,12 @@ export function TopicBody({
   content: TopicContent | undefined;
   accent: string;
 }) {
-  const c = content ?? placeholderContent(topicTitle);
-  const isPlaceholder = !content;
+  const [tab, setTab] = useState<string>("teoria");
+  const c = content;
+  const isPlaceholder = !c;
 
   return (
-    <Tabs defaultValue="teoria" className="w-full">
+    <Tabs value={tab} onValueChange={setTab} className="w-full">
       <TabsList className="grid grid-cols-4 max-w-2xl">
         <TabsTrigger value="teoria" className={accent}>Teoría</TabsTrigger>
         <TabsTrigger value="ejemplos" className={accent}>Ejemplos</TabsTrigger>
@@ -43,14 +35,20 @@ export function TopicBody({
       </TabsList>
 
       <TabsContent value="teoria" className="mt-6 space-y-6">
-        <article className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm space-y-4">
-          <h2 className="text-2xl font-semibold">{topicTitle}</h2>
-          {isPlaceholder ? (
-            <p className="text-muted-foreground">Contenido en desarrollo — disponible próximamente.</p>
-          ) : (
-            <>
+        {isPlaceholder ? (
+          <PlaceholderCard
+            title={topicTitle}
+            description={topicDescription}
+            onAskAI={() => setTab("tutor")}
+          />
+        ) : (
+          <>
+            <article className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm space-y-4">
+              <h2 className="text-2xl font-semibold">{topicTitle}</h2>
               {c.theory.map((p, i) => (
-                <p key={i} className="text-muted-foreground leading-relaxed">{p}</p>
+                <p key={i} className="text-muted-foreground leading-relaxed">
+                  <MathInline text={p} />
+                </p>
               ))}
               {c.formulas.length > 0 && (
                 <div className="space-y-3 pt-2">
@@ -67,18 +65,16 @@ export function TopicBody({
                 </div>
                 <p className="mt-1 text-sm text-[#14532D]/90">{c.definition.body}</p>
               </div>
-            </>
-          )}
-        </article>
-        <div className="rounded-2xl border-2 border-dashed border-border bg-muted/40 p-12 text-center text-muted-foreground text-sm">
-          📊 Gráfica interactiva — próximamente
-        </div>
+            </article>
+            <GeoGebraEmbed materialId={c.geogebraId} title={topicTitle} />
+          </>
+        )}
       </TabsContent>
 
       <TabsContent value="ejemplos" className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {c.examples.length === 0 ? (
+        {!c || c.examples.length === 0 ? (
           <div className="md:col-span-2 xl:col-span-3 rounded-xl border border-dashed border-border bg-muted/30 p-8 text-center text-sm text-muted-foreground">
-            Contenido en desarrollo — disponible próximamente.
+            Ejemplos en preparación. Mientras tanto puedes pedirle al tutor IA ejemplos de este tema.
           </div>
         ) : (
           c.examples.map((ex, i) => (
@@ -87,7 +83,7 @@ export function TopicBody({
                 <CardTitle className="text-base">Ejemplo {i + 1}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-sm">
-                <div className="rounded-lg bg-muted/50 p-3 font-medium">{ex.statement}</div>
+                <div className="rounded-lg bg-muted/50 p-3 font-medium"><MathInline text={ex.statement} /></div>
                 <ol className="space-y-2">
                   {ex.steps.map((s, k) => (
                     <li key={k} className="rounded-md border border-border bg-background p-2.5 text-muted-foreground">
@@ -107,9 +103,9 @@ export function TopicBody({
       </TabsContent>
 
       <TabsContent value="ejercicios" className="mt-6 space-y-3">
-        {c.exercises.length === 0 ? (
+        {!c || c.exercises.length === 0 ? (
           <div className="rounded-xl border border-dashed border-border bg-muted/30 p-8 text-center text-sm text-muted-foreground">
-            Contenido en desarrollo — disponible próximamente.
+            Ejercicios en preparación.
           </div>
         ) : (
           c.exercises.map((q, i) => <ExerciseRow key={i} index={i + 1} {...q} />)
@@ -117,9 +113,43 @@ export function TopicBody({
       </TabsContent>
 
       <TabsContent value="tutor" className="mt-6">
-        <AITutorChat topicTitle={c.contextLabel} compact />
+        <AITutorChat topicTitle={c?.contextLabel ?? topicTitle} compact />
       </TabsContent>
     </Tabs>
+  );
+}
+
+function PlaceholderCard({
+  title,
+  description,
+  onAskAI,
+}: {
+  title: string;
+  description: string;
+  onAskAI: () => void;
+}) {
+  return (
+    <div className="bg-card border border-border rounded-2xl p-8 shadow-sm space-y-5">
+      <div className="flex items-start gap-3">
+        <div className="rounded-xl bg-amber-100 p-2.5 text-amber-700">
+          <Construction className="h-5 w-5" />
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold">{title}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+        </div>
+      </div>
+      <div className="rounded-xl bg-muted/40 border border-dashed border-border p-5 text-sm text-muted-foreground">
+        Estamos preparando teoría, ejemplos paso a paso, ejercicios y una visualización interactiva
+        en GeoGebra para este tema. Disponible próximamente.
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button onClick={onAskAI} className="bg-[#15803D] hover:bg-[#166534] text-white">
+          <Sparkles className="mr-1.5 h-4 w-4" /> Pregúntale al tutor IA sobre este tema
+        </Button>
+        <span className="text-xs text-muted-foreground">El tutor ya conoce el contexto del tema.</span>
+      </div>
+    </div>
   );
 }
 
