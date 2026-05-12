@@ -9,11 +9,18 @@ export type TopicExercise = {
   solution: string;
 };
 
+export type TopicTheorySection = {
+  title: string;
+  body: string[];
+};
+
 export type TopicContent = {
   /** Tema actual para inyectar en el prompt del tutor IA */
   contextLabel: string;
   /** Párrafos de explicación teórica (texto plano, puede contener $...$ inline KaTeX) */
   theory: string[];
+  /** Bloques opcionales para organizar teoría extensa en secciones colapsables */
+  theorySections?: TopicTheorySection[];
   /** Fórmulas en LaTeX (sin $) que se renderizan en bloque */
   formulas: string[];
   /** Definición formal destacada */
@@ -1374,6 +1381,1209 @@ asintotasVerticalesHorizontalesContent.exercises = [
   examExercise("Da una función que cruce su AH $y=1$.", "$1+\\sin x/x$ cruza $y=1$ cuando $\\sin x=0$ y tiende a $1$."),
 ];
 
+const limitesContinuidadContent: TopicContent = {
+  contextLabel: "Introducción a los límites y continuidad",
+  geogebraId: limitesIntuitivoContent.geogebraId,
+  theory: [
+    "Este módulo construye el lenguaje central de Cálculo 1: aproximarse, comparar los dos lados de una función, distinguir límite de valor puntual y decidir continuidad.",
+    "El foco no es memorizar una lista de casos, sino leer el comportamiento local y global de una gráfica o fórmula: huecos, saltos, ramas que se disparan y alturas que se estabilizan al infinito.",
+  ],
+  theorySections: [
+    {
+      title: "Idea intuitiva de límite",
+      body: [
+        "Decir $\\lim_{x\\to a}f(x)=L$ significa que los valores de $f(x)$ se acercan a $L$ cuando $x$ se acerca a $a$. La función no necesita estar definida en $a$ para que el límite exista.",
+        "La frase $x\\to a$ describe un proceso de aproximación. Por eso el límite observa valores cercanos a $a$, pero excluye el punto exacto cuando analiza el comportamiento local.",
+        "Una tabla puede sugerir un límite y una gráfica puede hacerlo visible, pero la decisión final depende de que el comportamiento sea estable desde ambos lados.",
+      ],
+    },
+    {
+      title: "Límites laterales y existencia",
+      body: [
+        "El límite por la izquierda, $\\lim_{x\\to a^-}f(x)$, usa valores $x<a$. El límite por la derecha, $\\lim_{x\\to a^+}f(x)$, usa valores $x>a$.",
+        "El límite bilateral existe exactamente cuando los dos límites laterales existen y son iguales. Si los laterales llegan a alturas diferentes, el valor de $f(a)$ no puede arreglar el límite.",
+        "Un límite puede fallar por un salto, por crecimiento sin cota o por oscilación persistente. En cada caso, acercarse más a $a$ no produce una única altura real estable.",
+      ],
+    },
+    {
+      title: "Límite vs. valor de la función",
+      body: [
+        "$\\lim_{x\\to a}f(x)$ y $f(a)$ responden preguntas distintas. El límite pregunta hacia dónde va la función cerca de $a$; el valor pregunta qué altura fue asignada exactamente en $a$.",
+        "Puede ocurrir que el límite exista y $f(a)$ no exista, como en un hueco. También puede ocurrir que $f(a)$ exista pero sea diferente del límite, como cuando el punto cerrado está en otra altura.",
+        "Esta separación es la base para entender discontinuidades removibles: el comportamiento alrededor del punto es bueno, pero el valor puntual falta o está mal colocado.",
+      ],
+    },
+    {
+      title: "Continuidad puntual, lateral e intervalos",
+      body: [
+        "Una función es continua en $a$ si $f(a)$ existe, $\\lim_{x\\to a}f(x)$ existe y ambos coinciden: $\\lim_{x\\to a}f(x)=f(a)$.",
+        "En un intervalo abierto se exige continuidad en cada punto interior. En un intervalo cerrado $[a,b]$, se revisa continuidad por la derecha en $a$, continuidad por la izquierda en $b$ y continuidad usual en el interior.",
+        "La continuidad lateral es indispensable en dominios con extremos. Por ejemplo, $\\sqrt{x}$ es continua por la derecha en $0$ dentro de $[0,\\infty)$, aunque no tenga valores reales a la izquierda.",
+      ],
+    },
+    {
+      title: "Discontinuidades",
+      body: [
+        "Una discontinuidad removible aparece cuando el límite existe, pero el valor de la función no existe o no coincide con ese límite. Gráficamente se ve como un hueco o un punto colocado en otra altura.",
+        "Una discontinuidad de salto aparece cuando los límites laterales finitos existen pero son distintos. La gráfica llega a una altura desde la izquierda y a otra desde la derecha.",
+        "Una discontinuidad infinita, también inevitable en el sentido de que no se corrige redefiniendo un solo punto, ocurre cuando algún lateral tiende a $+\\infty$ o $-\\infty$. En este caso aparece comportamiento de asíntota vertical.",
+      ],
+    },
+    {
+      title: "Interpretación gráfica y asíntotas",
+      body: [
+        "En una gráfica, un límite finito se lee siguiendo la curva hacia la recta vertical $x=a$ desde ambos lados. El punto cerrado en $x=a$ informa $f(a)$, no necesariamente el límite.",
+        "La recta $x=a$ es una asíntota vertical si al acercarse a $a$ desde al menos un lado la función crece sin cota. La señal analítica es un límite lateral infinito.",
+        "La recta $y=L$ es una asíntota horizontal si $f(x)$ se acerca a $L$ cuando $x\\to\\infty$ o $x\\to-\\infty$. Una función puede cruzar una asíntota horizontal en valores finitos; la asíntota describe el comportamiento a largo plazo.",
+      ],
+    },
+  ],
+  formulas: [
+    "\\lim_{x\\to a} f(x)=L",
+    "\\lim_{x\\to a}f(x)=L \\Longleftrightarrow \\lim_{x\\to a^-}f(x)=\\lim_{x\\to a^+}f(x)=L",
+    "\\lim_{x\\to a}f(x)=f(a) \\quad \\text{si } f \\text{ es continua en } a",
+    "f \\text{ continua en } a \\Longleftrightarrow f(a) \\text{ existe},\\; \\lim_{x\\to a}f(x) \\text{ existe},\\; \\lim_{x\\to a}f(x)=f(a)",
+    "f \\text{ continua por la derecha en } a \\Longleftrightarrow \\lim_{x\\to a^+}f(x)=f(a)",
+    "f \\text{ continua por la izquierda en } a \\Longleftrightarrow \\lim_{x\\to a^-}f(x)=f(a)",
+    "f \\text{ continua en } [a,b] \\Longleftrightarrow \\lim_{x\\to a^+}f(x)=f(a),\\; f \\text{ continua en } (a,b),\\; \\lim_{x\\to b^-}f(x)=f(b)",
+    "\\text{Removible: } \\lim_{x\\to a}f(x)=L \\text{ existe, pero } f(a)\\ne L \\text{ o } f(a) \\text{ no existe}",
+    "\\text{Salto: } \\lim_{x\\to a^-}f(x)=L_1,\\; \\lim_{x\\to a^+}f(x)=L_2,\\; L_1\\ne L_2",
+    "\\text{Infinita: } \\lim_{x\\to a^-}f(x)=\\pm\\infty \\text{ o } \\lim_{x\\to a^+}f(x)=\\pm\\infty",
+    "x=a \\text{ es asíntota vertical si } \\lim_{x\\to a^-}f(x)=\\pm\\infty \\text{ o } \\lim_{x\\to a^+}f(x)=\\pm\\infty",
+    "y=L \\text{ es asíntota horizontal si } \\lim_{x\\to\\infty}f(x)=L \\text{ o } \\lim_{x\\to-\\infty}f(x)=L",
+  ],
+  definition: {
+    title: "Límite y continuidad",
+    body:
+      "El límite estudia el valor al que se aproxima una función cerca de un punto. La continuidad exige que esa aproximación exista y coincida con el valor real de la función en el punto; en extremos de intervalos, la coincidencia se revisa desde el lado que pertenece al dominio.",
+  },
+  examples: [
+    {
+      statement: "Una gráfica tiene un hueco en $(2,4)$ y un punto cerrado en $(2,-1)$. Interpreta límite, valor y continuidad.",
+      steps: [
+        "Las ramas se acercan a la altura $4$ por ambos lados.",
+        "El punto cerrado indica que $f(2)=-1$.",
+        "El límite y el valor de la función no coinciden.",
+      ],
+      conclusion: "$\\lim_{x\\to2}f(x)=4$, $f(2)=-1$ y la discontinuidad es removible.",
+    },
+    {
+      statement: "Sea $f(x)=\\begin{cases}x+2,&x<1\\\\2,&x=1\\\\3x,&x>1\\end{cases}$. Decide si existe $\\lim_{x\\to1}f(x)$ y si hay continuidad.",
+      steps: [
+        "Por la izquierda usamos $x+2$, así que $\\lim_{x\\to1^-}f(x)=3$.",
+        "Por la derecha usamos $3x$, así que $\\lim_{x\\to1^+}f(x)=3$.",
+        "Los límites laterales coinciden.",
+        "Sin embargo, el valor definido es $f(1)=2$.",
+      ],
+      conclusion: "El límite existe y vale $3$, pero la función no es continua porque $f(1)=2$.",
+    },
+    {
+      statement: "Halla $k$ para que $g(x)=\\begin{cases}kx+1,&x<2\\\\x^2-k,&x\\ge2\\end{cases}$ sea continua en $2$.",
+      steps: [
+        "El límite izquierdo es $2k+1$.",
+        "El valor y límite derecho vienen de la segunda rama: $4-k$.",
+        "Para continuidad igualamos $2k+1=4-k$.",
+      ],
+      conclusion: "$3k=3$, entonces $k=1$.",
+    },
+    {
+      statement: "Clasifica la discontinuidad de $h(x)=\\dfrac{x^2-9}{x-3}$ en $x=3$.",
+      steps: [
+        "La función original no está definida en $3$.",
+        "Para $x\\ne3$, $h(x)=x+3$.",
+        "El límite existe y vale $6$.",
+      ],
+      conclusion: "La discontinuidad es removible; se arreglaría definiendo $h(3)=6$.",
+    },
+    {
+      statement: "Estudia $p(x)=\\dfrac{1}{(x+1)^2}$ cerca de $x=-1$.",
+      steps: [
+        "El denominador tiende a $0$ al acercarse a $-1$.",
+        "Como está al cuadrado, se acerca a $0^+$ por ambos lados.",
+        "El cociente crece sin cota positiva.",
+      ],
+      conclusion: "$\\lim_{x\\to-1}p(x)=\\infty$ y $x=-1$ es una asíntota vertical.",
+    },
+    {
+      statement: "Verifica continuidad de $q(x)=\\sqrt{x-4}$ en su dominio.",
+      steps: [
+        "El dominio real es $[4,\\infty)$.",
+        "En puntos interiores $x>4$, la raíz es continua.",
+        "En $x=4$, se revisa solo $x\\to4^+$ y $q(4)=0$.",
+      ],
+      conclusion: "$q$ es continua en $[4,\\infty)$, con continuidad por la derecha en $4$.",
+    },
+    {
+      statement: "Sea $r(x)=\\begin{cases}2x-1,&x<2\\\\5,&x=2\\\\x^2-1,&x>2\\end{cases}$. Clasifica la discontinuidad en $2$.",
+      steps: [
+        "Límite izquierdo: $\\lim_{x\\to2^-}(2x-1)=3$.",
+        "Límite derecho: $\\lim_{x\\to2^+}(x^2-1)=3$.",
+        "El límite general existe y vale $3$, pero $r(2)=5$.",
+      ],
+      conclusion: "La discontinuidad es removible porque bastaría redefinir $r(2)=3$.",
+    },
+    {
+      statement: "Sea $s(x)=\\begin{cases}x^2,&x<0\\\\x+1,&x\\ge0\\end{cases}$. Decide si hay límite en $0$.",
+      steps: [
+        "Por la izquierda, $x^2\\to0$.",
+        "Por la derecha, $x+1\\to1$.",
+        "Los dos laterales son finitos pero distintos.",
+      ],
+      conclusion: "El límite no existe y la discontinuidad es de salto.",
+    },
+    {
+      statement: "Interpreta $\\displaystyle\\lim_{x\\to\\infty}\\left(2+\\dfrac{1}{x}\\right)$.",
+      steps: [
+        "Cuando $x\\to\\infty$, $1/x\\to0$.",
+        "Entonces la función se acerca a $2$.",
+        "Esa altura describe el comportamiento a largo plazo.",
+      ],
+      conclusion: "El límite es $2$ y la recta $y=2$ es una asíntota horizontal.",
+    },
+  ],
+  exercises: [
+    examExercise("Una tabla cerca de $a=3$ muestra valores por ambos lados acercándose a $7$, pero $f(3)=-2$. Indica límite y continuidad.", "$\\lim_{x\\to3}f(x)=7$ según la evidencia; no sería continua si $f(3)=-2$."),
+    examExercise("Si $\\lim_{x\\to a^-}f(x)=5$ y $\\lim_{x\\to a^+}f(x)=5$, halla $\\lim_{x\\to a}f(x)$.", "Existe y vale $5$."),
+    examExercise("Si $\\lim_{x\\to a^-}f(x)=2$ y $\\lim_{x\\to a^+}f(x)=7$, decide si existe el límite general y clasifica.", "No existe; es una discontinuidad de salto si ambos laterales son finitos."),
+    examExercise("Una gráfica se acerca a $3$ por ambos lados, pero $f(a)=8$. Clasifica.", "Discontinuidad removible."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{|x|}{x}$", "No existe; los laterales son $-1$ y $1$."),
+    examExercise("$\\displaystyle\\lim_{x\\to2}\\dfrac{x^2-4}{x-2}$ y clasificación en $2$.", "Para $x\\ne2$, queda $x+2$; el límite es $4$ y la discontinuidad original es removible."),
+    examExercise("Sea $f(x)=\\begin{cases}x^2,&x<1\\\\1,&x=1\\\\2-x,&x>1\\end{cases}$. Decide continuidad en $1$.", "Izquierda $1$, derecha $1$, valor $1$; sí es continua."),
+    examExercise("Sea $f(x)=\\begin{cases}x+1,&x<0\\\\4,&x=0\\\\x^2+2,&x>0\\end{cases}$. Decide continuidad en $0$.", "Izquierda $1$, derecha $2$; no existe límite general, no es continua."),
+    examExercise("Halla $k$: $f(x)=\\begin{cases}x+k,&x<3\\\\2x,&x\\ge3\\end{cases}$ continua en $3$.", "$3+k=6$, entonces $k=3$."),
+    examExercise("Halla $k$: $g(x)=\\begin{cases}kx-1,&x<2\\\\x^2+k,&x\\ge2\\end{cases}$ continua en $2$.", "$2k-1=4+k$, por tanto $k=5$."),
+    examExercise("¿Dónde es continua $f(x)=\\dfrac{x+1}{x^2-4}$?", "En $\\mathbb R\\setminus\\{-2,2\\}$."),
+    examExercise("¿Dónde es continua $f(x)=\\sqrt{9-x^2}$?", "En $[-3,3]$, con continuidad lateral en los extremos."),
+    examExercise("Clasifica $f(x)=\\sin(1/x)$ en $x=0$.", "Oscilatoria; no se acerca a una altura única."),
+    examExercise("Para $f(x)=\\dfrac{1}{x-5}$, describe los límites laterales en $5$ y la asíntota.", "Izquierda $-\\infty$, derecha $+\\infty$; asíntota vertical $x=5$."),
+    examExercise("Para $f(x)=\\dfrac{1}{(x+2)^2}$, describe el comportamiento en $x=-2$.", "Por ambos lados tiende a $+\\infty$; hay asíntota vertical $x=-2$."),
+    examExercise("Si $\\lim_{x\\to\\infty}f(x)=2$, ¿qué recta horizontal interpreta ese comportamiento?", "$y=2$."),
+    examExercise("Calcula $\\displaystyle\\lim_{x\\to\\infty}\\left(4-\\dfrac{3}{x}\\right)$ e interpreta.", "El límite es $4$; asíntota horizontal $y=4$."),
+    examExercise("Una función cumple $\\lim_{x\\to a}f(x)=L$, pero $f(a)$ no existe. ¿Qué condición de continuidad falla?", "Falla la existencia de $f(a)$; no hay continuidad en $a$."),
+  ],
+};
+
+
+const tecnicasAlgebraicasConsolidadasContent: TopicContent = {
+  contextLabel: "Técnicas algebraicas de límites",
+  geogebraId: tecnicasAlgebraicasLimitesContent.geogebraId,
+  theory: [
+    "Este módulo desarrolla las técnicas algebraicas que permiten calcular límites cuando la sustitución directa no basta. El caso central es la forma indeterminada $\\frac{0}{0}$, que indica trabajo pendiente y no un resultado.",
+    "Cada transformación debe conservar el comportamiento de la función para valores cercanos al punto de interés. En particular, cancelar factores es válido para calcular el límite cuando se trabaja con $x\\ne a$.",
+  ],
+  theorySections: [
+    {
+      title: "Sustitución directa",
+      body: [
+        "La sustitución directa consiste en evaluar la expresión en el punto al que tiende la variable. Funciona cuando la expresión está formada por operaciones continuas cerca del punto y no aparece una restricción del dominio.",
+        "Polinomios, muchas expresiones trigonométricas continuas y funciones racionales con denominador distinto de cero pueden evaluarse directamente: si $f$ es continua en $a$, entonces $\\lim_{x\\to a} f(x)=f(a)$.",
+        "La sustitución directa falla cuando produce una forma indeterminada como $\\frac{0}{0}$. En ese caso no se concluye que el límite sea cero ni que no exista; se debe transformar la expresión para comparar cómo se anulan sus partes.",
+        "También puede aparecer una expresión no indeterminada pero problemática, por ejemplo división entre cero con numerador no nulo. Ese caso suele indicar un límite infinito o la necesidad de estudiar límites laterales, no una técnica algebraica de cancelación.",
+      ],
+    },
+    {
+      title: "Factorización y cancelación",
+      body: [
+        "Factorizar ayuda porque muchas formas $\\frac{0}{0}$ esconden un factor común que se anula tanto en el numerador como en el denominador. Al escribir la expresión como producto, se puede detectar qué parte causa la indeterminación.",
+        "La cancelación se realiza solo con factores, no con términos sumados. Si aparece $\\frac{(x-a)g(x)}{(x-a)h(x)}$, entonces para $x\\ne a$ se puede trabajar con $\\frac{g(x)}{h(x)}$ y luego evaluar el límite.",
+        "Después de cancelar, la expresión simplificada no redefine automáticamente la función original en $x=a$. La restricción de dominio original permanece, pero el límite puede existir y revelar la altura de un hueco.",
+        "**Factor común**: se extrae el factor que aparece en todos los términos. Por ejemplo, $x^2+3x=x(x+3)$. En un límite como $\\lim_{x\\to0}\\frac{x^2+3x}{x}$, esto permite cancelar $x$ para $x\\ne0$ y evaluar $x+3\\to3$.",
+        "**Diferencia de cuadrados**: se usa $a^2-b^2=(a-b)(a+b)$. Por ejemplo, $x^2-9=(x-3)(x+3)$, lo que permite resolver $\\lim_{x\\to3}\\frac{x^2-9}{x-3}$ cancelando $x-3$.",
+        "**Trinomios**: se buscan dos factores lineales cuyos términos reproduzcan el trinomio. Por ejemplo, $x^2+5x+6=(x+2)(x+3)$. Si el denominador contiene $x+2$, la factorización puede revelar una cancelación removible.",
+        "**Suma de cubos**: se usa $a^3+b^3=(a+b)(a^2-ab+b^2)$. Por ejemplo, $x^3+8=(x+2)(x^2-2x+4)$; esta forma es útil cuando $x\\to-2$ y aparece el factor $x+2$ en el denominador.",
+        "**Diferencia de cubos**: se usa $a^3-b^3=(a-b)(a^2+ab+b^2)$. Por ejemplo, $x^3-8=(x-2)(x^2+2x+4)$; si el límite contiene $x-2$ abajo, se cancela para $x\\ne2$.",
+        "**Agrupación**: se agrupan términos para producir factores comunes por partes. Por ejemplo, $ax+ay+bx+by=a(x+y)+b(x+y)=(a+b)(x+y)$. En polinomios de cuatro términos, esta técnica puede descubrir el factor que causa $\\frac{0}{0}$.",
+        "**Inspección**: consiste en reconocer patrones conocidos rápidamente, como cuadrados perfectos, diferencias de cuadrados o raíces evidentes. Por ejemplo, ver $x^2-6x+9$ como $(x-3)^2$ evita expansión innecesaria.",
+        "**División sintética**: es útil cuando el denominador tiene un factor $x-a$ y el numerador también se anula en $x=a$. Si $P(a)=0$, dividir $P(x)$ entre $x-a$ revela el factor cancelable; por ejemplo, en $\\lim_{x\\to2}\\frac{x^3-4x^2+x+6}{x-2}$, la división sintética confirma que $x-2$ divide al numerador.",
+        "Una buena secuencia general es: sustituir, identificar $\\frac{0}{0}$, escoger la factorización más económica, cancelar factores comunes bajo la condición $x\\ne a$ y evaluar la expresión simplificada.",
+      ],
+    },
+    {
+      title: "Radicales y racionalización",
+      body: [
+        "Cuando la indeterminación contiene raíces, racionalizar con el conjugado puede convertir una diferencia de radicales en una expresión algebraica sin esa diferencia. La identidad clave es $(A-B)(A+B)=A^2-B^2$.",
+        "Si el radical está en el numerador, se multiplica numerador y denominador por el conjugado del numerador. Si el radical está en el denominador, se usa el conjugado del denominador. En ambos casos se multiplica por una forma de $1$, por lo que el valor de la expresión no cambia donde está definida.",
+        "Después de multiplicar por el conjugado, se expande con cuidado: $\\sqrt{u}^2-\\sqrt{v}^2=u-v$. Esa diferencia suele contener el factor que permite cancelar la causa de $\\frac{0}{0}$.",
+        "Con radicales anidados o expresiones más largas, la idea sigue siendo aislar la diferencia que se anula y escoger el conjugado que elimine la raíz dominante. No siempre conviene expandir todo; conviene expandir solo lo necesario para cancelar.",
+      ],
+    },
+    {
+      title: "Sustitución (cambio de variable)",
+      body: [
+        "Un cambio de variable simplifica límites donde se repite una expresión o donde una composición oculta una factorización. Se elige una variable nueva, por ejemplo $u=g(x)$, y se transforma también la condición de acercamiento.",
+        "Si $x\\to a$ y $u=g(x)$, entonces se debe calcular a qué valor tiende $u$. El límite original se resuelve en la nueva variable y luego se interpreta el resultado en el problema original.",
+        "En radicales de orden $3$ o mayor, una sustitución bien elegida puede convertir raíces en potencias enteras. Si aparecen varios índices, se usa el mínimo común múltiplo de los índices para construir una variable que elimine todas las raíces al elevarla adecuadamente.",
+        "Por ejemplo, si aparecen $\\sqrt[3]{2x-1}$ y $\\sqrt[4]{2x-1}$, se puede tomar $u=\\sqrt[12]{2x-1}$. Entonces $\\sqrt[3]{2x-1}=u^4$ y $\\sqrt[4]{2x-1}=u^3$, lo que convierte el límite en uno polinomial en $u$.",
+      ],
+    },
+  ],
+  formulas: [
+    "a^2-b^2=(a-b)(a+b)",
+    "a^3-b^3=(a-b)(a^2+ab+b^2)",
+    "a^3+b^3=(a+b)(a^2-ab+b^2)",
+    "(\\sqrt{u}-\\sqrt{v})(\\sqrt{u}+\\sqrt{v})=u-v",
+    "(\\sqrt[3]{u}-\\sqrt[3]{v})(\\sqrt[3]{u^2}+\\sqrt[3]{uv}+\\sqrt[3]{v^2})=u-v",
+  ],
+  definition: {
+    title: "Técnica algebraica de límite",
+    body:
+      "Una técnica algebraica de límite transforma una expresión en otra equivalente para valores cercanos al punto de interés, normalmente con $x\\ne a$, hasta que el comportamiento local puede evaluarse sin la forma indeterminada inicial.",
+  },
+  examples: [
+    {
+      statement: "Calcula $\\displaystyle\\lim_{x\\to3}(2x^2-x+1)$.",
+      steps: [
+        "La expresión es polinomial, por lo tanto continua en todo $\\mathbb{R}$.",
+        "La sustitución directa es válida.",
+        "Evaluamos $2(3)^2-3+1$.",
+      ],
+      conclusion: "El límite es $16$.",
+    },
+    {
+      statement: "Calcula $\\displaystyle\\lim_{x\\to3}\\frac{x^2-9}{x-3}$.",
+      steps: [
+        "La sustitución directa produce $\\frac{0}{0}$.",
+        "Factorizamos diferencia de cuadrados: $x^2-9=(x-3)(x+3)$.",
+        "Para $x\\ne3$, cancelamos el factor común $x-3$.",
+        "Evaluamos la expresión equivalente $x+3$ en $3$.",
+      ],
+      conclusion: "El límite es $6$.",
+    },
+    {
+      statement: "Calcula $\\displaystyle\\lim_{x\\to1}\\frac{x^3-3x+2}{x^2-1}$.",
+      steps: [
+        "La sustitución directa produce $\\frac{0}{0}$.",
+        "Por inspección, $x=1$ es raíz del numerador. Factorizamos: $x^3-3x+2=(x-1)^2(x+2)$.",
+        "También $x^2-1=(x-1)(x+1)$.",
+        "Cancelamos un factor $x-1$ para $x\\ne1$.",
+      ],
+      conclusion: "El límite es $0$.",
+    },
+    {
+      statement: "Calcula $\\displaystyle\\lim_{x\\to0}\\frac{\\sqrt{1+2x}-\\sqrt{1-3x}}{x}$.",
+      steps: [
+        "La sustitución directa produce $\\frac{0}{0}$.",
+        "Multiplicamos por el conjugado $\\sqrt{1+2x}+\\sqrt{1-3x}$.",
+        "El numerador queda $(1+2x)-(1-3x)=5x$.",
+        "Cancelamos $x$ y evaluamos el denominador en $0$.",
+      ],
+      conclusion: "El límite es $\\frac{5}{2}$.",
+    },
+    {
+      statement: "Calcula $\\displaystyle\\lim_{x\\to0}\\frac{x}{\\sqrt{x+4}-2}$.",
+      steps: [
+        "El radical está en el denominador y la sustitución produce $\\frac{0}{0}$.",
+        "Multiplicamos por el conjugado $\\sqrt{x+4}+2$.",
+        "El denominador queda $(x+4)-4=x$.",
+        "Cancelamos $x$ para $x\\ne0$.",
+      ],
+      conclusion: "El límite es $\\sqrt{4}+2=4$.",
+    },
+    {
+      statement: "Calcula $\\displaystyle\\lim_{x\\to4}\\frac{\\sqrt[3]{x+4}-2}{x-4}$.",
+      steps: [
+        "Tomamos $u=\\sqrt[3]{x+4}$. Cuando $x\\to4$, entonces $u\\to2$.",
+        "Como $u^3=x+4$, se tiene $x-4=u^3-8$.",
+        "La expresión queda $\\frac{u-2}{u^3-8}$.",
+        "Factorizamos $u^3-8=(u-2)(u^2+2u+4)$.",
+      ],
+      conclusion: "El límite es $\\frac{1}{12}$.",
+    },
+    {
+      statement: "Calcula $\\displaystyle\\lim_{x\\to1}\\frac{\\sqrt[3]{2x-1}-1}{1-\\sqrt[4]{2x-1}}$.",
+      steps: [
+        "Los índices son $3$ y $4$; su mínimo común múltiplo es $12$.",
+        "Tomamos $u=\\sqrt[12]{2x-1}$, de modo que $u\\to1$.",
+        "Entonces $\\sqrt[3]{2x-1}=u^4$ y $\\sqrt[4]{2x-1}=u^3$.",
+        "El cociente se transforma en $\\frac{u^4-1}{1-u^3}$.",
+        "Factorizamos $u^4-1=(u-1)(u+1)(u^2+1)$ y $1-u^3=-(u-1)(u^2+u+1)$.",
+      ],
+      conclusion: "El límite es $-\\frac{4}{3}$.",
+    },
+  ],
+  exercises: [
+    examExercise("$\\displaystyle\\lim_{x\\to2}(3x^2-x+1)$", "Por sustitución directa: $12-2+1=11$."),
+    examExercise("$\\displaystyle\\lim_{x\\to5}\\frac{x^2-25}{x-5}$", "Diferencia de cuadrados: $\\frac{(x-5)(x+5)}{x-5}\\to10$."),
+    examExercise("$\\displaystyle\\lim_{x\\to-3}\\frac{x^2-9}{x+3}$", "Factoriza $x^2-9=(x-3)(x+3)$; el límite es $-6$."),
+    examExercise("$\\displaystyle\\lim_{x\\to2}\\frac{x^2-4x+4}{x-2}$", "$(x-2)^2/(x-2)=x-2\\to0$."),
+    examExercise("$\\displaystyle\\lim_{x\\to1}\\frac{x^3-3x+2}{x^2-1}$", "$(x-1)^2(x+2)/[(x-1)(x+1)]\\to0$."),
+    examExercise("$\\displaystyle\\lim_{x\\to2}\\frac{x^3-8}{x^2-4}$", "Factoriza suma/diferencia notable y cancela; límite $3$."),
+    examExercise("$\\displaystyle\\lim_{x\\to9}\\frac{\\sqrt{x}-3}{x-9}$", "Racionaliza; queda $1/(\\sqrt{x}+3)\\to1/6$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\frac{\\sqrt{1+x}-1}{x}$", "Racionaliza; límite $1/2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\frac{x}{\\sqrt{x+4}-2}$", "Racionaliza el denominador; queda $\\sqrt{x+4}+2\\to4$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\frac{\\sqrt{4+x}-\\sqrt{4-x}}{x}$", "Racionaliza; límite $1/2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to2}\\frac{\\frac{1}{x}-\\frac{1}{2}}{x-2}$", "Unifica: $(2-x)/(2x(x-2))\\to-1/4$."),
+    examExercise("$\\displaystyle\\lim_{h\\to0}\\frac{\\frac{1}{3+h}-\\frac{1}{3}}{h}$", "Unifica y cancela $h$; límite $-1/9$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\frac{\\sqrt[3]{1+x}-1}{x}$", "Usa diferencia de cubos; límite $1/3$."),
+    examExercise("$\\displaystyle\\lim_{x\\to4}\\frac{\\sqrt[3]{x+4}-2}{x-4}$", "Con $u=\\sqrt[3]{x+4}$, queda $1/(u^2+2u+4)\\to1/12$."),
+    examExercise("$\\displaystyle\\lim_{x\\to1}\\frac{\\sqrt[3]{2x-1}-1}{1-\\sqrt[4]{2x-1}}$", "Con $u=\\sqrt[12]{2x-1}$, queda $(u^4-1)/(1-u^3)\\to-4/3$."),
+    examExercise("$\\displaystyle\\lim_{x\\to3}\\frac{(x-1)^2-4}{x-3}$", "Con $u=x-1\\to2$, queda $(u^2-4)/(u-2)\\to4$."),
+  ],
+};
+const limitesTrigonometricosIndeterminacionesContent: TopicContent = {
+  contextLabel: "Límites trigonométricos e indeterminaciones",
+  geogebraId: limitesTrigonometricosContent.geogebraId,
+  theory: [
+    "Este módulo desarrolla límites trigonométricos mediante razones fundamentales, identidades y argumentos de compresión. La meta es reconocer la estructura local de la expresión antes de transformar.",
+    "Las indeterminaciones trigonométricas no se resuelven por memoria aislada: se resuelven reescribiendo hasta comparar senos, cosenos y tangentes con cantidades que tienden a cero.",
+  ],
+  theorySections: [
+    {
+      title: "Límites fundamentales y radianes",
+      body: [
+        "**Radianes**: los límites fundamentales están normalizados con medida angular en radianes. La razón $\\sin x/x$ tiende a $1$ porque, en el círculo unitario, el ángulo en radianes mide longitud de arco; con grados aparecería un factor de conversión y la fórmula dejaría de ser $1$.",
+        "**Límite seno**: $\\lim_{x\\to0}\\frac{\\sin x}{x}=1$ compara una cuerda vertical con el arco que la contiene. En cálculo de límites se usa formando exactamente la razón $\\frac{\\sin u}{u}$ con $u\\to0$.",
+        "**Límite tangente**: como $\\tan x=\\frac{\\sin x}{\\cos x}$ y $\\cos x\\to1$, se obtiene $\\lim_{x\\to0}\\frac{\\tan x}{x}=1$. Este resultado se aplica del mismo modo: si aparece $\\tan(ax)$, se completa el denominador como $ax$ y se compensa la constante.",
+        "Cuando el argumento no tiende a cero, estos límites notables no aplican directamente. Primero se verifica la variable interna; luego se decide si conviene sustituir $u=ax$, factorizar constantes o transformar con identidades.",
+      ],
+    },
+    {
+      title: "Reescritura con seno, coseno e identidades",
+      body: [
+        "**Reescribir con seno y coseno**: muchas expresiones con $\\tan x$, $\\sec x$ o cocientes mixtos se simplifican al escribir todo en términos de $\\sin x$ y $\\cos x$. Esto suele revelar factores comunes, cocientes que tienden a $1$ o factores continuos que tienden a valores finitos.",
+        "**Identidades pitagóricas**: fórmulas como $\\sin^2 x+\\cos^2 x=1$ permiten convertir $1-\\cos^2 x$ en $\\sin^2 x$, que es más compatible con $\\sin x/x$.",
+        "**Ángulo doble**: identidades como $1-\\cos(2x)=2\\sin^2 x$ y $\\sin(2x)=2\\sin x\\cos x$ transforman diferencias o senos compuestos en productos controlables.",
+        "**Simplificación avanzada**: no se trata de expandir todo. La buena decisión es escoger la identidad que acerque la expresión a $\\frac{\\sin u}{u}$, $\\frac{\\tan u}{u}$ o $\\frac{1-\\cos u}{u^2}$, manteniendo separados los factores que son continuos y no problemáticos.",
+      ],
+    },
+    {
+      title: "Indeterminaciones y formas con 1-\\cos x",
+      body: [
+        "**Indeterminación**: una forma como $\\frac{0}{0}$ indica que numerador y denominador se anulan al mismo tiempo, pero no dice con qué rapidez. La tarea es comparar esas velocidades mediante límites fundamentales, identidades o racionalización trigonométrica.",
+        "**Diferencias de coseno**: las expresiones con $1-\\cos x$ suelen requerir la identidad $1-\\cos x=\\frac{(1-\\cos x)(1+\\cos x)}{1+\\cos x}$ o el límite reusable $\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}=\\frac12$.",
+        "**Productos mixtos**: cuando aparece un producto de factores trigonométricos, se separan las partes que tienden a $1$, las que tienden a constantes y las potencias de $x$ que determinan el orden de anulación.",
+        "Una expresión como $\\frac{\\sin(2x)-2\\sin x}{x^3}$ exige una identidad antes de comparar: $\\sin(2x)=2\\sin x\\cos x$ convierte el numerador en $2\\sin x(\\cos x-1)$, donde ya aparecen factores conocidos.",
+      ],
+    },
+    {
+      title: "Teorema de compresión y funciones acotadas",
+      body: [
+        "**Compresión**: si una expresión queda atrapada entre dos funciones que tienden al mismo valor, entonces comparte ese límite. En trigonometría esto es natural porque $-1\\le\\sin t\\le1$ y $-1\\le\\cos t\\le1$.",
+        "**Productos acotados**: si una función trigonométrica oscila pero está multiplicada por una cantidad que tiende a cero, el producto puede tener límite aunque la parte trigonométrica sola no lo tenga. Por ejemplo, $x^2\\cos(1/x)$ se controla entre $-x^2$ y $x^2$.",
+        "La acotación por sí sola no basta: las cotas deben cerrarse hacia el mismo valor. Por eso $\\sin(1/x)$ no tiene límite cuando $x\\to0$, pero $x\\sin(1/x)$ sí tiende a $0$.",
+      ],
+    },
+    {
+      title: "Patrones de decisión",
+      body: [
+        "**Cocientes con seno o tangente**: completar $\\frac{\\sin u}{u}$ o $\\frac{\\tan u}{u}$ suele ser la primera opción cuando el argumento tiende a cero.",
+        "**Cosenos restados**: si aparece $1-\\cos u$, conviene pensar en $u^2$ o en multiplicar por $1+\\cos u$ para convertir la diferencia en $\\sin^2 u$.",
+        "**Oscilación acotada**: si aparece $\\sin(1/x)$, $\\cos(1/x)$ o una variante similar, se busca una cota que sea multiplicada por una potencia de $x$ que tienda a cero.",
+        "No se cancela $\\sin x$ con $x$ como si fueran factores iguales. La afirmación correcta es que su cociente tiende a $1$ cuando $x\\to0$ en radianes.",
+      ],
+    },
+  ],
+  formulas: [
+    "\\lim_{x\\to0}\\frac{\\sin x}{x}=1",
+    "\\lim_{x\\to0}\\frac{\\tan x}{x}=1",
+    "\\lim_{x\\to0}\\frac{1-\\cos x}{x}=0",
+    "\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}=\\frac12",
+    "\\lim_{x\\to0}\\frac{\\sin(ax)}{\\sin(bx)}=\\frac{a}{b}",
+    "\\sin^2(x)+\\cos^2(x)=1",
+    "1-\\cos^2(x)=\\sin^2(x)",
+    "1-\\cos(2x)=2\\sin^2(x)",
+    "1+\\cos(2x)=2\\cos^2(x)",
+    "\\sin(2x)=2\\sin(x)\\cos(x)",
+    "\\tan(x)=\\frac{\\sin(x)}{\\cos(x)}",
+    "1+\\tan^2(x)=\\sec^2(x)",
+  ],
+  definition: {
+    title: "Indeterminación trigonométrica",
+    body:
+      "Una indeterminación trigonométrica es una forma provisional que requiere transformar la expresión con identidades, límites fundamentales o compresión. El objetivo es comparar la rapidez con que las partes se anulan, crecen u oscilan.",
+  },
+  examples: [
+    {
+      statement: "$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin(6x)}{x}$",
+      steps: [
+        "Formamos la razón fundamental con argumento $6x$.",
+        "$\\dfrac{\\sin(6x)}{x}=6\\dfrac{\\sin(6x)}{6x}$.",
+        "Como $6x\\to0$, el factor notable tiende a $1$.",
+      ],
+      conclusion: "El límite es $6$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to0}\\dfrac{1-\\cos(5x)}{x^2}$",
+      steps: [
+        "Usamos $\\lim_{u\\to0}\\frac{1-\\cos u}{u^2}=\\frac12$ con $u=5x$.",
+        "$\\dfrac{1-\\cos(5x)}{x^2}=25\\dfrac{1-\\cos(5x)}{(5x)^2}$.",
+      ],
+      conclusion: "El límite es $25/2$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to0}\\dfrac{\\tan(3x)}{\\sin(5x)}$",
+      steps: [
+        "Separamos dos razones fundamentales.",
+        "Reescribimos como $\\frac{\\tan(3x)}{3x}\\frac{5x}{\\sin(5x)}\\frac{3}{5}$.",
+        "Los dos límites fundamentales tienden a $1$.",
+      ],
+      conclusion: "El límite es $3/5$.",
+    },
+    {
+      statement: "Usa compresión para $\\displaystyle\\lim_{x\\to0}x^2\\cos\\left(\\dfrac{4}{x}\\right)$.",
+      steps: [
+        "Sabemos que $-1\\le\\cos(4/x)\\le1$.",
+        "Multiplicamos por $x^2\\ge0$: $-x^2\\le x^2\\cos(4/x)\\le x^2$.",
+        "Ambas cotas tienden a $0$.",
+      ],
+      conclusion: "Por compresión, el límite es $0$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{\\theta\\to0}\\dfrac{\\tan\\theta-\\sin\\theta}{\\sec\\theta-1}$",
+      steps: [
+        "Escribimos $\\tan\\theta=\\sin\\theta/\\cos\\theta$ y $\\sec\\theta=1/\\cos\\theta$.",
+        "El numerador es $\\sin\\theta(1/\\cos\\theta-1)$.",
+        "El denominador es $1/\\cos\\theta-1$.",
+        "Cancelamos el factor común para $\\theta\\ne0$.",
+      ],
+      conclusion: "El límite es $0$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin(2x)-2\\sin x}{x^3}$",
+      steps: [
+        "Usamos $\\sin(2x)=2\\sin x\\cos x$.",
+        "El numerador queda $2\\sin x(\\cos x-1)$.",
+        "Separamos $2\\frac{\\sin x}{x}\\frac{\\cos x-1}{x^2}$.",
+      ],
+      conclusion: "El límite es $2\\cdot1\\cdot(-1/2)=-1$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to0}\\dfrac{1-\\cos(3x)}{\\sin^2(2x)}$",
+      steps: [
+        "El numerador se comporta como $(3x)^2/2=9x^2/2$.",
+        "El denominador se comporta como $(2x)^2=4x^2$.",
+      ],
+      conclusion: "El límite es $9/8$.",
+    },
+  ],
+  exercises: [
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin(3x)}{x}$", "$3$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\tan(8x)}{x}$", "$8$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin(5x)}{\\sin(2x)}$", "$5/2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{1-\\cos(2x)}{x^2}$", "$2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{1-\\cos(6x)}{x^2}$", "$18$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\tan(3x)}{\\sin(2x)}$", "$3/2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin^2(3x)}{x^2}$", "$9$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\tan^2(2x)}{1-\\cos(4x)}$", "Numerador $\\sim4x^2$, denominador $\\sim8x^2$; límite $1/2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin(2x)\\sin(5x)}{x^2}$", "$10$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin(7x)}{\\tan(2x)}$", "$7/2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sec x-1}{x^2}$", "$(1-\\cos x)/(x^2\\cos x)\\to1/2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{1-\\cos(3x)}{\\sin^2(2x)}$", "$9/8$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\tan(5x)}{\\sin(3x)+\\tan(2x)}$", "$5/(3+2)=1$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}x\\sin(5/x)$", "Por compresión, el límite es $0$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}x^2\\cos(1/x)$", "Por compresión, el límite es $0$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin(2x)-2\\sin x}{x^3}$", "$-1$."),
+    examExercise("Explica por qué $\\displaystyle\\lim_{x\\to0}\\frac{\\sin x}{x}=1$ requiere radianes.", "Porque la comparación geométrica usa longitud de arco en el círculo unitario; con grados aparece un factor de conversión."),
+  ],
+};
+
+const limitesInfinitoAsintoticoContent: TopicContent = {
+  contextLabel: "Límites al infinito y comportamiento asintótico",
+  theory: [
+    "Este módulo estudia el comportamiento de una función cuando la variable se aleja indefinidamente o cuando se aproxima a una ruptura donde los valores crecen sin cota.",
+    "El objetivo es comparar dominancias: qué términos sobreviven al infinito, qué factores provocan explosiones locales y qué rectas describen el destino gráfico de la función.",
+  ],
+  theorySections: [
+    {
+      title: "Límites al infinito y comportamiento dominante",
+      body: [
+        "**Límites al infinito**: preguntar por $x\\to\\infty$ o $x\\to-\\infty$ no significa sustituir $x$ por un número llamado infinito. Significa estudiar qué ocurre cuando $x$ toma valores cada vez más grandes en magnitud.",
+        "**Dominancia**: en sumas de potencias, el término de mayor grado determina el comportamiento principal. Por eso $5x^4-3x+7$ se comporta como $5x^4$ cuando $|x|$ es grande.",
+        "**Factor común forzado**: consiste en extraer deliberadamente la potencia dominante aunque no aparezca como factor visible en todos los términos. Por ejemplo, en una expresión racional se puede escribir un polinomio como $x^n$ multiplicado por coeficientes y potencias negativas de $x$; así los términos menores quedan como fracciones que tienden a cero y la comparación dominante se vuelve explícita.",
+        "**Normalización**: dividir numerador y denominador por la mayor potencia relevante de $x$ convierte términos menores en fracciones que tienden a cero. Esta técnica revela el límite sin expandir innecesariamente.",
+        "**Funciones acotadas**: si una parte oscila pero permanece acotada, como $\\sin x$ o $\\cos x$, dividirla por una cantidad que crece sin cota produce un término que tiende a cero por compresión.",
+      ],
+    },
+    {
+      title: "Funciones racionales, grados y asíntotas horizontales",
+      body: [
+        "**Grado del denominador mayor**: si el denominador crece más rápido que el numerador, el cociente tiende a $0$. La gráfica se aproxima al eje horizontal.",
+        "**Grados iguales**: si numerador y denominador tienen el mismo grado, el límite al infinito es el cociente de los coeficientes principales. Los términos de menor grado desaparecen en la comparación.",
+        "**Grado del numerador mayor**: si el numerador domina, no hay asíntota horizontal finita. La función puede crecer sin cota o acercarse a una asíntota oblicua, pero esa clasificación requiere otro análisis.",
+        "**Asíntota horizontal**: una recta $y=L$ describe una altura estable cuando $x\\to\\infty$ o $x\\to-\\infty$. La función puede cruzarla para valores finitos; la asíntota habla del comportamiento lejano, no de una barrera.",
+      ],
+    },
+    {
+      title: "Radicales y conjugados al infinito",
+      body: [
+        "**Radicales al infinito**: expresiones como $\\sqrt{x^2+6x}-x$ producen una forma del tipo $\\infty-\\infty$. Esa escritura no decide el límite, porque dos cantidades grandes pueden diferir por un número finito.",
+        "**Conjugados**: multiplicar por el conjugado transforma una diferencia de raíces en una diferencia algebraica. El numerador suele simplificarse y el denominador queda listo para comparar términos dominantes.",
+        "El factor común forzado también se usa dentro de radicales: se extrae la potencia dominante del radicando, como $x^2$ dentro de una raíz cuadrada o $x^3$ dentro de una raíz cúbica, para separar una escala grande de una parte que tiende a una constante. Esto permite comparar radicales al infinito sin depender de la apariencia inicial de la expresión.",
+        "**Valor absoluto**: al extraer $x^2$ de una raíz se obtiene $\\sqrt{x^2}=|x|$. Si $x\\to+\\infty$, entonces $|x|=x$; si $x\\to-\\infty$, entonces $|x|=-x$. Este signo puede cambiar completamente el resultado.",
+        "**Radicales con distintas potencias**: primero se identifica la escala dominante dentro de la raíz. Luego se factoriza esa escala y se evalúa la parte que tiende a una constante.",
+      ],
+    },
+    {
+      title: "Límites infinitos y asíntotas verticales",
+      body: [
+        "**Límite infinito**: cerca de un punto $a$, una función puede crecer sin cota positiva o negativa. Esto no produce un límite real, pero sí describe una explosión local de la gráfica.",
+        "**Asíntota vertical**: la recta $x=a$ aparece cuando al menos un límite lateral en $a$ es $+\\infty$ o $-\\infty$. No basta con que el denominador sea cero; hay que verificar si el factor problemático permanece después de simplificar.",
+        "**Hueco versus asíntota**: si el factor que se anula se cancela completamente, puede aparecer una discontinuidad removible. Si queda en el denominador, suele producir una asíntota vertical o un comportamiento lateral infinito.",
+        "**Análisis lateral**: los límites por izquierda y derecha pueden tener signos distintos. Por eso una respuesta completa cerca de una asíntota vertical debe indicar $x\\to a^-$ y $x\\to a^+$ cuando el signo cambia.",
+      ],
+    },
+    {
+      title: "Análisis de signo cerca de asíntotas",
+      body: [
+        "**Factores pares**: si cerca de $a$ queda un denominador como $(x-a)^2$, el signo del denominador es positivo por ambos lados. El signo del numerador decide si ambos laterales van a $+\\infty$ o a $-\\infty$.",
+        "**Factores impares**: si queda un denominador como $(x-a)$ o $(x-a)^3$, el signo cambia al cruzar $a$. Esto puede producir $-\\infty$ por un lado y $+\\infty$ por el otro.",
+        "**Factores adicionales**: en expresiones como $\\frac{1}{(x-1)(x+2)}$, al estudiar $x=1$ el factor $x+2$ se comporta como una constante positiva. El factor que cambia el signo local es $x-1$.",
+        "El análisis de signo no es un adorno: decide si existe un límite infinito bilateral, si solo existen laterales distintos o si la gráfica tiene ramas en direcciones opuestas.",
+      ],
+    },
+  ],
+  formulas: [
+    "\\lim_{x\\to\\infty}\\frac{1}{x^p}=0",
+    "\\frac{a_nx^n}{b_mx^m}=\\frac{a_n}{b_m}x^{n-m}",
+    "\\frac{P(x)}{Q(x)}=\\frac{x^n(a_n+a_{n-1}/x+\\cdots+a_0/x^n)}{x^m(b_m+b_{m-1}/x+\\cdots+b_0/x^m)}",
+    "\\sqrt{x^2}=|x|",
+    "\\sqrt{x^2}=x\\quad (x\\ge0)",
+    "\\sqrt{x^2}=-x\\quad (x<0)",
+    "(\\sqrt{A}-\\sqrt{B})(\\sqrt{A}+\\sqrt{B})=A-B",
+    "\\sqrt{A}-\\sqrt{B}=\\frac{A-B}{\\sqrt{A}+\\sqrt{B}}",
+    "\\lim_{x\\to a}\\frac{c}{(x-a)^{2k}}=\\operatorname{sgn}(c)\\infty",
+  ],
+  definition: {
+    title: "Comportamiento asintótico",
+    body:
+      "El comportamiento asintótico describe qué parte de una función domina cuando la variable se aleja indefinidamente o cuando se aproxima a una ruptura vertical. Se estudia mediante límites al infinito, límites infinitos y comparación de términos dominantes.",
+  },
+  examples: [
+    {
+      statement: "$\\displaystyle\\lim_{x\\to\\infty}\\dfrac{3x^2-5x+1}{x^2+4}$",
+      steps: [
+        "Numerador y denominador tienen grado $2$.",
+        "Dividimos entre $x^2$: $\\frac{3-5/x+1/x^2}{1+4/x^2}$.",
+        "Los términos con $1/x$ y $1/x^2$ tienden a $0$.",
+      ],
+      conclusion: "El límite es $3$ y la asíntota horizontal es $y=3$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to\\infty}\\dfrac{2x+1}{x^3-4}$",
+      steps: [
+        "El denominador tiene mayor grado.",
+        "Dividimos por $x^3$: $\\frac{2/x^2+1/x^3}{1-4/x^3}$.",
+        "Cada término del numerador tiende a $0$ y el denominador tiende a $1$.",
+      ],
+      conclusion: "El límite es $0$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to+\\infty}\\left(\\sqrt{x^2+8x}-\\sqrt{x^2-4x}\\right)$",
+      steps: [
+        "Racionalizamos la diferencia.",
+        "$\\sqrt{x^2+8x}-\\sqrt{x^2-4x}=\\frac{12x}{\\sqrt{x^2+8x}+\\sqrt{x^2-4x}}$.",
+        "Como $x\\to+\\infty$, factorizamos $x$ en el denominador.",
+        "El denominador queda $x(\\sqrt{1+8/x}+\\sqrt{1-4/x})$.",
+      ],
+      conclusion: "El límite es $12/2=6$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to-\\infty}\\dfrac{\\sqrt{x^2+1}}{x}$",
+      steps: [
+        "Como $x\\to-\\infty$, $\\sqrt{x^2}=|x|=-x$.",
+        "Escribimos $\\sqrt{x^2+1}=|x|\\sqrt{1+1/x^2}$.",
+        "Entonces el cociente es $-\\sqrt{1+1/x^2}$.",
+      ],
+      conclusion: "El límite es $-1$.",
+    },
+    {
+      statement: "Estudia los laterales de $\\displaystyle f(x)=\\dfrac{1}{x-2}$ en $x=2$.",
+      steps: [
+        "Si $x\\to2^-$, entonces $x-2<0$ y se acerca a $0$.",
+        "Si $x\\to2^+$, entonces $x-2>0$ y se acerca a $0$.",
+      ],
+      conclusion: "$\\lim_{x\\to2^-}f(x)=-\\infty$ y $\\lim_{x\\to2^+}f(x)=+\\infty$; hay AV $x=2$.",
+    },
+    {
+      statement: "Distingue hueco y asíntota en $\\displaystyle f(x)=\\dfrac{x+2}{x^2-4}$.",
+      steps: [
+        "Factorizamos $x^2-4=(x-2)(x+2)$.",
+        "El factor $x+2$ se cancela para $x\\ne-2$, así que en $-2$ hay hueco.",
+        "El factor $x-2$ queda en el denominador.",
+      ],
+      conclusion: "Hay discontinuidad removible en $x=-2$ y asíntota vertical en $x=2$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to\\infty}\\left(1+\\dfrac{\\cos x}{x}\\right)$",
+      steps: [
+        "La función $\\cos x$ está acotada entre $-1$ y $1$.",
+        "Por tanto $-1/x\\le\\cos x/x\\le1/x$ para $x>0$.",
+        "Ambas cotas tienden a $0$.",
+      ],
+      conclusion: "El límite es $1$; la asíntota horizontal es $y=1$.",
+    },
+    {
+      statement: "Analiza $\\displaystyle\\lim_{x\\to1^-}\\frac{2x+1}{(x-1)^2}$ y $\\displaystyle\\lim_{x\\to1^+}\\frac{2x+1}{(x-1)^2}$.",
+      steps: [
+        "Cerca de $x=1$, el numerador $2x+1$ tiende a $3$, que es positivo.",
+        "El denominador $(x-1)^2$ tiende a $0$ y es positivo por ambos lados.",
+        "El cociente crece sin cota positiva desde ambos laterales.",
+      ],
+      conclusion: "Ambos límites laterales son $+\\infty$; hay asíntota vertical en $x=1$.",
+    },
+  ],
+  exercises: [
+    examExercise("$\\displaystyle\\lim_{x\\to\\infty}\\dfrac{7}{x}$", "$0$."),
+    examExercise("$\\displaystyle\\lim_{x\\to\\infty}\\dfrac{5x^2+1}{2x^2-3}$", "Grados iguales; límite $5/2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to\\infty}\\dfrac{x-8}{x^2+1}$", "El denominador domina; límite $0$."),
+    examExercise("$\\displaystyle\\lim_{x\\to\\infty}\\dfrac{x^3+1}{2x-5}$", "Crece como $x^2/2$; tiende a $+\\infty$."),
+    examExercise("$\\displaystyle\\lim_{x\\to-\\infty}\\dfrac{3x^2-x}{x^2+4}$", "Límite $3$."),
+    examExercise("Asíntota horizontal de $f(x)=\\dfrac{4x^2-x}{2x^2+5x+1}$.", "$y=2$."),
+    examExercise("$\\displaystyle\\lim_{x\\to+\\infty}\\left(\\sqrt{4x^2-x}-2x\\right)$", "Racionaliza; límite $-1/4$."),
+    examExercise("$\\displaystyle\\lim_{x\\to+\\infty}\\left(\\sqrt{x^2+6x}-x\\right)$", "Racionaliza; límite $3$."),
+    examExercise("$\\displaystyle\\lim_{x\\to-\\infty}\\left(\\sqrt{x^2+6x}+x\\right)$", "Cuidando $|x|=-x$, límite $-3$."),
+    examExercise("$\\displaystyle\\lim_{x\\to\\infty}\\dfrac{\\sqrt{x^2+1}}{x}$", "$1$."),
+    examExercise("$\\displaystyle\\lim_{x\\to-\\infty}\\dfrac{\\sqrt{x^2+1}}{x}$", "$-1$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0^+}\\dfrac{1}{x}$", "$+\\infty$."),
+    examExercise("$\\displaystyle\\lim_{x\\to0^-}\\dfrac{1}{x}$", "$-\\infty$."),
+    examExercise("Para $f(x)=\\dfrac{x+2}{x^2-4}$, clasifica $x=-2$ y $x=2$.", "$x=-2$ es hueco removible; $x=2$ es asíntota vertical."),
+    examExercise("Analiza el signo de $\\dfrac{1}{(x-1)(x+2)}$ cerca de $x=1$.", "Cerca de $1$, $x+2>0$; izquierda $x-1<0$ da $-\\infty$, derecha da $+\\infty$."),
+    examExercise("$\\displaystyle\\lim_{x\\to\\infty}\\dfrac{\\sin x}{x}$", "$0$ por compresión."),
+    examExercise("¿Todo cero del denominador produce una asíntota vertical?", "No; si el factor se cancela puede producir un hueco removible."),
+    examExercise("$\\displaystyle\\lim_{x\\to1^-}\\dfrac{3}{(x-1)^2}$", "$+\\infty$."),
+    examExercise("$\\displaystyle\\lim_{x\\to1^-}\\dfrac{3}{x-1}$", "$-\\infty$."),
+  ],
+};
+
+const derivadaRectaTangenteContent: TopicContent = {
+  contextLabel: "Derivada y recta tangente",
+  theory: [
+    "La derivada nace de comparar cambios. Primero se mide un cambio promedio en un intervalo; luego se hace que el intervalo se encoja hasta capturar el cambio instantáneo.",
+    "Geométricamente, este proceso transforma rectas secantes en una recta tangente. Físicamente, transforma velocidad promedio en velocidad instantánea.",
+  ],
+  theorySections: [
+    {
+      title: "Tasas de cambio y recta secante",
+      body: [
+        "**Tasa promedio de cambio**: mide cuánto cambia $f(x)$ por unidad de cambio en $x$ entre dos puntos. En el intervalo $[a,b]$ se calcula con el cociente $\\frac{f(b)-f(a)}{b-a}$.",
+        "**Recta secante**: es la recta que pasa por $(a,f(a))$ y $(b,f(b))$. Su pendiente es exactamente la tasa promedio de cambio, por eso resume el comportamiento de la curva en todo el intervalo.",
+        "Si el intervalo es grande, la secante puede ocultar variaciones locales. La derivada aparece cuando se estudian intervalos cada vez más pequeños alrededor de un punto.",
+      ],
+    },
+    {
+      title: "Derivada como límite",
+      body: [
+        "**Tasa instantánea de cambio**: describe la rapidez de cambio en un solo punto. Se obtiene como el límite de las pendientes secantes cuando el segundo punto se acerca al primero.",
+        "**Derivada en un punto**: si el límite $\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}$ existe, su valor se denota $f'(a)$ y representa la pendiente instantánea en $x=a$.",
+        "**Notación**: se usan varias formas equivalentes según el contexto: $f'(a)$, $\\frac{dy}{dx}\\big|_{x=a}$, $D_xf(a)$ o $\\dot{s}(t)$ cuando la variable es tiempo.",
+        "La derivada puede fallar si hay esquinas, cúspides, tangentes verticales u oscilaciones que impiden que las pendientes secantes se estabilicen.",
+      ],
+    },
+    {
+      title: "Interpretación geométrica y física",
+      body: [
+        "**Recta tangente**: es la recta que mejor aproxima localmente la curva cerca del punto. Su pendiente es $f'(a)$ y pasa por $(a,f(a))$.",
+        "**Recta normal**: es perpendicular a la tangente. Si $f'(a)\\ne0$, su pendiente es $-1/f'(a)$; si la tangente es horizontal, la normal es vertical.",
+        "**Velocidad**: si $s(t)$ representa posición, la velocidad instantánea es $v(t)=s'(t)$. La aceleración se obtiene derivando de nuevo: $a(t)=v'(t)=s''(t)$.",
+        "La interpretación correcta siempre depende de las unidades: si $f$ mide metros y $x$ segundos, entonces $f'(x)$ mide metros por segundo.",
+      ],
+    },
+  ],
+  formulas: [
+    "m_{sec}=\\frac{f(b)-f(a)}{b-a}",
+    "f'(a)=\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}",
+    "f'(a)=\\lim_{x\\to a}\\frac{f(x)-f(a)}{x-a}",
+    "y-f(a)=f'(a)(x-a)",
+    "y-f(a)=-\\frac{1}{f'(a)}(x-a)",
+    "v(t)=s'(t)",
+    "a(t)=s''(t)",
+  ],
+  definition: {
+    title: "Derivada en un punto",
+    body:
+      "$f$ es derivable en $a$ si existe el límite $f'(a)=\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}$. Ese valor es la pendiente de la tangente y la tasa instantánea de cambio.",
+  },
+  examples: [
+    {
+      statement: "Calcula la tasa promedio de $f(x)=x^2+1$ en $[1,3]$.",
+      steps: ["Evaluamos $f(1)=2$ y $f(3)=10$.", "La tasa promedio es $\\frac{10-2}{3-1}$.", "Simplificamos el cociente."],
+      conclusion: "La tasa promedio es $4$.",
+    },
+    {
+      statement: "Calcula $f'(3)$ por definición para $f(x)=x^2$.",
+      steps: ["$f(3+h)=(3+h)^2=9+6h+h^2$.", "$\\frac{f(3+h)-f(3)}{h}=\\frac{6h+h^2}{h}=6+h$.", "Tomamos $h\\to0$."],
+      conclusion: "$f'(3)=6$.",
+    },
+    {
+      statement: "Encuentra la tangente a $y=x^2-2x$ en $x=2$.",
+      steps: ["$f(2)=0$.", "La derivada es $f'(x)=2x-2$, por tanto $f'(2)=2$.", "Usamos $y-f(2)=f'(2)(x-2)$."],
+      conclusion: "La recta tangente es $y=2x-4$.",
+    },
+    {
+      statement: "Encuentra la normal a $y=x^2$ en $x=1$.",
+      steps: ["El punto es $(1,1)$.", "La pendiente tangente es $f'(1)=2$.", "La pendiente normal es $-1/2$."],
+      conclusion: "La normal es $y-1=-\\frac12(x-1)$.",
+    },
+  ],
+  exercises: [
+    { statement: "Tasa promedio de $f(x)=3x-1$ en $[0,4]$.", solution: "$3$." },
+    { statement: "Tasa promedio de $f(x)=x^2$ en $[2,5]$.", solution: "$\\frac{25-4}{3}=7$." },
+    { statement: "Calcula por definición $f'(x)$ para $f(x)=4x+7$.", solution: "$f'(x)=4$." },
+    { statement: "Calcula por definición $f'(2)$ para $f(x)=x^3$.", solution: "$12$." },
+    { statement: "¿Es derivable $f(x)=|x|$ en $0$?", solution: "No; las pendientes laterales son $-1$ y $1$." },
+    { statement: "Tangente a $y=1/x$ en $x=1$.", solution: "$y=-x+2$." },
+    { statement: "Normal a $y=x^2+1$ en $x=1$.", solution: "$y-2=-\\frac12(x-1)$." },
+    { statement: "Si $s(t)=t^2+3t$, halla $v(2)$.", solution: "$v(t)=2t+3$, entonces $v(2)=7$." },
+    { statement: "Si $s(t)=t^3-t$, halla $a(1)$.", solution: "$s''(t)=6t$, entonces $a(1)=6$." },
+    { statement: "Pendiente de la secante de $f(x)=\\sqrt{x}$ entre $1$ y $4$.", solution: "$\\frac{2-1}{3}=1/3$." },
+    { statement: "Tangente horizontal de $f(x)=x^2-4x+1$.", solution: "$f'(x)=2x-4=0$ en $x=2$." },
+    { statement: "Interpreta $C'(50)=12$ si $C$ es costo en dólares y $x$ unidades.", solution: "Cerca de 50 unidades, el costo aumenta aproximadamente $12$ dólares por unidad adicional." },
+  ],
+};
+
+const reglasDerivacionConsolidadasContent: TopicContent = {
+  contextLabel: "Reglas de derivación",
+  theory: [
+    "Las reglas de derivación permiten calcular tasas instantáneas sin regresar siempre al límite definitorio.",
+    "La clave es reconocer la estructura de la función: suma, producto, cociente, composición o una función elemental conocida.",
+  ],
+  theorySections: [
+    {
+      title: "Reglas lineales y potencia",
+      body: [
+        "**Constante**: la derivada de una constante es cero porque no hay cambio. Una función horizontal tiene pendiente $0$ en todos sus puntos.",
+        "**Potencia**: si $f(x)=x^n$, entonces $f'(x)=nx^{n-1}$. Esta regla cubre potencias enteras, fraccionarias y negativas donde la función esté definida.",
+        "**Múltiplo constante**: los factores constantes salen de la derivada. Si una función se estira verticalmente, su pendiente se estira en la misma proporción.",
+        "**Suma y diferencia**: se deriva término a término. Esta propiedad hace que los polinomios sean especialmente directos.",
+      ],
+    },
+    {
+      title: "Producto, cociente y cadena",
+      body: [
+        "**Producto**: la derivada de $fg$ no es $f'g'$. Cada factor puede cambiar, por eso se suma el cambio del primero con el segundo fijo y el cambio del segundo con el primero fijo.",
+        "**Cociente**: se usa cuando una función está dividida por otra. El denominador aparece al cuadrado y se conserva el orden $f'g-fg'$.",
+        "**Cadena**: se aplica a composiciones. Primero se deriva la función externa dejando la interna intacta; luego se multiplica por la derivada de la interna.",
+        "La cadena es una de las reglas más importantes: aparece en potencias de expresiones, raíces, exponenciales compuestas, logaritmos compuestos y funciones trigonométricas compuestas.",
+      ],
+    },
+    {
+      title: "Funciones elementales",
+      body: [
+        "**Polinomiales**: se derivan término a término usando potencia y linealidad.",
+        "**Exponenciales**: $e^x$ conserva su derivada; para $a^x$ aparece el factor $\\ln a$.",
+        "**Trigonométricas**: las derivadas de seno, coseno y tangente son patrones básicos que luego se combinan con producto, cociente y cadena.",
+        "Antes de derivar conviene simplificar solo si la simplificación reduce la estructura. Expandir todo a veces empeora una derivada que era simple por cadena o producto.",
+      ],
+    },
+  ],
+  formulas: [
+    "\\frac{d}{dx}c=0",
+    "\\frac{d}{dx}x^n=nx^{n-1}",
+    "\\frac{d}{dx}[cf(x)]=cf'(x)",
+    "\\frac{d}{dx}[f(x)\\pm g(x)]=f'(x)\\pm g'(x)",
+    "(fg)'=f'g+fg'",
+    "\\left(\\frac{f}{g}\\right)'=\\frac{f'g-fg'}{g^2}",
+    "(f\\circ g)'(x)=f'(g(x))g'(x)",
+    "\\frac{d}{dx}e^x=e^x",
+    "\\frac{d}{dx}a^x=a^x\\ln a",
+    "\\frac{d}{dx}\\sin x=\\cos x",
+    "\\frac{d}{dx}\\cos x=-\\sin x",
+    "\\frac{d}{dx}\\tan x=\\sec^2 x",
+  ],
+  definition: {
+    title: "Regla de la cadena",
+    body:
+      "Si $y=f(u)$ y $u=g(x)$ son derivables, entonces $\\frac{dy}{dx}=\\frac{dy}{du}\\frac{du}{dx}=f'(g(x))g'(x)$.",
+  },
+  examples: [
+    {
+      statement: "Deriva $f(x)=5x^4-3x^2+8$.",
+      steps: ["Aplicamos linealidad.", "Derivamos cada potencia.", "La constante desaparece."],
+      conclusion: "$f'(x)=20x^3-6x$.",
+    },
+    {
+      statement: "Deriva $f(x)=(x^2+1)\\sin x$.",
+      steps: ["Usamos producto con $u=x^2+1$ y $v=\\sin x$.", "$u'=2x$ y $v'=\\cos x$.", "Aplicamos $(uv)'=u'v+uv'$."],
+      conclusion: "$f'(x)=2x\\sin x+(x^2+1)\\cos x$.",
+    },
+    {
+      statement: "Deriva $g(x)=\\frac{x+1}{x^2+1}$.",
+      steps: ["Usamos cociente.", "Numerador derivado: $1(x^2+1)-(x+1)2x$.", "Simplificamos el numerador."],
+      conclusion: "$g'(x)=\\frac{-x^2-2x+1}{(x^2+1)^2}$.",
+    },
+    {
+      statement: "Deriva $h(x)=e^{\\sin(3x)}$.",
+      steps: ["Hay composición exponencial, seno y función lineal.", "Derivamos la externa: $e^{\\sin(3x)}$.", "Multiplicamos por $\\cos(3x)$ y luego por $3$."],
+      conclusion: "$h'(x)=3e^{\\sin(3x)}\\cos(3x)$.",
+    },
+  ],
+  exercises: [
+    { statement: "Deriva $x^7-4x+1$.", solution: "$7x^6-4$." },
+    { statement: "Deriva $\\sqrt{x}$.", solution: "$1/(2\\sqrt{x})$." },
+    { statement: "Deriva $x^{-3}$.", solution: "$-3x^{-4}$." },
+    { statement: "Deriva $3e^x-2^x$.", solution: "$3e^x-2^x\\ln2$." },
+    { statement: "Deriva $\\sin x+x\\cos x$.", solution: "$\\cos x+\\cos x-x\\sin x=2\\cos x-x\\sin x$." },
+    { statement: "Deriva $(2x-1)^5$.", solution: "$10(2x-1)^4$." },
+    { statement: "Deriva $\\ln(x^2+1)$.", solution: "$2x/(x^2+1)$." },
+    { statement: "Deriva $x^2\\tan x$.", solution: "$2x\\tan x+x^2\\sec^2x$." },
+    { statement: "Deriva $\\frac{e^x}{x}$.", solution: "$\\frac{xe^x-e^x}{x^2}$." },
+    { statement: "Deriva $\\cos(5x^2)$.", solution: "$-10x\\sin(5x^2)$." },
+    { statement: "Deriva $\\sqrt{1+\sin x}$.", solution: "$\\frac{\\cos x}{2\\sqrt{1+\sin x}}$." },
+    { statement: "Deriva $\\frac{\\sin x}{1+\cos x}$.", solution: "$\\frac{1+\cos x}{(1+\cos x)^2}=\\frac{1}{1+\cos x}$." },
+  ],
+};
+
+const tecnicasAvanzadasDerivacionContent: TopicContent = {
+  contextLabel: "Técnicas avanzadas de derivación",
+  theory: [
+    "Las técnicas avanzadas amplían las reglas básicas a curvas implícitas, funciones inversas, productos complejos, potencias variables y derivadas sucesivas.",
+    "La idea común es elegir una representación donde la estructura de la función sea más visible antes de derivar.",
+  ],
+  theorySections: [
+    {
+      title: "Derivación implícita",
+      body: [
+        "**Derivación implícita**: se usa cuando $x$ y $y$ están relacionadas por una ecuación y no conviene despejar $y$. Se deriva ambos lados respecto de $x$ tratando $y$ como función de $x$.",
+        "Cada vez que se deriva una expresión con $y$, aparece el factor $y'$ por regla de la cadena. Luego se agrupan los términos con $y'$ y se despeja.",
+        "Esta técnica es natural para circunferencias, elipses y curvas donde despejar produce varias ramas.",
+      ],
+    },
+    {
+      title: "Derivación logarítmica",
+      body: [
+        "**Derivación logarítmica**: se toma logaritmo natural en ambos lados para convertir productos en sumas, cocientes en restas y potencias en productos.",
+        "Es especialmente útil para expresiones como $x^x$, productos largos o potencias donde base y exponente dependen de $x$.",
+        "Después de derivar la ecuación logarítmica, se multiplica por la función original para recuperar $y'$.",
+      ],
+    },
+    {
+      title: "Funciones inversas e inversas trigonométricas",
+      body: [
+        "**Derivada de la inversa**: si $f$ es derivable e invertible cerca de un punto y $f'(x)\\ne0$, la pendiente de la inversa es el recíproco de la pendiente original en el punto correspondiente.",
+        "**Inversas trigonométricas**: sus derivadas aparecen al invertir funciones trigonométricas restringidas a intervalos donde son biyectivas.",
+        "Estas fórmulas requieren atención al dominio. Por ejemplo, $\\arcsin x$ y $\\arccos x$ solo reciben valores entre $-1$ y $1$.",
+      ],
+    },
+    {
+      title: "Derivadas de orden superior",
+      body: [
+        "**Segunda derivada**: mide cómo cambia la primera derivada. En movimiento rectilíneo, si $s'(t)$ es velocidad, entonces $s''(t)$ es aceleración.",
+        "**Orden superior**: derivar repetidamente produce $f''$, $f'''$ y $f^{(n)}$. Estos objetos describen curvatura, aceleración y patrones de cambio más finos.",
+        "En polinomios, las derivadas sucesivas eventualmente se vuelven cero. En exponenciales y trigonométricas aparecen ciclos o repeticiones estructurales.",
+      ],
+    },
+  ],
+  formulas: [
+    "\\frac{d}{dx}F(x,y)=F_x+F_y\\frac{dy}{dx}",
+    "(f^{-1})'(y)=\\frac{1}{f'(x)}",
+    "\\frac{d}{dx}\\ln|y|=\\frac{y'}{y}",
+    "\\frac{d}{dx}x^x=x^x(\\ln x+1)",
+    "\\frac{d}{dx}\\arcsin x=\\frac{1}{\\sqrt{1-x^2}}",
+    "\\frac{d}{dx}\\arccos x=-\\frac{1}{\\sqrt{1-x^2}}",
+    "\\frac{d}{dx}\\arctan x=\\frac{1}{1+x^2}",
+    "f''(x)=\\frac{d}{dx}f'(x)",
+    "f^{(n)}(x)=\\frac{d}{dx}f^{(n-1)}(x)",
+  ],
+  definition: {
+    title: "Derivación implícita",
+    body:
+      "Derivar implícitamente significa derivar una ecuación que relaciona $x$ y $y$, considerando $y$ como función de $x$ y despejando $\\frac{dy}{dx}$.",
+  },
+  examples: [
+    {
+      statement: "Halla $y'$ si $x^2+y^2=25$.",
+      steps: ["Derivamos ambos lados respecto de $x$.", "$2x+2yy'=0$.", "Despejamos $y'$."],
+      conclusion: "$y'=-x/y$.",
+    },
+    {
+      statement: "Deriva $y=x^x$ para $x>0$.",
+      steps: ["Tomamos logaritmo: $\\ln y=x\\ln x$.", "Derivamos: $y'/y=\\ln x+1$.", "Multiplicamos por $y=x^x$."],
+      conclusion: "$y'=x^x(\\ln x+1)$.",
+    },
+    {
+      statement: "Si $f(2)=5$ y $f'(2)=4$, halla $(f^{-1})'(5)$.",
+      steps: ["El punto correspondiente es $x=2$ porque $f(2)=5$.", "Usamos la fórmula de la inversa.", "$(f^{-1})'(5)=1/f'(2)$."],
+      conclusion: "$(f^{-1})'(5)=1/4$.",
+    },
+    {
+      statement: "Calcula la tercera derivada de $f(x)=x^4-2x^2$.",
+      steps: ["$f'(x)=4x^3-4x$.", "$f''(x)=12x^2-4$.", "$f'''(x)=24x$."],
+      conclusion: "$f'''(x)=24x$.",
+    },
+  ],
+  exercises: [
+    { statement: "Para $x^2+xy+y^2=7$, halla $y'$.", solution: "$y'=-(2x+y)/(x+2y)$." },
+    { statement: "Para $\\sin y=x$, halla $y'$.", solution: "$\\cos y\\,y'=1$, entonces $y'=1/\\cos y$." },
+    { statement: "Deriva $y=(x^2+1)^x$.", solution: "$y'=(x^2+1)^x\\left(\\ln(x^2+1)+\\frac{2x^2}{x^2+1}\\right)$." },
+    { statement: "Deriva $y=\\frac{(x+1)^3}{\\sqrt{x^2+1}}$ usando logaritmos.", solution: "$y'=y\\left(\\frac{3}{x+1}-\\frac{x}{x^2+1}\\right)$." },
+    { statement: "Deriva $\\arcsin(2x)$.", solution: "$2/\\sqrt{1-4x^2}$." },
+    { statement: "Deriva $\\arctan(x^2)$.", solution: "$2x/(1+x^4)$." },
+    { statement: "Si $f(1)=3$ y $f'(1)=-2$, halla $(f^{-1})'(3)$.", solution: "$-1/2$." },
+    { statement: "Segunda derivada de $e^{3x}$.", solution: "$9e^{3x}$." },
+    { statement: "Cuarta derivada de $\\sin x$.", solution: "$\\sin x$." },
+    { statement: "Para $y^3+x^3=6xy$, plantea la ecuación para $y'$.", solution: "$3x^2+3y^2y'=6y+6xy'$." },
+    { statement: "Deriva $\\ln|\\sin x|$.", solution: "$\\cot x$." },
+    { statement: "Deriva $x^{\\sin x}$ para $x>0$.", solution: "$x^{\\sin x}\\left(\\cos x\\ln x+\\frac{\\sin x}{x}\\right)$." },
+  ],
+};
+
+const optimizacionRazonesCambioContent: TopicContent = {
+  contextLabel: "Optimización y razones de cambio",
+  theory: [
+    "Las aplicaciones de derivadas convierten descripciones verbales en relaciones matemáticas y luego interpretan derivadas como velocidades, tasas o condiciones de optimalidad.",
+    "El trabajo principal no es derivar mecánicamente, sino elegir variables, formular ecuaciones y leer el significado del resultado.",
+  ],
+  theorySections: [
+    {
+      title: "Razones de cambio relacionadas",
+      body: [
+        "**Variables dependientes del tiempo**: en razones relacionadas, varias cantidades cambian simultáneamente. Se expresa cada cantidad como función de $t$, aunque la ecuación original no muestre $t$ explícitamente.",
+        "**Diferenciar respecto al tiempo**: después de escribir una relación geométrica o física, se deriva toda la ecuación respecto de $t$. Aparecen tasas como $dx/dt$, $dy/dt$ o $dV/dt$.",
+        "**Sustitución al final**: los valores numéricos del instante se colocan después de derivar. Sustituir demasiado temprano puede eliminar variables que todavía cambian.",
+      ],
+    },
+    {
+      title: "Modelado y restricciones",
+      body: [
+        "**Modelar variables**: se identifican las cantidades que cambian, las constantes y la tasa que se busca.",
+        "**Ecuación de restricción**: relaciona las variables del problema. Puede venir de geometría, volumen, área, distancia o conservación de una cantidad.",
+        "**Dominio físico**: las variables deben respetar longitudes positivas, áreas posibles, intervalos de tiempo y restricciones del contexto.",
+      ],
+    },
+    {
+      title: "Optimización",
+      body: [
+        "**Función objetivo**: es la cantidad que se desea maximizar o minimizar: área, costo, volumen, distancia o ganancia.",
+        "**Restricción**: permite escribir la función objetivo en una sola variable. Sin esta reducción, no se puede aplicar el análisis de una variable.",
+        "**Puntos críticos**: se buscan donde la derivada es cero o no existe dentro del dominio. También se revisan extremos del intervalo cuando el dominio es cerrado.",
+        "**Interpretación**: un punto crítico solo es candidato. Debe verificarse si produce máximo, mínimo o ninguno, y la respuesta debe tener sentido en el problema original.",
+      ],
+    },
+  ],
+  formulas: [
+    "\\frac{d}{dt}x(t)^n=nx(t)^{n-1}\\frac{dx}{dt}",
+    "\\frac{d}{dt}[x(t)y(t)]=x'(t)y(t)+x(t)y'(t)",
+    "A=xy",
+    "A=\\pi r^2",
+    "V=\\pi r^2h",
+    "x^2+y^2=z^2",
+    "f'(c)=0",
+  ],
+  definition: {
+    title: "Optimización",
+    body:
+      "Optimizar consiste en encontrar el valor máximo o mínimo de una función objetivo bajo las restricciones del problema, usando derivadas para localizar candidatos y comparar valores.",
+  },
+  examples: [
+    {
+      statement: "Un círculo aumenta su radio a $2$ cm/s. ¿Qué tan rápido cambia el área cuando $r=5$?",
+      steps: ["$A=\\pi r^2$.", "Derivamos respecto de $t$: $dA/dt=2\\pi r\\,dr/dt$.", "Sustituimos $r=5$ y $dr/dt=2$."],
+      conclusion: "$dA/dt=20\\pi$ cm$^2$/s.",
+    },
+    {
+      statement: "Una escalera de $10$ m se desliza. Si la base se aleja a $1$ m/s y está a $6$ m de la pared, halla $dy/dt$.",
+      steps: ["Relación: $x^2+y^2=100$.", "Derivamos: $2x dx/dt+2y dy/dt=0$.", "Cuando $x=6$, $y=8$.", "Sustituimos $dx/dt=1$."],
+      conclusion: "$dy/dt=-3/4$ m/s.",
+    },
+    {
+      statement: "Maximiza el área de un rectángulo con perímetro $40$.",
+      steps: ["$2x+2y=40$, entonces $y=20-x$.", "Área: $A=x(20-x)=20x-x^2$.", "$A'(x)=20-2x$.", "El punto crítico es $x=10$."],
+      conclusion: "El área máxima es $100$, con un cuadrado de lado $10$.",
+    },
+    {
+      statement: "Minimiza $C(x)=x^2+\\frac{16}{x}$ para $x>0$.",
+      steps: ["Derivamos: $C'(x)=2x-16/x^2$.", "Resolvemos $2x=16/x^2$.", "Obtenemos $x^3=8$, así que $x=2$.", "El comportamiento del costo crece hacia $0^+$ y hacia $\\infty$."],
+      conclusion: "El mínimo ocurre en $x=2$.",
+    },
+  ],
+  exercises: [
+    { statement: "Si $V=s^3$ y $ds/dt=2$, halla $dV/dt$ cuando $s=4$.", solution: "$dV/dt=3s^2ds/dt=96$." },
+    { statement: "Si $A=\\pi r^2$ y $dr/dt=0.5$, halla $dA/dt$ cuando $r=10$.", solution: "$10\\pi$." },
+    { statement: "Para $x^2+y^2=25$, con $dx/dt=3$, halla $dy/dt$ cuando $(x,y)=(3,4)$.", solution: "$dy/dt=-9/4$." },
+    { statement: "Maximiza $A=x(30-x)$.", solution: "$x=15$, máximo $225$." },
+    { statement: "Minimiza $f(x)=x^2-6x+10$.", solution: "$x=3$, mínimo $1$." },
+    { statement: "Encuentra dos números positivos con suma $20$ y producto máximo.", solution: "$10$ y $10$." },
+    { statement: "Maximiza el área de un rectángulo bajo $2x+y=12$.", solution: "$A=x(12-2x)$, máximo en $x=3$, $y=6$." },
+    { statement: "Si $V=\\pi r^2h$, $r$ constante $3$ y $dh/dt=4$, halla $dV/dt$.", solution: "$36\\pi$." },
+    { statement: "Si $y=x^2$ y $dx/dt=5$, halla $dy/dt$ cuando $x=2$.", solution: "$20$." },
+    { statement: "Minimiza $x+9/x$ para $x>0$.", solution: "$x=3$." },
+    { statement: "¿Por qué se revisa el dominio en optimización?", solution: "Porque los candidatos fuera del dominio físico no son soluciones del problema." },
+    { statement: "Maximiza $f(x)=x(8-x)^2$ en $[0,8]$.", solution: "$f'(x)=(8-x)(8-3x)$; máximo en $x=8/3$." },
+  ],
+};
+
+const analisisFuncionesDerivadasContent: TopicContent = {
+  contextLabel: "Análisis de funciones con derivadas",
+  theory: [
+    "Las derivadas permiten leer la forma de una gráfica: dónde sube, dónde baja, dónde se curva y dónde puede alcanzar extremos.",
+    "El análisis completo combina puntos críticos, pruebas de la primera y segunda derivada, extremos de intervalos y comportamiento global.",
+  ],
+  theorySections: [
+    {
+      title: "Puntos críticos y extremos",
+      body: [
+        "**Número crítico**: es un punto del dominio donde $f'(c)=0$ o donde $f'(c)$ no existe. Allí pueden ocurrir máximos o mínimos relativos.",
+        "**Extremo relativo**: compara valores cercanos. Un máximo relativo es mayor que los valores próximos; un mínimo relativo es menor que los valores próximos.",
+        "**Extremo absoluto**: compara todos los valores del dominio considerado. En un intervalo cerrado se revisan puntos críticos interiores y extremos del intervalo.",
+        "**Teorema de Fermat**: si $f$ tiene un extremo local en un punto interior y es derivable allí, entonces $f'(c)=0$. La condición es necesaria, no suficiente.",
+      ],
+    },
+    {
+      title: "Crecimiento y primera derivada",
+      body: [
+        "**Intervalos de crecimiento**: si $f'(x)>0$ en un intervalo, la función crece allí. Si $f'(x)<0$, decrece.",
+        "**Prueba de la primera derivada**: se observa el cambio de signo de $f'$ alrededor de un punto crítico. De positivo a negativo hay máximo; de negativo a positivo hay mínimo.",
+        "Si el signo de $f'$ no cambia, el punto crítico no produce extremo relativo aunque la tangente sea horizontal o la derivada falle.",
+      ],
+    },
+    {
+      title: "Concavidad e inflexión",
+      body: [
+        "**Concavidad**: la segunda derivada describe cómo cambia la pendiente. Si $f''(x)>0$, la gráfica es cóncava hacia arriba; si $f''(x)<0$, es cóncava hacia abajo.",
+        "**Punto de inflexión**: aparece cuando cambia la concavidad y el punto pertenece a la gráfica. No basta con que $f''(x)=0$; debe verificarse el cambio de signo.",
+        "**Prueba de la segunda derivada**: si $f'(c)=0$ y $f''(c)>0$, hay mínimo local; si $f''(c)<0$, hay máximo local. Si $f''(c)=0$, la prueba no decide.",
+      ],
+    },
+    {
+      title: "Análisis gráfico completo",
+      body: [
+        "**Tabla de signos**: se combinan los ceros de $f'$ y $f''$ con puntos donde no existen para dividir el dominio en intervalos de comportamiento estable.",
+        "**Lectura global**: una buena descripción incluye dominio, interceptos relevantes, crecimiento, extremos, concavidad, inflexiones y comportamiento al infinito o cerca de asíntotas cuando corresponde.",
+        "La derivada no reemplaza el álgebra previa: factorizar, simplificar y entender el dominio siguen siendo necesarios antes de construir la tabla.",
+      ],
+    },
+  ],
+  formulas: [
+    "f'(c)=0",
+    "f'(x)>0",
+    "f'(x)<0",
+    "f''(x)>0",
+    "f''(x)<0",
+    "f''(c)=0",
+    "\\frac{d^2y}{dx^2}=f''(x)",
+  ],
+  definition: {
+    title: "Número crítico",
+    body:
+      "Un número crítico de $f$ es un número $c$ en el dominio de $f$ tal que $f'(c)=0$ o $f'(c)$ no existe.",
+  },
+  examples: [
+    {
+      statement: "Analiza crecimiento de $f(x)=x^3-3x$.",
+      steps: ["$f'(x)=3x^2-3=3(x-1)(x+1)$.", "Puntos críticos: $x=-1,1$.", "El signo de $f'$ es positivo en $(-\\infty,-1)$, negativo en $(-1,1)$ y positivo en $(1,\\infty)$."],
+      conclusion: "Máximo relativo en $x=-1$ y mínimo relativo en $x=1$.",
+    },
+    {
+      statement: "Encuentra extremos absolutos de $f(x)=x^2-4x+1$ en $[0,5]$.",
+      steps: ["$f'(x)=2x-4$.", "Punto crítico interior: $x=2$.", "Evaluamos $f(0)=1$, $f(2)=-3$, $f(5)=6$."],
+      conclusion: "Mínimo absoluto $-3$ en $x=2$; máximo absoluto $6$ en $x=5$.",
+    },
+    {
+      statement: "Estudia concavidad de $f(x)=x^4-4x^2$.",
+      steps: ["$f''(x)=12x^2-8$.", "Resolvemos $12x^2-8=0$, así $x=\\pm\\sqrt{2/3}$.", "El signo de $f''$ cambia al cruzar ambos valores."],
+      conclusion: "Hay puntos de inflexión en $x=\\pm\\sqrt{2/3}$.",
+    },
+    {
+      statement: "Usa segunda derivada para clasificar $f(x)=x^2e^{-x}$ en sus puntos críticos.",
+      steps: ["$f'(x)=e^{-x}(2x-x^2)=e^{-x}x(2-x)$.", "Puntos críticos: $0$ y $2$.", "El signo de $f'$ cambia de negativo a positivo en $0$ y de positivo a negativo en $2$."],
+      conclusion: "Mínimo local en $0$ y máximo local en $2$.",
+    },
+  ],
+  exercises: [
+    { statement: "Números críticos de $f(x)=x^3-12x$.", solution: "$f'(x)=3x^2-12$, críticos $x=\\pm2$." },
+    { statement: "Clasifica los críticos de $x^3-12x$.", solution: "Máximo en $-2$, mínimo en $2$." },
+    { statement: "Extremos absolutos de $x^2$ en $[-1,3]$.", solution: "Mínimo $0$ en $0$, máximo $9$ en $3$." },
+    { statement: "Intervalos de crecimiento de $f(x)=x^2-6x$.", solution: "Decrece en $(-\\infty,3)$ y crece en $(3,\\infty)$." },
+    { statement: "Concavidad de $f(x)=x^3$.", solution: "$f''=6x$; abajo en $(-\\infty,0)$, arriba en $(0,\\infty)$." },
+    { statement: "Punto de inflexión de $f(x)=x^3$.", solution: "$(0,0)$." },
+    { statement: "Segunda derivada de $f(x)=\\ln x$ y concavidad.", solution: "$f''=-1/x^2<0$ para $x>0$; cóncava hacia abajo." },
+    { statement: "Si $f'(x)=(x-1)^2(x+2)$, clasifica $x=1$ y $x=-2$.", solution: "En $-2$ cambia de negativo a positivo: mínimo; en $1$ no cambia: no extremo." },
+    { statement: "Si $f''(c)>0$ y $f'(c)=0$, ¿qué concluyes?", solution: "Mínimo local." },
+    { statement: "Si $f''(c)=0$, ¿hay inflexión automáticamente?", solution: "No; debe cambiar la concavidad." },
+    { statement: "Extremos de $f(x)=x+1/x$ en $(0,\\infty)$.", solution: "Crítico $x=1$, mínimo local y absoluto." },
+    { statement: "Analiza crecimiento de $f(x)=e^x-x$.", solution: "$f'=e^x-1$; decrece en $(-\\infty,0)$ y crece en $(0,\\infty)$." },
+  ],
+};
+
+const reglaLHopitalContent: TopicContent = {
+  contextLabel: "Regla de L’Hôpital",
+  theory: [
+    "La regla de L’Hôpital es una herramienta para ciertos límites indeterminados donde numerador y denominador se anulan o crecen sin cota al mismo tiempo.",
+    "No reemplaza el análisis algebraico: primero se verifica la forma indeterminada y las condiciones de derivabilidad; luego se decide si derivar numerador y denominador simplifica el límite.",
+  ],
+  theorySections: [
+    {
+      title: "Formas indeterminadas y condiciones",
+      body: [
+        "**Forma $0/0$**: aparece cuando numerador y denominador tienden a cero. La regla permite comparar sus derivadas si ambas funciones son derivables cerca del punto.",
+        "**Forma $\\infty/\\infty$**: aparece cuando numerador y denominador crecen sin cota. La regla compara las velocidades de crecimiento mediante derivadas.",
+        "**Condiciones**: no basta con ver un cociente. Debe existir una forma indeterminada adecuada, el denominador derivado no debe anularse cerca del punto y el nuevo límite debe existir o describir divergencia.",
+      ],
+    },
+    {
+      title: "Aplicación y repetición",
+      body: [
+        "**Aplicación directa**: se deriva el numerador y el denominador por separado. No se aplica regla del cociente al cociente completo.",
+        "**Aplicación repetida**: si después de una aplicación sigue apareciendo $0/0$ o $\\infty/\\infty$, puede aplicarse de nuevo siempre que las condiciones sigan cumpliéndose.",
+        "Cada aplicación debe simplificar el problema. Si las derivadas complican la expresión, puede convenir regresar a álgebra, identidades o comparación dominante.",
+      ],
+    },
+    {
+      title: "Casos algebraicos, trigonométricos, exponenciales y logarítmicos",
+      body: [
+        "**Algebraicos**: en cocientes de polinomios o radicales, L’Hôpital puede confirmar resultados que también se obtienen por factorización o dominancia.",
+        "**Trigonométricos**: límites como $\\frac{\\sin x}{x}$ cumplen $0/0$, pero conviene recordar que este límite fundamental suele usarse antes de introducir la regla.",
+        "**Exponenciales y logarítmicos**: la regla es útil para comparar crecimiento, por ejemplo logaritmos contra potencias o potencias contra exponenciales.",
+      ],
+    },
+    {
+      title: "Errores comunes",
+      body: [
+        "**No indeterminación**: si la sustitución produce un número, infinito no ambiguo o división por cero con numerador no nulo, la regla no aplica en esa forma.",
+        "**Derivar mal el cociente**: L’Hôpital no dice que se derive el cociente con la regla del cociente; dice que se reemplaza por el cociente de derivadas.",
+        "**Formas indirectas**: productos, diferencias o potencias indeterminadas deben transformarse primero en cocientes antes de usar la regla.",
+      ],
+    },
+  ],
+  formulas: [
+    "\\frac{0}{0}",
+    "\\frac{\\infty}{\\infty}",
+    "\\lim_{x\\to a}\\frac{f(x)}{g(x)}=\\lim_{x\\to a}\\frac{f'(x)}{g'(x)}",
+    "\\lim_{x\\to\\infty}\\frac{\\ln x}{x}=0",
+    "\\lim_{x\\to\\infty}\\frac{x^n}{e^x}=0",
+  ],
+  definition: {
+    title: "Regla de L’Hôpital",
+    body:
+      "Si $f$ y $g$ son derivables cerca de $a$, $g'(x)\\ne0$ cerca de $a$, y $f/g$ produce $0/0$ o $\\infty/\\infty$, entonces, cuando existe, $\\lim\\frac{f}{g}=\\lim\\frac{f'}{g'}$.",
+  },
+  examples: [
+    {
+      statement: "$\\displaystyle\\lim_{x\\to0}\\frac{e^x-1}{x}$",
+      steps: ["La sustitución produce $0/0$.", "Derivamos numerador y denominador por separado.", "El nuevo límite es $\\lim_{x\\to0}e^x/1$."],
+      conclusion: "El límite es $1$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to\\infty}\\frac{\\ln x}{x}$",
+      steps: ["La forma es $\\infty/\\infty$.", "Aplicamos L’Hôpital: $\\frac{1/x}{1}$.", "Al tender $x\\to\\infty$, $1/x\\to0$."],
+      conclusion: "El límite es $0$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}$",
+      steps: ["La forma inicial es $0/0$.", "Primera aplicación: $\\frac{\\sin x}{2x}$, todavía $0/0$.", "Segunda aplicación: $\\frac{\\cos x}{2}$."],
+      conclusion: "El límite es $1/2$.",
+    },
+    {
+      statement: "$\\displaystyle\\lim_{x\\to\\infty}\\frac{x^2}{e^x}$",
+      steps: ["La forma es $\\infty/\\infty$.", "Primera aplicación: $\\frac{2x}{e^x}$.", "Sigue $\\infty/\\infty$; segunda aplicación: $\\frac{2}{e^x}$."],
+      conclusion: "El límite es $0$.",
+    },
+  ],
+  exercises: [
+    { statement: "$\\displaystyle\\lim_{x\\to0}\\frac{\\sin x}{x}$", solution: "$1$." },
+    { statement: "$\\displaystyle\\lim_{x\\to0}\\frac{e^{2x}-1}{x}$", solution: "$2$." },
+    { statement: "$\\displaystyle\\lim_{x\\to0}\\frac{\\ln(1+x)}{x}$", solution: "$1$." },
+    { statement: "$\\displaystyle\\lim_{x\\to0}\\frac{x-\\sin x}{x^3}$", solution: "Aplicando tres veces o usando expansión, $1/6$." },
+    { statement: "$\\displaystyle\\lim_{x\\to\\infty}\\frac{x}{e^x}$", solution: "$0$." },
+    { statement: "$\\displaystyle\\lim_{x\\to\\infty}\\frac{\\ln x}{\\sqrt{x}}$", solution: "$0$." },
+    { statement: "$\\displaystyle\\lim_{x\\to0}\\frac{\\tan x}{x}$", solution: "$1$." },
+    { statement: "$\\displaystyle\\lim_{x\\to1}\\frac{x^3-1}{x-1}$", solution: "$3$." },
+    { statement: "¿Aplica L’Hôpital a $\\lim_{x\\to0}\\frac{1+x}{x}$?", solution: "No como $0/0$ ni $\\infty/\\infty$; el numerador tiende a $1$ y el cociente diverge." },
+    { statement: "¿Qué se deriva en L’Hôpital?", solution: "Numerador y denominador por separado." },
+    { statement: "$\\displaystyle\\lim_{x\\to\\infty}\\frac{x^3}{e^x}$", solution: "$0$ tras aplicaciones repetidas." },
+    { statement: "$\\displaystyle\\lim_{x\\to0^+}x\\ln x$", solution: "Reescribir como $\\ln x/(1/x)$ y aplicar; límite $0$." },
+  ],
+};
 export const topicContent: Record<string, TopicContent> = Object.fromEntries([
   // ---------------- PRECÁLCULO ----------------
   M("precalculo:dominio-maximo", {
@@ -1642,135 +2852,17 @@ export const topicContent: Record<string, TopicContent> = Object.fromEntries([
   }),
 
   // ---------------- CÁLCULO 1 ----------------
-  M("calculo-1:limites-intuitivo", limitesIntuitivoContent),
-  M("calculo-1:concepto-intuitivo-limite-y-limites-laterales", limitesIntuitivoContent),
-  M("calculo-1:limites-infinitos", limitesInfinitosContent),
-  M("calculo-1:limites-infinitos-y-al-infinito", limitesInfinitosContent),
+  M("calculo-1:limites-continuidad", limitesContinuidadContent),
+  M("calculo-1:tecnicas-algebraicas-limites", tecnicasAlgebraicasConsolidadasContent),
+  M("calculo-1:limites-trigonometricos-indeterminaciones", limitesTrigonometricosIndeterminacionesContent),
+  M("calculo-1:limites-infinito-comportamiento-asintotico", limitesInfinitoAsintoticoContent),
 
-  M("calculo-1:tecnicas-limites", tecnicasAlgebraicasLimitesContent),
-  M("calculo-1:tecnicas-algebraicas-de-calculo-de-limites", tecnicasAlgebraicasLimitesContent),
-  M("calculo-1:indeterminaciones-encaje", indeterminacionesCompresionContent),
-  M("calculo-1:indeterminaciones-y-teorema-de-compresion", indeterminacionesCompresionContent),
-
-  M("calculo-1:continuidad", continuidadPuntoIntervaloContent),
-  M("calculo-1:continuidad-en-un-punto-y-en-un-intervalo", continuidadPuntoIntervaloContent),
-  M("calculo-1:continuidad-lateral", continuidadLateralContent),
-  M("calculo-1:continuidad-por-la-derecha-y-por-la-izquierda", continuidadLateralContent),
-  M("calculo-1:tipos-discontinuidad", tiposDiscontinuidadContent),
-  M("calculo-1:tipos-de-discontinuidad", tiposDiscontinuidadContent),
-  M("calculo-1:cambios-variable", cambiosVariableContent),
-  M("calculo-1:cambios-de-variable", cambiosVariableContent),
-  M("calculo-1:limites-trigonometricos", limitesTrigonometricosContent),
-  M("calculo-1:asintotas-vh", asintotasVerticalesHorizontalesContent),
-  M("calculo-1:asintotas-verticales-y-horizontales", asintotasVerticalesHorizontalesContent),
-
-  M("calculo-1:definicion-derivada", {
-    contextLabel: "Definición e interpretación de la derivada",
-    geogebraId: "WGCsKBeM",
-    theory: [
-      "La derivada de $f$ en $a$, denotada $f'(a)$, mide la tasa instantánea de cambio de $f$ en ese punto. Geométricamente es la pendiente de la recta tangente a la gráfica de $f$ en $(a, f(a))$.",
-      "Se define como un límite: $f'(a) = \\lim_{h\\to 0}\\dfrac{f(a+h)-f(a)}{h}$, siempre que el límite exista. Si existe, decimos que $f$ es derivable en $a$.",
-      "La derivabilidad implica continuidad, pero no al revés: la función $|x|$ es continua en $0$ pero no derivable allí porque la pendiente cambia bruscamente.",
-      "La función derivada $f'$ asigna a cada punto donde $f$ es derivable el valor de la pendiente. Sus aplicaciones incluyen velocidad, aceleración, optimización y análisis de gráficas.",
-    ],
-    formulas: [
-      "f'(a) = \\lim_{h\\to 0}\\dfrac{f(a+h)-f(a)}{h}",
-      "f'(a) = \\lim_{x\\to a}\\dfrac{f(x)-f(a)}{x-a}",
-    ],
-    definition: {
-      title: "Derivada en un punto",
-      body: "$f$ es derivable en $a$ si existe el límite $f'(a) = \\lim_{h\\to 0}\\dfrac{f(a+h)-f(a)}{h}$.",
-    },
-    examples: [
-      {
-        statement: "Calcula la derivada de $f(x) = x^2$ en $x = 3$ por definición.",
-        steps: [
-          "$f(3+h) = (3+h)^2 = 9 + 6h + h^2$.",
-          "$f(3+h) - f(3) = 6h + h^2$.",
-          "Cociente: $\\dfrac{6h+h^2}{h} = 6 + h$.",
-          "Tomamos límite $h \\to 0$: $6$.",
-        ],
-        conclusion: "$f'(3) = 6$.",
-      },
-      {
-        statement: "Halla $f'(x)$ si $f(x) = \\sqrt{x}$.",
-        steps: [
-          "Cociente: $\\dfrac{\\sqrt{x+h}-\\sqrt{x}}{h}$.",
-          "Multiplicamos por el conjugado $\\Rightarrow \\dfrac{h}{h(\\sqrt{x+h}+\\sqrt{x})}$.",
-          "Simplificamos y tomamos $h \\to 0$.",
-        ],
-        conclusion: "$f'(x) = \\dfrac{1}{2\\sqrt{x}}$.",
-      },
-      {
-        statement: "Halla la ecuación de la recta tangente a $y = x^2$ en $x = 1$.",
-        steps: [
-          "$f'(x) = 2x \\Rightarrow$ pendiente $m = 2$.",
-          "Punto $(1, 1)$.",
-          "Recta: $y - 1 = 2(x - 1)$.",
-        ],
-        conclusion: "$y = 2x - 1$.",
-      },
-    ],
-    exercises: [
-      { statement: "Por definición, derivada de $f(x) = 3x + 2$.", solution: "Cociente $\\dfrac{3h}{h} = 3 \\Rightarrow f'(x) = 3$." },
-      { statement: "Por definición, derivada de $f(x) = x^3$ en $x = 2$.", solution: "$12$." },
-      { statement: "¿Es derivable $f(x) = |x|$ en $0$?", solution: "No, los laterales $1$ y $-1$ difieren." },
-      { statement: "Tangente a $y = 1/x$ en $x = 1$.", solution: "Pendiente $-1$, recta $y = -x + 2$." },
-      { statement: "Derivada por definición de $f(x) = 1/x$.", solution: "$-1/x^2$." },
-    ],
-  }),
-
-  M("calculo-1:reglas-derivacion", {
-    contextLabel: "Reglas de derivación",
-    geogebraId: "JZPQJseE",
-    theory: [
-      "Las reglas de derivación permiten calcular derivadas sin recurrir cada vez a la definición. Las básicas son la regla de la potencia, suma, producto, cociente y cadena.",
-      "Regla de la potencia: si $f(x) = x^n$ entonces $f'(x) = n x^{n-1}$ (válida para cualquier exponente real).",
-      "Regla del producto: $(fg)' = f'g + fg'$. Regla del cociente: $\\left(\\dfrac{f}{g}\\right)' = \\dfrac{f'g - fg'}{g^2}$. Regla de la cadena: $(f\\circ g)'(x) = f'(g(x))\\cdot g'(x)$.",
-      "Combinando estas reglas con derivadas conocidas — $\\sin' = \\cos$, $\\cos' = -\\sin$, $(e^x)' = e^x$, $(\\ln x)' = 1/x$ — se calcula casi cualquier derivada elemental.",
-    ],
-    formulas: [
-      "(f g)' = f' g + f g', \\qquad \\left(\\dfrac{f}{g}\\right)' = \\dfrac{f' g - f g'}{g^2}",
-      "(f\\circ g)'(x) = f'(g(x))\\cdot g'(x)",
-    ],
-    definition: {
-      title: "Regla de la cadena",
-      body: "Si $y = f(u)$ y $u = g(x)$ son derivables, entonces $\\dfrac{dy}{dx} = \\dfrac{dy}{du}\\cdot\\dfrac{du}{dx} = f'(g(x))\\cdot g'(x)$.",
-    },
-    examples: [
-      {
-        statement: "Deriva $f(x) = (3x^2 + 1)\\sin(x)$.",
-        steps: [
-          "Aplicamos la regla del producto con $u = 3x^2+1$ ($u'=6x$) y $v = \\sin x$ ($v'=\\cos x$).",
-          "$(uv)' = 6x\\sin x + (3x^2+1)\\cos x$.",
-        ],
-        conclusion: "$f'(x) = 6x\\sin x + (3x^2+1)\\cos x$.",
-      },
-      {
-        statement: "Deriva $g(x) = \\sin(x^2)$.",
-        steps: [
-          "Cadena con $u = x^2 \\Rightarrow u' = 2x$.",
-          "$g'(x) = \\cos(u)\\cdot u' = \\cos(x^2)\\cdot 2x$.",
-        ],
-        conclusion: "$g'(x) = 2x\\cos(x^2)$.",
-      },
-      {
-        statement: "Deriva $h(x) = \\dfrac{x+1}{x^2+1}$.",
-        steps: [
-          "Cociente: numerador $1\\cdot(x^2+1) - (x+1)\\cdot 2x$.",
-          "Simplificamos: $x^2+1-2x^2-2x = -x^2-2x+1$.",
-        ],
-        conclusion: "$h'(x) = \\dfrac{-x^2-2x+1}{(x^2+1)^2}$.",
-      },
-    ],
-    exercises: [
-      { statement: "Deriva $f(x) = x^5 - 3x^2 + 7$.", solution: "$5x^4 - 6x$." },
-      { statement: "Deriva $f(x) = e^{2x}$.", solution: "$2e^{2x}$." },
-      { statement: "Deriva $f(x) = \\ln(x^2+1)$.", solution: "$\\dfrac{2x}{x^2+1}$." },
-      { statement: "Deriva $f(x) = x^2\\cos(x)$.", solution: "$2x\\cos x - x^2\\sin x$." },
-      { statement: "Deriva $f(x) = \\sqrt{3x+1}$.", solution: "$\\dfrac{3}{2\\sqrt{3x+1}}$." },
-    ],
-  }),
+  M("calculo-1:derivada-recta-tangente", derivadaRectaTangenteContent),
+  M("calculo-1:reglas-derivacion", reglasDerivacionConsolidadasContent),
+  M("calculo-1:tecnicas-avanzadas-derivacion", tecnicasAvanzadasDerivacionContent),
+  M("calculo-1:optimizacion-razones-cambio", optimizacionRazonesCambioContent),
+  M("calculo-1:analisis-funciones-derivadas", analisisFuncionesDerivadasContent),
+  M("calculo-1:regla-lhopital", reglaLHopitalContent),
 
   M("calculo-1:integral-indefinida", {
     contextLabel: "Integral indefinida",

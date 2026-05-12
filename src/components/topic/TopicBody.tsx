@@ -52,6 +52,7 @@ export function TopicBody({
   const c = content;
   const isPlaceholder = !c;
   const topicKey = `${courseSlug}:${topicSlug}`;
+  const hasTheorySections = Boolean(c?.theorySections?.length);
 
   return (
     <Tabs value={tab} onValueChange={setTab} className="w-full">
@@ -74,11 +75,15 @@ export function TopicBody({
           <>
             <article className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm space-y-4">
               <h2 className="text-2xl font-semibold">{topicTitle}</h2>
-              {c.theory.map((p, i) => (
-                <div key={i} className="text-muted-foreground leading-relaxed">
-                  <MathMarkdown text={p} />
-                </div>
-              ))}
+              {hasTheorySections && c.theorySections ? (
+                <TheorySections sections={c.theorySections} />
+              ) : (
+                c.theory.map((p, i) => (
+                  <div key={i} className="text-muted-foreground leading-relaxed">
+                    <MathMarkdown text={p} />
+                  </div>
+                ))
+              )}
               {c.formulas.length > 0 && (
                 <FormulaGrid formulas={c.formulas} />
               )}
@@ -149,6 +154,30 @@ export function TopicBody({
   );
 }
 
+function TheorySections({ sections }: { sections: NonNullable<TopicContent["theorySections"]> }) {
+  return (
+    <div className="space-y-3">
+      {sections.map((section, index) => (
+        <details
+          key={section.title}
+          open={index === 0}
+          className="group rounded-xl border border-border bg-background/80 shadow-sm"
+        >
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+            <span>{section.title}</span>
+            <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
+          </summary>
+          <div className="space-y-3 border-t border-border/70 px-4 py-4 text-sm leading-relaxed text-muted-foreground">
+            {section.body.map((paragraph, paragraphIndex) => (
+              <MathMarkdown key={paragraphIndex} text={paragraph} />
+            ))}
+          </div>
+        </details>
+      ))}
+    </div>
+  );
+}
+
 function FormulaGrid({ formulas }: { formulas: string[] }) {
   return (
     <section className="pt-3">
@@ -158,7 +187,7 @@ function FormulaGrid({ formulas }: { formulas: string[] }) {
         </span>
         <div>
           <h3 className="text-sm font-semibold text-foreground">Fórmulas clave</h3>
-          <p className="text-xs text-muted-foreground">Ideas esenciales para reconocer patrones.</p>
+          <p className="text-xs text-muted-foreground">Fórmulas clave para reconocer patrones.</p>
         </div>
       </div>
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -169,7 +198,7 @@ function FormulaGrid({ formulas }: { formulas: string[] }) {
           >
             <div className="flex items-center justify-between gap-2 border-b border-green-100/80 px-3 py-2">
               <span className="rounded-full bg-[#15803D]/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[#14532D]">
-                Idea {index + 1}
+                Fórmula
               </span>
               <span className="h-1.5 w-1.5 rounded-full bg-[#15803D]/60" />
             </div>

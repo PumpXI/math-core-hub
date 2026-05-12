@@ -11,7 +11,7 @@ export function TopicVisual({ topicKey, title }: TopicVisualProps) {
   switch (topicKey) {
     case "precalculo:numeros-reales":
       return <RealNumbersVisual title={title} />;
-    case "calculo-1:limites-intuitivo":
+    case "calculo-1:limites-continuidad":
       return <LimitsVisual title={title} />;
     default:
       return (
