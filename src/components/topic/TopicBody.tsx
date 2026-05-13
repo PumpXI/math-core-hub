@@ -7,7 +7,7 @@ import "katex/dist/katex.min.css";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronUp, BookOpen, Construction, Sparkles } from "lucide-react";
+import { ChevronDown, ChevronUp, BookOpen, Construction, FlaskConical, Sparkles } from "lucide-react";
 import { AITutorChat } from "./AITutorChat";
 import { TopicVisual } from "./TopicVisual";
 import type { TopicContent } from "@/lib/topicContent";
@@ -56,10 +56,14 @@ export function TopicBody({
 
   return (
     <Tabs value={tab} onValueChange={setTab} className="w-full">
-      <TabsList className="grid grid-cols-4 max-w-2xl">
+      <TabsList className="grid grid-cols-5 max-w-4xl">
         <TabsTrigger value="teoria" className={accent}>Teoría</TabsTrigger>
         <TabsTrigger value="ejemplos" className={accent}>Ejemplos</TabsTrigger>
         <TabsTrigger value="ejercicios" className={accent}>Ejercicios</TabsTrigger>
+        <TabsTrigger value="visual-lab" className={`${accent} gap-1.5`}>
+          <FlaskConical className="h-3.5 w-3.5" />
+          Visual Lab
+        </TabsTrigger>
         <TabsTrigger value="tutor" className={accent}>Tutor IA</TabsTrigger>
       </TabsList>
 
@@ -72,32 +76,29 @@ export function TopicBody({
             onAskAI={() => setTab("tutor")}
           />
         ) : (
-          <>
-            <article className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm space-y-4">
-              <h2 className="text-2xl font-semibold">{topicTitle}</h2>
-              {hasTheorySections && c.theorySections ? (
-                <TheorySections sections={c.theorySections} />
-              ) : (
-                c.theory.map((p, i) => (
-                  <div key={i} className="text-muted-foreground leading-relaxed">
-                    <MathMarkdown text={p} />
-                  </div>
-                ))
-              )}
-              {c.formulas.length > 0 && (
-                <FormulaGrid formulas={c.formulas} />
-              )}
-              <div className="mt-2 rounded-xl border-l-4 border-[#15803D] bg-green-50 p-4">
-                <div className="flex items-center gap-2 text-sm font-semibold text-[#14532D]">
-                  <BookOpen className="h-4 w-4" /> {c.definition.title}
+          <article className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm space-y-4">
+            <h2 className="text-2xl font-semibold">{topicTitle}</h2>
+            {hasTheorySections && c.theorySections ? (
+              <TheorySections sections={c.theorySections} />
+            ) : (
+              c.theory.map((p, i) => (
+                <div key={i} className="text-muted-foreground leading-relaxed">
+                  <MathMarkdown text={p} />
                 </div>
-                <p className="mt-1 text-sm text-[#14532D]/90">
-                  <MathMarkdown text={c.definition.body} />
-                </p>
+              ))
+            )}
+            {c.formulas.length > 0 && (
+              <FormulaGrid formulas={c.formulas} />
+            )}
+            <div className="mt-2 rounded-xl border-l-4 border-[#15803D] bg-green-50 p-4">
+              <div className="flex items-center gap-2 text-sm font-semibold text-[#14532D]">
+                <BookOpen className="h-4 w-4" /> {c.definition.title}
               </div>
-            </article>
-            <TopicVisual topicKey={topicKey} title={topicTitle} />
-          </>
+              <p className="mt-1 text-sm text-[#14532D]/90">
+                <MathMarkdown text={c.definition.body} />
+              </p>
+            </div>
+          </article>
         )}
       </TabsContent>
 
@@ -146,11 +147,71 @@ export function TopicBody({
         )}
       </TabsContent>
 
+      {/* ── TAB VISUAL LAB ── */}
+      <TabsContent value="visual-lab" className="mt-6">
+        <VisualLabShell
+          title={topicTitle}
+          description={topicDescription}
+          topicKey={topicKey}
+          isPlaceholder={isPlaceholder}
+        />
+      </TabsContent>
+
       {/* ── TAB TUTOR IA ── */}
       <TabsContent value="tutor" className="mt-6">
         <AITutorChat topicTitle={c?.contextLabel ?? topicTitle} compact />
       </TabsContent>
     </Tabs>
+  );
+}
+
+function VisualLabShell({
+  title,
+  description,
+  topicKey,
+  isPlaceholder,
+}: {
+  title: string;
+  description: string;
+  topicKey: string;
+  isPlaceholder: boolean;
+}) {
+  return (
+    <section className="overflow-hidden rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-950 via-[#0f2f24] to-slate-950 text-white shadow-lg">
+      <div className="border-b border-white/10 bg-white/[0.03] px-5 py-4 md:px-7">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-start gap-3">
+            <div className="rounded-xl border border-emerald-300/30 bg-emerald-400/15 p-2.5 text-emerald-200 shadow-sm shadow-emerald-950/30">
+              <FlaskConical className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-200/80">
+                Visual Lab
+              </div>
+              <h2 className="mt-1 text-xl font-semibold md:text-2xl">{title}</h2>
+              <p className="mt-1 max-w-3xl text-sm leading-relaxed text-emerald-50/70">
+                {description}
+              </p>
+            </div>
+          </div>
+          <div className="rounded-full border border-emerald-300/25 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
+            Experiencia conceptual
+          </div>
+        </div>
+      </div>
+      <div className="p-4 md:p-7">
+        {isPlaceholder ? (
+          <div className="rounded-2xl border border-dashed border-white/20 bg-white/[0.04] p-10 text-center text-sm text-emerald-50/75">
+            <Sparkles className="mx-auto mb-3 h-6 w-6 text-emerald-200" />
+            Visual Lab en preparación para este módulo.
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-white/10 bg-white/[0.96] p-3 text-foreground shadow-2xl shadow-emerald-950/30">
+            <TopicVisual topicKey={topicKey} title={title} />
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
 

@@ -418,7 +418,7 @@ const indeterminacionesCompresionContent: TopicContent = {
     "\\sqrt{x}-\\sqrt{a}=\\dfrac{x-a}{\\sqrt{x}+\\sqrt{a}}",
     "\\lim_{x\\to\\infty}\\dfrac{a_nx^n+\\cdots}{b_mx^m+\\cdots}=\\dfrac{a_n}{b_m} \\quad \\text{si } n=m",
     "g(x)\\le f(x)\\le h(x),\\; \\lim_{x\\to a}g(x)=\\lim_{x\\to a}h(x)=L \\Longrightarrow \\lim_{x\\to a}f(x)=L",
-    "-x^2\\le x^2\\sin\\!\\left(\\dfrac{1}{x}\\right)\\le x^2",
+    "-x^2\\le x^2\\operatorname{sen}(x)\\le x^2",
     "\\lim_{x\\to0}\\dfrac{\\sin x}{x}=1",
     "\\lim_{x\\to0}\\dfrac{1-\\cos x}{x}=0",
   ],
@@ -469,10 +469,10 @@ const indeterminacionesCompresionContent: TopicContent = {
       conclusion: "$\\displaystyle\\lim_{x\\to0^+}x\\ln x=0$.",
     },
     {
-      statement: "Usa compresión para $\\displaystyle\\lim_{x\\to0}x^2\\sin\\!\\left(\\dfrac{1}{x}\\right)$.",
+      statement: "Usa compresión para $\\displaystyle\\lim_{x\\to0}x^2\\operatorname{sen}(x)$.",
       steps: [
-        "Sabemos que $-1\\le\\sin(1/x)\\le1$.",
-        "Multiplicamos por $x^2\\ge0$: $-x^2\\le x^2\\sin(1/x)\\le x^2$.",
+        "Sabemos que $-1\\le\\operatorname{sen}(x)\\le1$.",
+        "Multiplicamos por $x^2\\ge0$: $-x^2\\le x^2\\operatorname{sen}(x)\\le x^2$.",
         "Ambas cotas tienden a $0$ cuando $x\\to0$.",
       ],
       conclusion: "Por compresión, el límite es $0$.",
@@ -2055,18 +2055,43 @@ const derivadaRectaTangenteContent: TopicContent = {
     {
       title: "Tasas de cambio y recta secante",
       body: [
-        "**Tasa promedio de cambio**: mide cuánto cambia $f(x)$ por unidad de cambio en $x$ entre dos puntos. En el intervalo $[a,b]$ se calcula con el cociente $\\frac{f(b)-f(a)}{b-a}$.",
-        "**Recta secante**: es la recta que pasa por $(a,f(a))$ y $(b,f(b))$. Su pendiente es exactamente la tasa promedio de cambio, por eso resume el comportamiento de la curva en todo el intervalo.",
-        "Si el intervalo es grande, la secante puede ocultar variaciones locales. La derivada aparece cuando se estudian intervalos cada vez más pequeños alrededor de un punto.",
+        "En muchas situaciones reales no basta con conocer el valor de una cantidad; también interesa entender cómo cambia. Por ejemplo, en el movimiento de un automóvil no solo importa la posición, sino qué tan rápido cambia esa posición con respecto al tiempo. De forma similar, en economía interesa cómo cambian las ganancias, y en física cómo cambia la temperatura o la velocidad.",
+        "La idea de comparar cuánto cambia una cantidad respecto a otra recibe el nombre de **tasa de cambio**.",
+        "Si una función $f(x)$ cambia desde el valor $f(a)$ hasta el valor $f(b)$, entonces el cambio vertical es $f(b)-f(a)$ y el cambio horizontal es $b-a$. La razón entre ambos cambios mide qué tan rápido varía la función en promedio entre esos dos puntos.",
+        "La tasa de cambio promedio se calcula mediante:",
+        "$$\\frac{f(b)-f(a)}{b-a}$$",
+        "Geométricamente, esta expresión representa la pendiente de la recta que conecta los puntos $(a,f(a))$ y $(b,f(b))$ sobre la gráfica de la función.",
+        "Esa recta recibe el nombre de **recta secante**.",
+        "La pendiente de una recta secante se calcula igual que cualquier pendiente entre dos puntos:",
+        "$$m=\\frac{y_2-y_1}{x_2-x_1}$$",
+        "Cuando los puntos pertenecen a una función, la fórmula toma la forma:",
+        "$$m_{sec}=\\frac{f(b)-f(a)}{b-a}$$",
+        "La recta secante describe el comportamiento promedio de la función entre dos puntos distintos. Si la pendiente es positiva, la función aumenta en promedio; si es negativa, disminuye. Mientras mayor sea el valor absoluto de la pendiente, más rápido ocurre el cambio.",
+        "Por ejemplo, si un automóvil pasa de 40 km recorridos a 100 km recorridos en 2 horas, la tasa de cambio promedio es:",
+        "$$\\frac{100-40}{2}=30$$",
+        "Esto significa que, en promedio, el automóvil recorrió 30 kilómetros por hora durante ese intervalo.",
+        "Es importante notar que la recta secante no describe necesariamente lo que ocurre en un instante específico, sino el comportamiento promedio entre dos puntos. Más adelante veremos cómo acercar esos puntos cada vez más para estudiar el cambio instantáneo y construir la idea de derivada.",
       ],
     },
     {
       title: "Derivada como límite",
       body: [
-        "**Tasa instantánea de cambio**: describe la rapidez de cambio en un solo punto. Se obtiene como el límite de las pendientes secantes cuando el segundo punto se acerca al primero.",
-        "**Derivada en un punto**: si el límite $\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}$ existe, su valor se denota $f'(a)$ y representa la pendiente instantánea en $x=a$.",
-        "**Notación**: se usan varias formas equivalentes según el contexto: $f'(a)$, $\\frac{dy}{dx}\\big|_{x=a}$, $D_xf(a)$ o $\\dot{s}(t)$ cuando la variable es tiempo.",
-        "La derivada puede fallar si hay esquinas, cúspides, tangentes verticales u oscilaciones que impiden que las pendientes secantes se estabilicen.",
+        "La tasa de cambio promedio mide cómo varía una función entre dos puntos distintos. Pero muchas preguntas importantes no buscan un promedio en un intervalo, sino el cambio exacto en un punto. Por ejemplo, la velocidad promedio de un automóvil durante varios minutos no necesariamente coincide con la velocidad que marca el velocímetro en un instante específico.",
+        "El problema es que una pendiente necesita dos puntos, mientras que un instante o un punto específico parece darnos solo uno. La idea de la derivada resuelve esto usando un segundo punto cercano y haciéndolo acercarse cada vez más al punto que queremos estudiar.",
+        "Tomamos un punto fijo de la gráfica, $(a,f(a))$, y otro punto cercano, $(a+h,f(a+h))$. El número $h$ representa la distancia horizontal entre ambos puntos. Si $h>0$, el segundo punto está a la derecha de $a$; si $h<0$, está a la izquierda.",
+        "La pendiente de la recta secante que une esos dos puntos es:",
+        "$$\\frac{f(a+h)-f(a)}{h}$$",
+        "Esta expresión se llama **cociente incremental**. El numerador $f(a+h)-f(a)$ mide el cambio vertical de la función, mientras que el denominador $h$ mide el cambio horizontal.",
+        "Cuando hacemos que $h$ se acerque a $0$, el segundo punto $(a+h,f(a+h))$ se aproxima al punto fijo $(a,f(a))$. Entonces las rectas secantes van cambiando de inclinación. Si sus pendientes se acercan a un único valor, ese valor se define como la derivada de $f$ en $a$.",
+        "$$f'(a)=\\lim_{h\\to0}\\frac{f(a+h)-f(a)}{h}$$",
+        "Esta fórmula dice que la derivada es el límite de tasas de cambio promedio cuando el intervalo horizontal se vuelve cada vez más pequeño.",
+        "Geométricamente, $f'(a)$ es la pendiente de la recta tangente a la gráfica de $f$ en el punto $(a,f(a))$. La tangente puede entenderse como la posición límite de las rectas secantes cuando el segundo punto se acerca al primero.",
+        "Físicamente, si $s(t)$ representa la posición de un objeto en el tiempo, entonces $s'(t)$ representa su velocidad instantánea. Es decir, mide qué tan rápido cambia la posición justo en el instante $t$.",
+        "También podemos definir la derivada como una nueva función. En lugar de fijar el punto $a$, dejamos que el punto sea variable y escribimos:",
+        "$$f'(x)=\\lim_{h\\to0}\\frac{f(x+h)-f(x)}{h}$$",
+        "Cuando este límite existe para un valor de $x$, decimos que la función es **derivable** en ese punto. Si el límite no existe, la función no tiene una derivada bien definida allí.",
+        "La derivada puede fallar si la gráfica tiene una esquina, una cúspide, una discontinuidad, una tangente vertical o un comportamiento oscilatorio que impide que las pendientes secantes se acerquen a un único valor.",
+        "En resumen, la derivada convierte una pregunta local —cómo cambia una función exactamente en un punto— en un proceso de límites construido a partir de rectas secantes cada vez más cercanas.",
       ],
     },
     {
@@ -2074,8 +2099,7 @@ const derivadaRectaTangenteContent: TopicContent = {
       body: [
         "**Recta tangente**: es la recta que mejor aproxima localmente la curva cerca del punto. Su pendiente es $f'(a)$ y pasa por $(a,f(a))$.",
         "**Recta normal**: es perpendicular a la tangente. Si $f'(a)\\ne0$, su pendiente es $-1/f'(a)$; si la tangente es horizontal, la normal es vertical.",
-        "**Velocidad**: si $s(t)$ representa posición, la velocidad instantánea es $v(t)=s'(t)$. La aceleración se obtiene derivando de nuevo: $a(t)=v'(t)=s''(t)$.",
-        "La interpretación correcta siempre depende de las unidades: si $f$ mide metros y $x$ segundos, entonces $f'(x)$ mide metros por segundo.",
+        
       ],
     },
   ],
@@ -2085,8 +2109,6 @@ const derivadaRectaTangenteContent: TopicContent = {
     "f'(a)=\\lim_{x\\to a}\\frac{f(x)-f(a)}{x-a}",
     "y-f(a)=f'(a)(x-a)",
     "y-f(a)=-\\frac{1}{f'(a)}(x-a)",
-    "v(t)=s'(t)",
-    "a(t)=s''(t)",
   ],
   definition: {
     title: "Derivada en un punto",
@@ -2171,14 +2193,16 @@ const reglasDerivacionConsolidadasContent: TopicContent = {
     "\\frac{d}{dx}x^n=nx^{n-1}",
     "\\frac{d}{dx}[cf(x)]=cf'(x)",
     "\\frac{d}{dx}[f(x)\\pm g(x)]=f'(x)\\pm g'(x)",
-    "(fg)'=f'g+fg'",
-    "\\left(\\frac{f}{g}\\right)'=\\frac{f'g-fg'}{g^2}",
-    "(f\\circ g)'(x)=f'(g(x))g'(x)",
+    "\\frac{d}{dx}[f(x)g(x)]=f'(x)g(x)+f(x)g'(x)",
+    "\\left(\\frac{f(x)}{g(x)}\\right)'=\\frac{f'(x)g(x)-f(x)g'(x)}{g^2(x)}",
+    "\\frac{d}{dx}[f(g(x))]=f'(g(x))g'(x)",
     "\\frac{d}{dx}e^x=e^x",
     "\\frac{d}{dx}a^x=a^x\\ln a",
     "\\frac{d}{dx}\\sin x=\\cos x",
     "\\frac{d}{dx}\\cos x=-\\sin x",
     "\\frac{d}{dx}\\tan x=\\sec^2 x",
+    "\\frac{d}{dx}\\ln(x)=\\frac{1}{x}",
+     "\\frac{d}{dx}\\log_a(x)=\\frac{1}{x\\ln a}",
   ],
   definition: {
     title: "Regla de la cadena",
@@ -2231,37 +2255,146 @@ const tecnicasAvanzadasDerivacionContent: TopicContent = {
   ],
   theorySections: [
     {
-      title: "Derivación implícita",
-      body: [
-        "**Derivación implícita**: se usa cuando $x$ y $y$ están relacionadas por una ecuación y no conviene despejar $y$. Se deriva ambos lados respecto de $x$ tratando $y$ como función de $x$.",
-        "Cada vez que se deriva una expresión con $y$, aparece el factor $y'$ por regla de la cadena. Luego se agrupan los términos con $y'$ y se despeja.",
-        "Esta técnica es natural para circunferencias, elipses y curvas donde despejar produce varias ramas.",
-      ],
-    },
-    {
-      title: "Derivación logarítmica",
-      body: [
-        "**Derivación logarítmica**: se toma logaritmo natural en ambos lados para convertir productos en sumas, cocientes en restas y potencias en productos.",
-        "Es especialmente útil para expresiones como $x^x$, productos largos o potencias donde base y exponente dependen de $x$.",
-        "Después de derivar la ecuación logarítmica, se multiplica por la función original para recuperar $y'$.",
-      ],
-    },
-    {
-      title: "Funciones inversas e inversas trigonométricas",
-      body: [
-        "**Derivada de la inversa**: si $f$ es derivable e invertible cerca de un punto y $f'(x)\\ne0$, la pendiente de la inversa es el recíproco de la pendiente original en el punto correspondiente.",
-        "**Inversas trigonométricas**: sus derivadas aparecen al invertir funciones trigonométricas restringidas a intervalos donde son biyectivas.",
-        "Estas fórmulas requieren atención al dominio. Por ejemplo, $\\arcsin x$ y $\\arccos x$ solo reciben valores entre $-1$ y $1$.",
-      ],
-    },
-    {
-      title: "Derivadas de orden superior",
-      body: [
-        "**Segunda derivada**: mide cómo cambia la primera derivada. En movimiento rectilíneo, si $s'(t)$ es velocidad, entonces $s''(t)$ es aceleración.",
-        "**Orden superior**: derivar repetidamente produce $f''$, $f'''$ y $f^{(n)}$. Estos objetos describen curvatura, aceleración y patrones de cambio más finos.",
-        "En polinomios, las derivadas sucesivas eventualmente se vuelven cero. En exponenciales y trigonométricas aparecen ciclos o repeticiones estructurales.",
-      ],
-    },
+  title: "Derivación implícita",
+  body: [
+    "En muchos problemas las variables $x$ y $y$ aparecen mezcladas en una misma ecuación, de modo que no resulta sencillo —o incluso posible— despejar explícitamente a $y$ como función de $x$. Aun así, sigue siendo posible calcular la derivada utilizando un procedimiento llamado **derivación implícita**.",
+
+    "Una ecuación como:",
+
+    "$$x^2+y^2=25$$",
+
+    "describe una circunferencia. Aunque podríamos despejar $y$ usando raíces, hacerlo divide la curva en dos funciones distintas y complica el análisis. La derivación implícita permite trabajar directamente con la ecuación original.",
+
+    "La idea consiste en derivar ambos lados de la ecuación respecto a $x$, tratando a $y$ como una función dependiente de $x$.",
+
+    "Por ejemplo, derivando la ecuación anterior:",
+
+    "$$\\frac{d}{dx}(x^2+y^2)=\\frac{d}{dx}(25)$$",
+
+    "obtenemos:",
+
+    "$$2x+2y\\frac{dy}{dx}=0$$",
+
+    "El término $2y\\frac{dy}{dx}$ aparece porque $y$ depende de $x$. Al derivar expresiones que contienen $y$, es necesario aplicar la **regla de la cadena**.",
+
+    "Finalmente despejamos $\\frac{dy}{dx}$:",
+
+    "$$\\frac{dy}{dx}=-\\frac{x}{y}$$",
+
+    "La derivación implícita es especialmente útil en curvas algebraicas, ecuaciones trigonométricas, relaciones geométricas y modelos físicos donde las variables aparecen relacionadas de forma natural."
+  ]
+},
+{
+  title: "Derivación logarítmica",
+  body: [
+    "La **derivación logarítmica** es una técnica muy útil cuando una función contiene productos complicados, cocientes extensos o potencias donde tanto la base como el exponente dependen de la variable.",
+
+    "Por ejemplo, derivar directamente expresiones como:",
+
+    "$$y=x^x$$",
+
+    "resulta difícil usando únicamente las reglas básicas de derivación.",
+
+    "La idea principal consiste en aplicar logaritmo natural a ambos lados de la ecuación:",
+
+    "$$\\ln y=\\ln(x^x)$$",
+
+    "Luego usamos propiedades de los logaritmos para simplificar la expresión. En este caso:",
+
+    "$$\\ln y=x\\ln x$$",
+
+    "Ahora derivamos implícitamente respecto a $x$:",
+
+    "$$\\frac{1}{y}\\frac{dy}{dx}=\\ln x+1$$",
+
+    "Finalmente despejamos la derivada multiplicando por $y$:",
+
+    "$$\\frac{dy}{dx}=y(\\ln x+1)$$",
+
+    "Como originalmente $y=x^x$, obtenemos:",
+
+    "$$\\frac{dy}{dx}=x^x(\\ln x+1)$$",
+
+    "La derivación logarítmica simplifica enormemente expresiones complejas porque transforma productos en sumas, cocientes en restas y exponentes en factores multiplicativos.",
+
+    "Es importante recordar que el logaritmo natural solo está definido para valores positivos, por lo que siempre deben considerarse las restricciones de dominio antes de aplicar esta técnica."
+  ]
+},
+{
+  title: "Derivada de funciones inversas",
+  body: [
+    "Dos funciones son inversas cuando una deshace el efecto de la otra. Geométricamente, las gráficas de una función y su inversa son reflejos respecto a la recta $y=x$.",
+
+    "Si una función tiene pendiente grande en un punto, su inversa tendrá una pendiente pequeña en el punto correspondiente. Esto sugiere que las pendientes de funciones inversas están relacionadas mediante recíprocos.",
+
+    "La fórmula general para derivar funciones inversas es:",
+
+    "$$\\left(f^{-1}\\right)'(a)=\\frac{1}{f'(f^{-1}(a))}$$",
+
+    "Esta expresión permite calcular derivadas de funciones inversas sin necesidad de despejar explícitamente la inversa completa.",
+
+    "La fórmula solo puede aplicarse cuando $f'(x)\\neq0$, ya que no es posible dividir entre cero.",
+
+    "El estudio de funciones inversas resulta fundamental en cálculo porque muchas funciones importantes, como las trigonométricas inversas y los logaritmos, aparecen naturalmente como funciones inversas."
+  ]
+},
+{
+  title: "Derivadas de funciones trigonométricas inversas",
+  body: [
+    "Las funciones trigonométricas inversas aparecen cuando queremos recuperar un ángulo a partir de una razón trigonométrica. Las más comunes son $\\arcsin(x)$, $\\arccos(x)$ y $\\arctan(x)$.",
+
+    "Sus derivadas se obtienen aplicando derivación implícita y utilizando las relaciones trigonométricas fundamentales.",
+
+    "Las fórmulas más importantes son:",
+
+    "$$\\frac{d}{dx}(\\arcsin x)=\\frac{1}{\\sqrt{1-x^2}}$$",
+
+    "$$\\frac{d}{dx}(\\arccos x)=-\\frac{1}{\\sqrt{1-x^2}}$$",
+
+    "$$\\frac{d}{dx}(\\arctan x)=\\frac{1}{1+x^2}$$",
+
+    "Cuando estas funciones contienen expresiones internas, también debe aplicarse la regla de la cadena.",
+
+    "Por ejemplo:",
+
+    "$$\\frac{d}{dx}(\\arcsin(3x))=\\frac{3}{\\sqrt{1-9x^2}}$$",
+
+    "Las restricciones de dominio son muy importantes en estas funciones, ya que no todas las razones trigonométricas pueden invertirse sobre todo su dominio original."
+  ]
+},
+{
+  title: "Derivadas de orden superior",
+  body: [
+    "La derivada de una función también puede derivarse nuevamente. Esto produce las llamadas **derivadas de orden superior**.",
+
+    "La segunda derivada se escribe como:",
+
+    "$$f''(x)$$",
+
+    "y representa la derivada de la primera derivada.",
+
+    "De forma similar, la tercera derivada se escribe:",
+
+    "$$f'''(x)$$",
+
+    "y así sucesivamente.",
+
+    "En general, la derivada número $n$ se representa como:",
+
+    "$$f^{(n)}(x)$$",
+
+    "Las derivadas de orden superior permiten estudiar cómo cambia la tasa de cambio de una función.",
+
+    "Por ejemplo, si $s(t)$ representa posición:",
+    
+    "- $s'(t)$ representa velocidad",
+    "- $s''(t)$ representa aceleración",
+
+    "La segunda derivada también juega un papel fundamental en el estudio de concavidad y comportamiento gráfico de funciones.",
+
+    "En física, ingeniería y modelado matemático, las derivadas de orden superior aparecen constantemente porque muchos fenómenos dependen no solo del cambio, sino también de cómo cambia ese cambio."
+  ]
+},
   ],
   formulas: [
     "\\frac{d}{dx}F(x,y)=F_x+F_y\\frac{dy}{dx}",
@@ -2324,40 +2457,107 @@ const optimizacionRazonesCambioContent: TopicContent = {
     "El trabajo principal no es derivar mecánicamente, sino elegir variables, formular ecuaciones y leer el significado del resultado.",
   ],
   theorySections: [
-    {
-      title: "Razones de cambio relacionadas",
-      body: [
-        "**Variables dependientes del tiempo**: en razones relacionadas, varias cantidades cambian simultáneamente. Se expresa cada cantidad como función de $t$, aunque la ecuación original no muestre $t$ explícitamente.",
-        "**Diferenciar respecto al tiempo**: después de escribir una relación geométrica o física, se deriva toda la ecuación respecto de $t$. Aparecen tasas como $dx/dt$, $dy/dt$ o $dV/dt$.",
-        "**Sustitución al final**: los valores numéricos del instante se colocan después de derivar. Sustituir demasiado temprano puede eliminar variables que todavía cambian.",
-      ],
-    },
-    {
-      title: "Modelado y restricciones",
-      body: [
-        "**Modelar variables**: se identifican las cantidades que cambian, las constantes y la tasa que se busca.",
-        "**Ecuación de restricción**: relaciona las variables del problema. Puede venir de geometría, volumen, área, distancia o conservación de una cantidad.",
-        "**Dominio físico**: las variables deben respetar longitudes positivas, áreas posibles, intervalos de tiempo y restricciones del contexto.",
-      ],
-    },
-    {
-      title: "Optimización",
-      body: [
-        "**Función objetivo**: es la cantidad que se desea maximizar o minimizar: área, costo, volumen, distancia o ganancia.",
-        "**Restricción**: permite escribir la función objetivo en una sola variable. Sin esta reducción, no se puede aplicar el análisis de una variable.",
-        "**Puntos críticos**: se buscan donde la derivada es cero o no existe dentro del dominio. También se revisan extremos del intervalo cuando el dominio es cerrado.",
-        "**Interpretación**: un punto crítico solo es candidato. Debe verificarse si produce máximo, mínimo o ninguno, y la respuesta debe tener sentido en el problema original.",
-      ],
-    },
+  {
+  title: "Razones de cambio relacionadas",
+  body: [
+    "En muchos fenómenos reales varias cantidades cambian simultáneamente y están conectadas mediante una ecuación. Cuando una variable cambia con respecto al tiempo, otras variables relacionadas también cambian.",
+
+    "Las **razones de cambio relacionadas** estudian precisamente cómo el cambio de una variable afecta el cambio de otra.",
+
+    "Por ejemplo, si el radio de un globo aumenta con el tiempo, entonces su volumen también cambia. Aunque radio y volumen representan cantidades distintas, ambas están conectadas por una relación matemática.",
+
+    "La idea fundamental consiste en:",
+    
+    "- identificar las variables que cambian",
+    "- escribir una ecuación que las relacione",
+    "- derivar respecto al tiempo",
+    "- sustituir los valores conocidos",
+    "- despejar la razón de cambio buscada",
+
+    "Cuando derivamos respecto al tiempo, normalmente utilizamos derivadas como:",
+
+    "$$\\frac{dx}{dt},\\quad \\frac{dy}{dt},\\quad \\frac{dr}{dt}$$",
+
+    "Estas expresiones representan velocidades de cambio temporal.",
+
+    "Por ejemplo, el área de un círculo está dada por:",
+
+    "$$A=\\pi r^2$$",
+
+    "Si el radio cambia con el tiempo, entonces el área también cambia. Derivando respecto a $t$ obtenemos:",
+
+    "$$\\frac{dA}{dt}=2\\pi r\\frac{dr}{dt}$$",
+
+    "La regla de la cadena es esencial en este tipo de problemas, porque las variables dependen indirectamente del tiempo.",
+
+    "Las razones de cambio relacionadas aparecen constantemente en física, ingeniería, biología y geometría aplicada, ya que muchos sistemas reales evolucionan simultáneamente."
+  ]
+},
+{
+  title: "Modelado con derivadas",
+  body: [
+    "Una de las aplicaciones más importantes de las derivadas consiste en construir modelos matemáticos capaces de describir fenómenos reales.",
+
+    "Modelar significa representar una situación mediante variables, ecuaciones y relaciones matemáticas que permitan analizar el comportamiento del sistema.",
+
+    "Las derivadas son especialmente útiles porque permiten medir cómo cambian las cantidades involucradas.",
+
+    "Por ejemplo, en economía una derivada puede representar el cambio marginal de un costo o una ganancia; en física puede representar velocidad o aceleración; y en biología puede describir tasas de crecimiento poblacional.",
+
+    "El proceso de modelado normalmente incluye:",
+    
+    "- identificar las variables relevantes",
+    "- establecer relaciones entre ellas",
+    "- construir una función matemática",
+    "- interpretar las derivadas obtenidas",
+
+    "Muchas veces el comportamiento importante de un sistema no depende únicamente del valor de una función, sino de cómo cambia esa función.",
+
+    "Por ejemplo, si una función representa ganancias, una derivada positiva indica crecimiento, mientras que una derivada negativa indica disminución.",
+
+    "Las derivadas permiten transformar información geométrica y física en herramientas cuantitativas útiles para analizar y predecir comportamientos."
+  ]
+},
+{
+  title: "Optimización",
+  body: [
+    "Los problemas de **optimización** buscan encontrar el mejor valor posible de una cantidad bajo ciertas condiciones. Dependiendo del contexto, esto puede significar maximizar ganancias, minimizar costos, reducir tiempo, aumentar área o disminuir material utilizado.",
+
+    "La derivada es fundamental en optimización porque los máximos y mínimos suelen ocurrir en puntos donde la pendiente de la función cambia de comportamiento.",
+
+    "El procedimiento general consiste en:",
+    
+    "- identificar la cantidad que se desea optimizar",
+    "- construir una función objetivo",
+    "- expresar la función en términos de una sola variable",
+    "- determinar el dominio físicamente válido",
+    "- derivar la función",
+    "- encontrar puntos críticos",
+    "- analizar cuáles producen máximos o mínimos",
+
+    "Los puntos críticos aparecen cuando:",
+
+    "$$f'(x)=0$$",
+
+    "o cuando la derivada no existe.",
+
+    "Por ejemplo, si queremos maximizar el área de un rectángulo con perímetro fijo, primero debemos construir una relación entre sus dimensiones y luego obtener una función de área dependiente de una sola variable.",
+
+    "Después utilizamos derivadas para localizar el valor que produce el área máxima.",
+
+    "En optimización no basta con resolver ecuaciones algebraicamente; también es necesario interpretar físicamente las restricciones y verificar que las soluciones tengan sentido dentro del contexto del problema.",
+
+    "Muchos problemas de ingeniería, economía, diseño y ciencias aplicadas dependen directamente de técnicas de optimización."
+  ]
+},
   ],
   formulas: [
-    "\\frac{d}{dt}x(t)^n=nx(t)^{n-1}\\frac{dx}{dt}",
-    "\\frac{d}{dt}[x(t)y(t)]=x'(t)y(t)+x(t)y'(t)",
+  
     "A=xy",
     "A=\\pi r^2",
     "V=\\pi r^2h",
-    "x^2+y^2=z^2",
-    "f'(c)=0",
+    
+    
   ],
   definition: {
     title: "Optimización",
@@ -2444,14 +2644,14 @@ const analisisFuncionesDerivadasContent: TopicContent = {
     },
   ],
   formulas: [
-    "f'(c)=0",
-    "f'(x)>0",
-    "f'(x)<0",
-    "f''(x)>0",
-    "f''(x)<0",
-    "f''(c)=0",
-    "\\frac{d^2y}{dx^2}=f''(x)",
-  ],
+  "f'(c)=0\\;\\text{→ punto crítico}",
+  "f'(x)>0\\;\\text{→ función creciente}",
+  "f'(x)<0\\;\\text{→ función decreciente}",
+  "f''(x)>0\\;\\text{→ concavidad hacia arriba}",
+  "f''(x)<0\\;\\text{→ concavidad hacia abajo}",
+  "f''(c)=0\\;\\text{→ posible punto de inflexión}",
+  "\\frac{d^2y}{dx^2}=f''(x)\\;\\text{→ segunda derivada}",
+],
   definition: {
     title: "Número crítico",
     body:
@@ -2502,46 +2702,70 @@ const reglaLHopitalContent: TopicContent = {
     "No reemplaza el análisis algebraico: primero se verifica la forma indeterminada y las condiciones de derivabilidad; luego se decide si derivar numerador y denominador simplifica el límite.",
   ],
   theorySections: [
-    {
-      title: "Formas indeterminadas y condiciones",
-      body: [
-        "**Forma $0/0$**: aparece cuando numerador y denominador tienden a cero. La regla permite comparar sus derivadas si ambas funciones son derivables cerca del punto.",
-        "**Forma $\\infty/\\infty$**: aparece cuando numerador y denominador crecen sin cota. La regla compara las velocidades de crecimiento mediante derivadas.",
-        "**Condiciones**: no basta con ver un cociente. Debe existir una forma indeterminada adecuada, el denominador derivado no debe anularse cerca del punto y el nuevo límite debe existir o describir divergencia.",
-      ],
-    },
-    {
-      title: "Aplicación y repetición",
-      body: [
-        "**Aplicación directa**: se deriva el numerador y el denominador por separado. No se aplica regla del cociente al cociente completo.",
-        "**Aplicación repetida**: si después de una aplicación sigue apareciendo $0/0$ o $\\infty/\\infty$, puede aplicarse de nuevo siempre que las condiciones sigan cumpliéndose.",
-        "Cada aplicación debe simplificar el problema. Si las derivadas complican la expresión, puede convenir regresar a álgebra, identidades o comparación dominante.",
-      ],
-    },
-    {
-      title: "Casos algebraicos, trigonométricos, exponenciales y logarítmicos",
-      body: [
-        "**Algebraicos**: en cocientes de polinomios o radicales, L’Hôpital puede confirmar resultados que también se obtienen por factorización o dominancia.",
-        "**Trigonométricos**: límites como $\\frac{\\sin x}{x}$ cumplen $0/0$, pero conviene recordar que este límite fundamental suele usarse antes de introducir la regla.",
-        "**Exponenciales y logarítmicos**: la regla es útil para comparar crecimiento, por ejemplo logaritmos contra potencias o potencias contra exponenciales.",
-      ],
-    },
-    {
-      title: "Errores comunes",
-      body: [
-        "**No indeterminación**: si la sustitución produce un número, infinito no ambiguo o división por cero con numerador no nulo, la regla no aplica en esa forma.",
-        "**Derivar mal el cociente**: L’Hôpital no dice que se derive el cociente con la regla del cociente; dice que se reemplaza por el cociente de derivadas.",
-        "**Formas indirectas**: productos, diferencias o potencias indeterminadas deben transformarse primero en cocientes antes de usar la regla.",
-      ],
-    },
-  ],
-  formulas: [
-    "\\frac{0}{0}",
-    "\\frac{\\infty}{\\infty}",
-    "\\lim_{x\\to a}\\frac{f(x)}{g(x)}=\\lim_{x\\to a}\\frac{f'(x)}{g'(x)}",
-    "\\lim_{x\\to\\infty}\\frac{\\ln x}{x}=0",
-    "\\lim_{x\\to\\infty}\\frac{x^n}{e^x}=0",
-  ],
+  {
+    title: "La regla de L’Hôpital y las formas indeterminadas",
+    body: [
+      "Cuando se calcula un límite, muchas veces basta con sustituir directamente el valor al que se aproxima la variable. Sin embargo, existen situaciones donde esa sustitución produce expresiones que no permiten determinar inmediatamente el comportamiento de la función.",
+      
+      "Las más conocidas son:",
+      
+      "$$\\frac00$$",
+      "$$\\frac{\\infty}{\\infty}$$",
+      
+      "Estas expresiones reciben el nombre de formas indeterminadas porque no contienen suficiente información por sí solas. Obtener $$\\frac00$$ no significa automáticamente que el límite sea cero, y obtener $$\\frac{\\infty}{\\infty}$$ tampoco implica que el resultado sea uno. Todo depende de la rapidez con la que crecen, decrecen o se aproximan las funciones involucradas.",
+      
+      "La regla de L’Hôpital permite estudiar este comportamiento comparando directamente las derivadas del numerador y del denominador. En términos intuitivos, en lugar de analizar las funciones originales, analizamos cómo están cambiando cerca del punto problemático.",
+      
+      "Si un límite produce una forma indeterminada del tipo $$\\frac00$$ o $$\\frac{\\infty}{\\infty}$$, entonces bajo ciertas condiciones puede calcularse mediante:",
+      
+      "$$\\lim_{x\\to a}\\frac{f(x)}{g(x)}=\\lim_{x\\to a}\\frac{f'(x)}{g'(x)}$$",
+      
+      "siempre que el nuevo límite exista o sea más fácil de evaluar.",
+      
+      "Muchas veces una sola aplicación basta para resolver el problema. En otros casos, la indeterminación reaparece después de derivar y es necesario aplicar la regla nuevamente.",
+      
+      "La clave conceptual es entender que L’Hôpital no es un truco aislado, sino una herramienta para comparar tasas de cambio. Si tanto el numerador como el denominador se acercan simultáneamente a cero o a infinito, sus derivadas ayudan a revelar cuál domina el comportamiento del límite.",
+    ],
+  },
+
+  {
+    title: "Indeterminaciones exponenciales y uso de logaritmos",
+    body: [
+      "Existen otras formas indeterminadas que no aparecen directamente como fracciones. Las más importantes son:",
+      
+      "$$0^0,\\quad 1^\\infty,\\quad \\infty^0$$",
+      
+      "Estas expresiones suelen involucrar potencias donde tanto la base como el exponente cambian simultáneamente. El problema es que la regla de L’Hôpital solamente puede aplicarse directamente a cocientes.",
+      
+      "Para transformar estas expresiones utilizamos una identidad fundamental:",
+      
+      "$$a^b=e^{b\\ln(a)}$$",
+      
+      "La idea es usar logaritmos para ‘bajar’ el exponente y convertir la expresión en un producto o una fracción manipulable.",
+      
+      "Si definimos:",
+      
+      "$$y=f(x)^{g(x)}$$",
+      
+      "entonces:",
+      
+      "$$\\ln(y)=g(x)\\ln(f(x))$$",
+      
+      "Ahora el problema deja de ser una potencia complicada y pasa a ser un límite algebraico mucho más accesible. En muchos ejercicios, este producto puede reorganizarse como una fracción para aplicar L’Hôpital.",
+      
+      "Después de calcular el límite de $$\\ln(y)$$, el resultado final se obtiene aplicando exponencial:",
+      
+      "$$y=e^{\\lim\\ln(y)}$$",
+      
+      "Este procedimiento aparece constantemente en cálculo porque los logaritmos permiten simplificar expresiones exponenciales que serían extremadamente difíciles de analizar de forma directa."
+    ],
+  },
+],
+
+formulas: [
+  "\\lim_{x\\to a}\\frac{f(x)}{g(x)}=\\lim_{x\\to a}\\frac{f'(x)}{g'(x)}",
+  "a^b=e^{b\\ln(a)}",
+],
   definition: {
     title: "Regla de L’Hôpital",
     body:
@@ -2864,108 +3088,630 @@ export const topicContent: Record<string, TopicContent> = Object.fromEntries([
   M("calculo-1:analisis-funciones-derivadas", analisisFuncionesDerivadasContent),
   M("calculo-1:regla-lhopital", reglaLHopitalContent),
 
-  M("calculo-1:integral-indefinida", {
-    contextLabel: "Integral indefinida",
+  M("calculo-1:fundamentos-integracion", {
+    contextLabel: "Fundamentos de integración",
     geogebraId: "RCVce5W4",
     theory: [
-      "Una antiderivada (o primitiva) de $f$ es una función $F$ tal que $F'(x) = f(x)$. La integral indefinida $\\int f(x)\\,dx$ denota la familia de todas las antiderivadas y se escribe $F(x) + C$, donde $C$ es una constante arbitraria.",
-      "La integración es la operación inversa de la derivación. Las reglas básicas son la linealidad $\\int(af + bg) = a\\int f + b\\int g$ y la regla de la potencia $\\int x^n\\,dx = \\dfrac{x^{n+1}}{n+1} + C$, válida para $n \\neq -1$.",
-      "Para $n = -1$ tenemos $\\int \\dfrac{dx}{x} = \\ln|x| + C$. Otras integrales fundamentales: $\\int e^x\\,dx = e^x + C$, $\\int \\sin x\\,dx = -\\cos x + C$, $\\int \\cos x\\,dx = \\sin x + C$.",
-      "Métodos avanzados como sustitución y partes permiten reducir integrales complejas a estas formas básicas.",
+      "La integración comienza con dos ideas que al principio parecen distintas: reconstruir una función a partir de su derivada y medir una acumulación continua. Una mira hacia atrás desde una tasa de cambio; la otra suma contribuciones pequeñas a lo largo de un intervalo.",
+      "El poder del cálculo aparece cuando descubrimos que esas ideas son la misma historia contada desde dos ángulos. La integral no es una colección de fórmulas: es el lenguaje que conecta cambio, área, acumulación y reconstrucción.",
+    ],
+    theorySections: [
+      {
+        title: "Antiderivadas e integrales indefinidas",
+        body: [
+          "Derivar comprime información. Al calcular una derivada, todas las constantes desaparecen: $x^2+3$, $x^2-10$ y $x^2$ tienen la misma derivada $2x$. Por eso, cuando integramos una función como $2x$, no recuperamos una única función, sino una familia completa.",
+          "Una antiderivada, también llamada primitiva, es una función $F$ cuya derivada produce la función original: $F'(x)=f(x)$. La integral indefinida $\\int f(x)\\,dx$ representa todas esas primitivas a la vez.",
+          "$$\\int f(x)\\,dx=F(x)+C$$",
+          "La constante $C$ no es un detalle decorativo. Representa la información inicial que la derivada perdió: una altura de partida, una posición inicial o un nivel base. Si una tasa de cambio determina la forma de la curva, la constante decide dónde queda colocada verticalmente.",
+          "Esta es la primera interpretación de integrar: invertir la derivación. No como una operación mecánica, sino como una reconstrucción parcial de una función desde su comportamiento local.",
+        ],
+      },
+      {
+        title: "Integral definida como acumulación",
+        body: [
+          "La integral definida responde otra pregunta: ¿cuánto se acumula una cantidad entre dos puntos? Si $f(x)$ mide una tasa, entonces $\\int_a^b f(x)\\,dx$ mide la cantidad total acumulada desde $a$ hasta $b$.",
+          "Cuando $f$ es positiva, esta acumulación se ve como el área bajo la curva. Pero la idea es más amplia que área geométrica: si $f$ mide velocidad, la integral mide desplazamiento; si mide flujo, la integral mide volumen; si mide costo marginal, la integral mide costo acumulado.",
+          "Cuando la gráfica está sobre el eje $x$, aporta acumulación positiva. Cuando está debajo, aporta acumulación negativa. Por eso una integral definida mide área firmada o área neta, no necesariamente el área geométrica total.",
+        ],
+      },
+      {
+        title: "Particiones y sumas de Riemann",
+        body: [
+          "Para definir acumulación continua, primero la aproximamos. Dividimos el intervalo $[a,b]$ en partes pequeñas, elegimos puntos de muestra y construimos rectángulos delgados. Cada rectángulo tiene base $\\Delta x$ y altura aproximadamente $f(x_i^*)$.",
+          "La suma de esas contribuciones aproxima la acumulación total:",
+          "$$\\sum_{i=1}^{n} f(x_i^*)\\Delta x$$",
+          "Si hacemos los subintervalos cada vez más finos, la suma deja de depender de la aproximación rectangular y se estabiliza en un valor. Ese límite es la integral definida.",
+          "Esta construcción es importante porque muestra que integrar no es simplemente buscar una fórmula. Integrar es convertir una suma de muchas contribuciones pequeñas en una cantidad continua exacta.",
+        ],
+      },
+      {
+        title: "Teorema Fundamental del Cálculo",
+        body: [
+          "El Teorema Fundamental del Cálculo une las dos interpretaciones anteriores. Si definimos una función de acumulación $A(x)=\\int_a^x f(t)\\,dt$, entonces $A(x)$ mide todo lo acumulado desde $a$ hasta el punto móvil $x$.",
+          "Cuando $x$ aumenta un poco, la acumulación cambia aproximadamente por una franja delgada cuya altura es $f(x)$. Por eso la derivada de la acumulación vuelve a ser la tasa original:",
+          "$$\\frac{d}{dx}\\int_a^x f(t)\\,dt=f(x)$$",
+          "La segunda parte del teorema dice que si $F$ es una antiderivada de $f$, entonces la acumulación de $f$ desde $a$ hasta $b$ se calcula como una diferencia de estados: $F(b)-F(a)$.",
+          "Así, derivada e integral no son capítulos separados. La derivada mide cambio instantáneo; la integral acumula ese cambio; el teorema explica por qué una puede deshacer a la otra bajo condiciones adecuadas.",
+        ],
+      },
+      {
+        title: "Propiedades básicas de la integral",
+        body: [
+          "La integral respeta la suma y los factores constantes porque la acumulación también lo hace. Si una tasa está formada por dos partes, acumular la tasa completa equivale a acumular cada parte y sumar los resultados.",
+          "También podemos partir un intervalo. Acumular de $a$ a $c$ y luego de $c$ a $b$ produce la misma acumulación que ir de $a$ a $b$ directamente. Estas propiedades son algebraicas, pero tienen una lectura geométrica y física muy clara.",
+          "La diferencia entre integral indefinida y definida queda ahora más nítida: la indefinida produce una familia de primitivas; la definida produce un número que representa acumulación neta en un intervalo.",
+        ],
+      },
     ],
     formulas: [
-      "\\int x^n\\,dx = \\dfrac{x^{n+1}}{n+1}+C,\\quad n\\neq -1",
-      "\\int \\dfrac{1}{x}\\,dx = \\ln|x|+C",
+      "F'(x)=f(x)\\;\\text{→ antiderivative}",
+      "\\int f(x)\\,dx=F(x)+C",
+      "\\Delta x=\\frac{b-a}{n}",
+      "\\int_a^b f(x)\\,dx=\\lim_{n\\to\\infty}\\sum_{i=1}^{n}f(x_i^*)\\Delta x",
+      "\\frac{d}{dx}\\int_a^x f(t)\\,dt=f(x)",
+      "\\int_a^b f(x)\\,dx=F(b)-F(a)\\quad(F'=f)",
+      "\\int_a^b\\bigl(\\alpha f(x)+\\beta g(x)\\bigr)\\,dx=\\alpha\\int_a^b f(x)\\,dx+\\beta\\int_a^b g(x)\\,dx",
     ],
     definition: {
-      title: "Antiderivada",
-      body: "$F$ es antiderivada de $f$ en un intervalo si $F'(x) = f(x)$ para todo $x$ del intervalo. Dos antiderivadas difieren en una constante.",
+      title: "Integración",
+      body: "Integrar es reconstruir funciones a partir de tasas de cambio o medir acumulación continua mediante el límite de sumas. El Teorema Fundamental del Cálculo conecta ambas interpretaciones.",
     },
     examples: [
       {
-        statement: "Calcula $\\int (3x^2 - 4x + 5)\\,dx$.",
-        steps: [
-          "Linealidad: separamos en tres integrales.",
-          "$\\int 3x^2\\,dx = x^3$, $\\int -4x\\,dx = -2x^2$, $\\int 5\\,dx = 5x$.",
-          "Sumamos y añadimos $C$.",
-        ],
-        conclusion: "$x^3 - 2x^2 + 5x + C$.",
+        statement: "Calcula $\\int(2x+1)\\,dx$.",
+        steps: ["Buscamos una familia de funciones cuya derivada sea $2x+1$.", "Una función cuya derivada es $2x$ es $x^2$.", "Una función cuya derivada es $1$ es $x$.", "Añadimos la constante porque hay infinitas primitivas."],
+        conclusion: "$\\int(2x+1)dx=x^2+x+C$.",
       },
       {
-        statement: "Calcula $\\int \\left(\\dfrac{1}{x} + e^x\\right)dx$.",
-        steps: [
-          "$\\int \\dfrac{1}{x}\\,dx = \\ln|x|$.",
-          "$\\int e^x\\,dx = e^x$.",
-          "Sumamos.",
-        ],
-        conclusion: "$\\ln|x| + e^x + C$.",
+        statement: "Evalúa $\\int_0^2 x^2\\,dx$ usando una antiderivada.",
+        steps: ["Una antiderivada de $x^2$ es $x^3/3$.", "Por el TFC, evaluamos en el extremo superior y restamos el extremo inferior.", "$\\left[x^3/3\\right]_0^2=8/3-0$."],
+        conclusion: "$\\int_0^2x^2dx=8/3$.",
       },
       {
-        statement: "Verifica que $F(x) = x\\sin x$ es antiderivada de $f(x) = \\sin x + x\\cos x$.",
-        steps: [
-          "Derivamos $F$: $F'(x) = \\sin x + x\\cos x$.",
-          "Coincide con $f$.",
-        ],
-        conclusion: "Sí, $F$ es antiderivada de $f$.",
+        statement: "Encuentra $F$ si $F'(x)=3x^2$ y $F(0)=1$.",
+        steps: ["Primero encontramos la familia de primitivas: $F(x)=x^3+C$.", "Usamos la condición inicial $F(0)=1$.", "Entonces $0^3+C=1$, así que $C=1$."],
+        conclusion: "$F(x)=x^3+1$.",
+      },
+      {
+        statement: "Diferencia $A(x)=\\int_0^{x^2}(1+t^2)\\,dt$.",
+        steps: ["La integral define acumulación desde $0$ hasta $x^2$.", "Por el TFC, evaluamos el integrando en $x^2$.", "Luego multiplicamos por la derivada de $x^2$."],
+        conclusion: "$A'(x)=(1+x^4)2x=2x+2x^5$.",
+      },
+      {
+        statement: "Usa el TFC para evaluar $\\int_1^4(2x-3)\\,dx$.",
+        steps: ["Una antiderivada de $2x-3$ es $x^2-3x$.", "Evaluamos $F(4)-F(1)$.", "$F(4)=16-12=4$ y $F(1)=1-3=-2$."],
+        conclusion: "$\\int_1^4(2x-3)dx=6$.",
+      },
+      {
+        statement: "Explica el área firmada si una gráfica tiene área $4$ sobre el eje y área $2$ bajo el eje.",
+        steps: ["El área sobre el eje $x$ aporta positivo.", "El área bajo el eje $x$ aporta negativo.", "La integral definida suma esas contribuciones con signo."],
+        conclusion: "La integral firmada vale $4-2=2$, mientras que el área geométrica total vale $6$.",
+      },
+      {
+        statement: "Si $\\int_0^1 f(x)dx=2$ y $\\int_1^3 f(x)dx=4$, calcula $\\int_0^3 f(x)dx$.",
+        steps: ["La integral definida es aditiva en intervalos contiguos.", "Partimos $[0,3]$ en $[0,1]$ y $[1,3]$.", "Sumamos los valores dados."],
+        conclusion: "$\\int_0^3 f(x)dx=2+4=6$.",
+      },
+      {
+        statement: "Evalúa una acumulación por tramos: $f(x)=2$ en $[0,1]$ y $f(x)=-1$ en $[1,3]$.",
+        steps: ["La integral total es la suma de las integrales en cada tramo.", "En $[0,1]$, el área firmada es $2(1)=2$.", "En $[1,3]$, el área firmada es $-1(2)=-2$."],
+        conclusion: "$\\int_0^3 f(x)dx=0$, aunque hay área geométrica positiva.",
+      },
+      {
+        statement: "Diferencia $B(x)=\\int_x^{2x}\\sqrt{1+t^2}\\,dt$.",
+        steps: ["Con dos límites variables, derivamos extremo superior menos extremo inferior.", "El extremo superior aporta $\\sqrt{1+(2x)^2}\\cdot2$.", "El extremo inferior aporta $\\sqrt{1+x^2}\\cdot1$ y se resta."],
+        conclusion: "$B'(x)=2\\sqrt{1+4x^2}-\\sqrt{1+x^2}$.",
+      },
+      {
+        statement: "Justifica por qué $\\int_a^a f(x)dx=0$.",
+        steps: ["La integral definida mide acumulación sobre un intervalo.", "Si los extremos son iguales, el intervalo tiene ancho cero.", "Una suma de Riemann sobre una longitud total cero no acumula área."],
+        conclusion: "$\\int_a^a f(x)dx=0$.",
+      },
+      {
+        statement: "Analiza el error: $\\int xf(x)dx=x\\int f(x)dx$.",
+        steps: ["La variable $x$ no es una constante respecto de $dx$.", "Solo factores constantes pueden salir de la integral.", "Si se deriva el lado derecho, aparece una regla del producto, no solo $xf(x)$."],
+        conclusion: "La igualdad es falsa en general; sacar $x$ de la integral confunde variable con constante.",
+      },
+      {
+        statement: "Usa el TFC para evaluar $\\int_0^2 3x^2dx$.",
+        steps: ["Buscamos una antiderivada: $F(x)=x^3$.", "Aplicamos $F(2)-F(0)$.", "Calculamos $8-0$."],
+        conclusion: "$\\int_0^2 3x^2dx=8$.",
       },
     ],
     exercises: [
-      { statement: "$\\int (2x + 3)\\,dx$", solution: "$x^2 + 3x + C$." },
-      { statement: "$\\int \\sqrt{x}\\,dx$", solution: "$\\dfrac{2}{3}x^{3/2} + C$." },
-      { statement: "$\\int \\cos(x)\\,dx$", solution: "$\\sin x + C$." },
-      { statement: "$\\int \\left(x^3 - \\dfrac{1}{x^2}\\right)dx$", solution: "$\\dfrac{x^4}{4} + \\dfrac{1}{x} + C$." },
-      { statement: "$\\int 5e^x\\,dx$", solution: "$5e^x + C$." },
+      { statement: "$\\int(4x-2)dx$", solution: "$2x^2-2x+C$." },
+      { statement: "Evalúa $\\int_0^3 2x\\,dx$.", solution: "$9$." },
+      { statement: "Encuentra $F$ si $F'(x)=5$ y $F(2)=7$.", solution: "$F(x)=5x-3$." },
+      { statement: "Si $\\int_0^1 f(x)dx=2$ y $\\int_1^3 f(x)dx=4$, calcula $\\int_0^3 f(x)dx$.", solution: "$6$." },
+      { statement: "Si $\\int_0^2 f(x)dx=5$ y $\\int_0^1 f(x)dx=3$, calcula $\\int_1^2 f(x)dx$.", solution: "$2$." },
+      { statement: "Diferencia $F(x)=\\int_0^{x^2}(1+t)dt$.", solution: "$F'(x)=(1+x^2)2x$." },
+      { statement: "Diferencia $F(x)=\\int_x^{2x}\\sqrt{1+t^2}dt$.", solution: "$2\\sqrt{1+4x^2}-\\sqrt{1+x^2}$." },
+      { statement: "Una gráfica tiene área $6$ sobre el eje y $4$ bajo el eje. Halla la integral firmada.", solution: "$2$." },
+      { statement: "La misma gráfica anterior, ¿cuál es el área geométrica total?", solution: "$10$." },
+      { statement: "Evalúa $\\int_{-1}^{1}x\\,dx$ e interpreta.", solution: "$0$ por cancelación de área firmada." },
+      { statement: "¿Qué ocurre con $\\int_a^b f(x)dx$ al invertir los límites?", solution: "Cambia de signo: $\\int_b^a f=-\\int_a^b f$." },
+      { statement: "Explica $\\int_a^b f(x)dx$ como suma de Riemann.", solution: "Es el límite de sumas $\\sum f(x_i^*)\\Delta x$ cuando la partición se refina." },
+      { statement: "Demuestra $\\int_a^b c\\,dx=c(b-a)$.", solution: "La antiderivada es $cx$; entonces $cb-ca=c(b-a)$." },
+      { statement: "Si $\\int_a^b f(x)dx=5$, halla $\\int_b^a f(x)dx$.", solution: "$-5$." },
+      { statement: "¿Por qué $\\int_a^a f(x)dx=0$?", solution: "Porque el intervalo tiene ancho cero y no hay acumulación." },
+      { statement: "Explica por qué $\\int_a^b|f(x)|dx$ no siempre es $\\left|\\int_a^b f(x)dx\\right|$.", solution: "La integral de $f$ puede cancelar áreas positivas y negativas; $|f|$ suma magnitudes." },
     ],
   }),
 
-  M("calculo-1:tfc", {
-    contextLabel: "Teorema fundamental del cálculo",
-    geogebraId: "CfwjsmHx",
+  M("calculo-1:reglas-basicas-integracion", {
+    contextLabel: "Reglas básicas e integrales inmediatas",
     theory: [
-      "El Teorema Fundamental del Cálculo (TFC) conecta los conceptos de derivada e integral, mostrando que son operaciones inversas. Tiene dos partes que suelen enunciarse por separado.",
-      "Primera parte: si $f$ es continua en $[a,b]$ y definimos $F(x) = \\int_a^x f(t)\\,dt$, entonces $F$ es derivable y $F'(x) = f(x)$. Es decir, derivar una integral con extremo variable devuelve el integrando.",
-      "Segunda parte (regla de Barrow): si $F$ es cualquier antiderivada de $f$ en $[a,b]$, entonces $\\int_a^b f(x)\\,dx = F(b) - F(a)$. Esto reduce el cálculo de integrales definidas a evaluar antiderivadas.",
-      "El TFC justifica geométricamente que la integral definida representa el área neta entre la gráfica de $f$ y el eje $x$, sumando con signo según $f$ sea positiva o negativa.",
+      "Antes de estudiar técnicas largas, conviene construir una biblioteca pequeña y comprensible de integrales inmediatas. Estas fórmulas no son una tabla para memorizar sin contexto: son derivadas conocidas leídas en sentido inverso.",
+      "Una integral inmediata se reconoce cuando el integrando ya tiene una forma elemental o cuando apenas necesita linealidad para separarse. La habilidad importante es mirar una expresión y preguntarse qué función, al derivarse, produciría exactamente esa forma.",
+    ],
+    theorySections: [
+      {
+        title: "Linealidad y constantes",
+        body: [
+          "La integración respeta sumas y factores constantes porque la derivación también lo hace. Si una función está formada por varias tasas de cambio, podemos reconstruir cada contribución por separado y luego reunirlas.",
+          "Esta propiedad permite integrar polinomios término a término y separar expresiones como $3e^x-2\\cos x$ sin perder significado. El factor constante solo escala la familia de antiderivadas.",
+          "La linealidad es la puerta de entrada a casi todo cálculo integral práctico: antes de buscar una técnica sofisticada, conviene simplificar, distribuir y separar lo que ya se puede integrar directamente.",
+        ],
+      },
+      {
+        title: "Potencias y el caso logarítmico",
+        body: [
+          "La regla de potencia invierte la derivada de $x^{n+1}$. Como derivar baja el exponente y multiplica por el exponente original, integrar hace el movimiento contrario: sube el exponente y divide por el nuevo valor.",
+          "El caso $n=-1$ no cabe en esa regla porque el denominador $n+1$ sería cero. Esa excepción no es un capricho: la antiderivada de $1/x$ es logarítmica, $\\ln|x|$, porque la derivada del logaritmo natural reproduce el cambio proporcional de $x$.",
+          "El valor absoluto en $\\ln|x|$ protege el dominio: $1/x$ existe en intervalos negativos y positivos, y la familia de primitivas debe funcionar en cualquiera de esos intervalos sin cruzar $0$.",
+        ],
+      },
+      {
+        title: "Exponenciales y trigonométricas",
+        body: [
+          "$e^x$ es su propia derivada, así que también es su propia antiderivada. Para una base general $a^x$, la derivada introduce el factor $\\ln(a)$; integrar exige dividir por ese factor para compensarlo.",
+          "Las integrales trigonométricas básicas se reconocen invirtiendo pares de derivadas: seno y coseno se alternan con un signo, mientras que $\\sec^2x$, $\\csc^2x$, $\\sec x\\tan x$ y $\\csc x\\cot x$ provienen de derivadas directas de tangente, cotangente, secante y cosecante.",
+          "Estas fórmulas son especialmente útiles porque muchas técnicas más avanzadas intentan transformar una integral hasta que aparezca una de estas formas básicas.",
+        ],
+      },
+      {
+        title: "Formas inversas trigonométricas",
+        body: [
+          "Algunas integrales inmediatas no producen funciones algebraicas o trigonométricas directas, sino inversas trigonométricas. Estas aparecen cuando el integrando tiene una forma asociada a las derivadas de $\\arctan x$ o $\\arcsin x$.",
+          "Reconocer $\\frac{1}{1+x^2}$ como derivada de $\\arctan x$ evita forzar una sustitución innecesaria. Reconocer $\\frac{1}{\\sqrt{1-x^2}}$ como derivada de $\\arcsin x$ prepara el terreno para entender por qué ciertas raíces cuadráticas se conectan con trigonometría.",
+        ],
+      },
     ],
     formulas: [
-      "\\dfrac{d}{dx}\\int_a^x f(t)\\,dt = f(x)",
-      "\\int_a^b f(x)\\,dx = F(b) - F(a),\\quad F'=f",
+      "\\int kf(x)\\,dx=k\\int f(x)\\,dx\\;\\text{→ múltiplo constante}",
+      "\\int (f(x)+g(x))\\,dx=\\int f(x)\\,dx+\\int g(x)\\,dx\\;\\text{→ linealidad}",
+      "\\int x^n\\,dx=\\frac{x^{n+1}}{n+1}+C\\;\\text{→ regla de potencia, }n\\neq -1",
+      "\\int \\frac{1}{x}\\,dx=\\ln|x|+C\\;\\text{→ caso logarítmico}",
+      "\\int e^x\\,dx=e^x+C",
+      "\\int a^x\\,dx=\\frac{a^x}{\\ln(a)}+C\\;\\text{→ exponencial base }a",
+      "\\int \\sin x\\,dx=-\\cos x+C",
+      "\\int \\cos x\\,dx=\\sin x+C",
+      "\\int \\sec^2 x\\,dx=\\tan x+C",
+      "\\int \\csc^2 x\\,dx=-\\cot x+C",
+      "\\int \\sec x\\tan x\\,dx=\\sec x+C",
+      "\\int \\csc x\\cot x\\,dx=-\\csc x+C",
+      "\\int \\frac{1}{1+x^2}\\,dx=\\arctan x+C",
+      "\\int \\frac{1}{\\sqrt{1-x^2}}\\,dx=\\arcsin x+C",
     ],
     definition: {
-      title: "Regla de Barrow",
-      body: "Si $f$ es continua en $[a,b]$ y $F$ es una antiderivada de $f$, entonces $\\int_a^b f(x)\\,dx = F(b) - F(a)$.",
+      title: "Integral inmediata",
+      body: "Una integral inmediata es una antiderivada reconocible directamente a partir de reglas básicas de derivación, posiblemente después de aplicar linealidad o simplificar constantes.",
     },
     examples: [
       {
-        statement: "Calcula $\\displaystyle\\int_0^2 3x^2\\,dx$.",
-        steps: [
-          "Antiderivada: $F(x) = x^3$.",
-          "$F(2) - F(0) = 8 - 0 = 8$.",
-        ],
-        conclusion: "El valor es $8$.",
+        statement: "Calcula $\\int x^5\\,dx$.",
+        steps: ["Reconocemos una potencia de $x$.", "Aplicamos la regla $\\int x^n dx=\\frac{x^{n+1}}{n+1}+C$ para $n\\ne-1$.", "Aquí $n=5$, así que sumamos uno al exponente y dividimos por $6$."],
+        conclusion: "$\\int x^5dx=\\frac{x^6}{6}+C$.",
       },
       {
-        statement: "Calcula $\\dfrac{d}{dx}\\displaystyle\\int_1^x \\ln(t)\\,dt$.",
-        steps: [
-          "Por la primera parte del TFC, el resultado es el integrando evaluado en $x$.",
-        ],
-        conclusion: "$\\ln(x)$.",
+        statement: "Calcula $\\int e^x\\,dx$.",
+        steps: ["Recordamos que la derivada de $e^x$ es $e^x$.", "Por lo tanto, su antiderivada inmediata es la misma función.", "Añadimos la constante de integración."],
+        conclusion: "$\\int e^xdx=e^x+C$.",
       },
       {
-        statement: "Calcula $\\displaystyle\\int_0^{\\pi} \\sin x\\,dx$.",
-        steps: [
-          "Antiderivada: $-\\cos x$.",
-          "$[-\\cos\\pi] - [-\\cos 0] = 1 - (-1) = 2$.",
-        ],
-        conclusion: "El valor es $2$.",
+        statement: "Calcula $\\int \\cos x\\,dx$.",
+        steps: ["Buscamos una función cuya derivada sea $\\cos x$.", "Como $(\\sin x)'=\\cos x$, la antiderivada es $\\sin x$.", "Añadimos $C$."],
+        conclusion: "$\\int\\cos x\\,dx=\\sin x+C$.",
+      },
+      {
+        statement: "Calcula $\\int(3x^2-4x+1)dx$.",
+        steps: ["Usamos linealidad para integrar término a término.", "$\\int3x^2dx=x^3$.", "$\\int-4xdx=-2x^2$ y $\\int1dx=x$."],
+        conclusion: "$x^3-2x^2+x+C$.",
+      },
+      {
+        statement: "Calcula $\\int 2e^{3x}dx$.",
+        steps: ["Reconocemos una exponencial con factor lineal en el exponente.", "Como $(e^{3x})'=3e^{3x}$, compensamos dividiendo por $3$.", "El factor $2$ permanece multiplicando."],
+        conclusion: "$\\int2e^{3x}dx=\\frac{2}{3}e^{3x}+C$.",
+      },
+      {
+        statement: "Calcula $\\int(\\sec^2x-\\sin x)dx$.",
+        steps: ["Integramos cada término por separado.", "La antiderivada de $\\sec^2x$ es $\\tan x$.", "La antiderivada de $-\\sin x$ es $\\cos x$."],
+        conclusion: "$\\tan x+\cos x+C$.",
+      },
+      {
+        statement: "Calcula $\\int(x^{1/2}-x^{-1/2})dx$.",
+        steps: ["Ambos términos son potencias de $x$.", "Para $x^{1/2}$ sumamos uno al exponente: $3/2$.", "Para $x^{-1/2}$ sumamos uno al exponente: $1/2$."],
+        conclusion: "$\\frac{2}{3}x^{3/2}-2x^{1/2}+C$.",
+      },
+      {
+        statement: "Calcula $\\int(3\\sin x-4\\cos x+x^3)dx$.",
+        steps: ["Aplicamos linealidad.", "$\\int3\\sin xdx=-3\\cos x$.", "$\\int-4\\cos xdx=-4\\sin x$.", "$\\int x^3dx=x^4/4$."],
+        conclusion: "$-3\\cos x-4\\sin x+\\frac{x^4}{4}+C$.",
+      },
+      {
+        statement: "Calcula $\\int\\left(\\frac{1}{1+x^2}+e^{2x}\\right)dx$.",
+        steps: ["Reconocemos $\\frac{1}{1+x^2}$ como derivada de $\\arctan x$.", "Para $e^{2x}$ compensamos el factor interno $2$ dividiendo por $2$.", "Sumamos ambas primitivas."],
+        conclusion: "$\\arctan x+\\frac12e^{2x}+C$.",
+      },
+      {
+        statement: "Decide por qué $\\int x^{-1}dx$ no usa la regla de potencia usual.",
+        steps: ["La regla de potencia divide por $n+1$.", "Si $n=-1$, entonces $n+1=0$ y la regla no tiene sentido.", "Este caso especial corresponde a la derivada de $\\ln|x|$."],
+        conclusion: "$\\int x^{-1}dx=\\ln|x|+C$.",
       },
     ],
     exercises: [
-      { statement: "$\\displaystyle\\int_0^1 (2x+1)\\,dx$", solution: "$[x^2+x]_0^1 = 2$." },
-      { statement: "$\\displaystyle\\int_1^e \\dfrac{1}{x}\\,dx$", solution: "$\\ln e - \\ln 1 = 1$." },
-      { statement: "$\\dfrac{d}{dx}\\displaystyle\\int_2^x (t^2+1)\\,dt$", solution: "$x^2 + 1$." },
-      { statement: "$\\displaystyle\\int_0^{\\pi/2} \\cos x\\,dx$", solution: "$\\sin(\\pi/2) - \\sin 0 = 1$." },
-      { statement: "$\\displaystyle\\int_{-1}^1 x^2\\,dx$", solution: "$\\left[\\dfrac{x^3}{3}\\right]_{-1}^1 = \\dfrac{2}{3}$." },
+      { statement: "$\\int x^7\\,dx$", solution: "$x^8/8+C$." },
+      { statement: "$\\int \\frac{1}{x}\\,dx$", solution: "$\\ln|x|+C$." },
+      { statement: "$\\int e^{3x}\\,dx$", solution: "$e^{3x}/3+C$." },
+      { statement: "$\\int 2^x\\,dx$", solution: "$2^x/\\ln2+C$." },
+      { statement: "$\\int \\sin(5x)\\,dx$", solution: "$-\\cos(5x)/5+C$." },
+      { statement: "$\\int \\cos(mx)\\,dx$", solution: "$\\sin(mx)/m+C$ si $m\\ne0$." },
+      { statement: "$\\int \\sec^2(4x)\\,dx$", solution: "$\\tan(4x)/4+C$." },
+      { statement: "$\\int \\csc^2(2x)\\,dx$", solution: "$-\\cot(2x)/2+C$." },
+      { statement: "$\\int \\sec(3x)\\tan(3x)\\,dx$", solution: "$\\sec(3x)/3+C$." },
+      { statement: "$\\int \\frac{1}{1+x^2}\\,dx$", solution: "$\\arctan x+C$." },
+      { statement: "$\\int \\frac{1}{\\sqrt{1-x^2}}\\,dx$", solution: "$\\arcsin x+C$." },
+      { statement: "$\\int(x^2+3x-5)dx$", solution: "$x^3/3+3x^2/2-5x+C$." },
+      { statement: "$\\int(x^{1/2}-x^{-1/2})dx$", solution: "$\\frac23x^{3/2}-2x^{1/2}+C$." },
+      { statement: "$\\int\\frac{\\ln^3x+\ln(x^3)}{x}dx$", solution: "$\\ln^4x/4+3\\ln^2x/2+C$." },
+      { statement: "$\\int\\frac{x^2}{x^2+1}dx$", solution: "$x-\\arctan x+C$." },
+    ],
+  }),
+
+  M("calculo-1:tecnicas-integracion", {
+    contextLabel: "Técnicas de integración",
+    theory: [
+      "Las técnicas de integración aparecen cuando una integral no es inmediata, pero contiene una estructura reconocible. Cada método transforma el problema para acercarlo a una integral básica, a una sustitución natural o a una descomposición más simple.",
+      "Este módulo no debe sentirse como una lista de procedimientos. La pregunta central es siempre conceptual: qué obstáculo impide integrar directamente y qué transformación conserva el valor de la integral mientras revela una forma más manejable.",
+    ],
+    theorySections: [
+      {
+        title: "Método de sustitución",
+        body: [
+          "La sustitución resuelve integrales que esconden una composición. Si derivar $F(g(x))$ produce $F'(g(x))g'(x)$, entonces integrar una expresión con una función interna y su derivada debe poder deshacer ese proceso.",
+          "El primer paso es elegir $u=g(x)$, normalmente la expresión interna: algo dentro de una potencia, raíz, exponencial, logaritmo o función trigonométrica. Luego se calcula $du=g'(x)\\,dx$ y se revisa si el resto del integrando puede escribirse en términos de $u$ y $du$.",
+          "Una sustitución correcta reescribe toda la integral. No basta cambiar una parte y dejar restos de $x$ mezclados con $u$. Si queda una variable antigua sin traducir, la sustitución está incompleta o no era la elección adecuada.",
+          "En integrales definidas, los límites también cambian: $x=a$ se convierte en $u=g(a)$ y $x=b$ en $u=g(b)$. Esto evita regresar a $x$ al final y mantiene la interpretación de acumulación en la nueva variable.",
+          "Ejemplo teórico: en $\\int 2x\\cos(x^2)\\,dx$, la función interna es $x^2$ porque está dentro del coseno. Su derivada es $2x$, que aparece multiplicando a la expresión. Elegimos $u=x^2$ y entonces $du=2x\\,dx$.",
+          "$$\\int 2x\\cos(x^2)\\,dx=\\int \\cos u\\,du$$",
+          "Ahora la integral es inmediata: $\\int\\cos u\\,du=\\sin u+C$. La sustitución termina regresando a la variable original: $\\sin(x^2)+C$. La clave no fue adivinar una fórmula, sino reconocer la composición y reescribir toda la integral.",
+          "Errores comunes: elegir como $u$ una expresión cuya derivada no aparece, olvidar ajustar una constante, no cambiar límites en integrales definidas, o tratar $du$ como un símbolo decorativo en lugar de una relación de cambio.",
+        ],
+      },
+      {
+        title: "División polinomial",
+        body: [
+          "La división polinomial aparece antes de fracciones parciales cuando una función racional es impropia. Esto ocurre si el grado del numerador es mayor o igual que el grado del denominador. En ese caso, intentar descomponer directamente oculta una parte polinomial que debe separarse primero.",
+          "La idea es escribir el cociente racional como una suma de dos piezas: un polinomio, que se integra con reglas básicas, y una fracción propia, que sí puede tratarse con fracciones parciales u otras técnicas.",
+          "$$\\frac{P(x)}{Q(x)}=S(x)+\\frac{R(x)}{Q(x)}$$",
+          "Ejemplo teórico: en $\\int \\frac{x^2+1}{x-1}\\,dx$, el numerador tiene grado $2$ y el denominador grado $1$, así que hay que dividir primero. La división de $x^2+1$ entre $x-1$ da cociente $x+1$ y residuo $2$.",
+          "$$\\frac{x^2+1}{x-1}=x+1+\\frac{2}{x-1}$$",
+          "La integral original deja de ser una fracción racional pesada y se convierte en una suma reconocible:",
+          "$$\\int \\frac{x^2+1}{x-1}\\,dx=\\int(x+1)\\,dx+2\\int\\frac{1}{x-1}\\,dx$$",
+          "El resultado es $\\frac{x^2}{2}+x+2\\ln|x-1|+C$. La división no es un trámite previo sin significado: separa la parte de crecimiento polinomial de la parte racional que todavía necesita tratamiento.",
+        ],
+      },
+      {
+        title: "Completar cuadrados",
+        body: [
+          "Completar cuadrados es una técnica algebraica que reorganiza cuadráticas para que revelen una forma conocida. En integración, suele aparecer en denominadores cuadráticos, radicales y expresiones relacionadas con arcotangente o sustitución trigonométrica.",
+          "La idea es transformar una cuadrática en una versión desplazada de un cuadrado más una constante. Esto muestra el centro de la expresión y permite reconocer patrones como $u^2+a^2$, $a^2-u^2$ o $u^2-a^2$.",
+          "$$x^2+bx=\\left(x+\\frac{b}{2}\\right)^2-\\frac{b^2}{4}$$",
+          "Ejemplo teórico: en $\\int \\frac{1}{x^2+6x+13}\\,dx$, el denominador no parece una forma inmediata. Completamos el cuadrado:",
+          "$$x^2+6x+13=(x+3)^2+4=(x+3)^2+2^2$$",
+          "Entonces la integral se reescribe como:",
+          "$$\\int \\frac{1}{(x+3)^2+2^2}\\,dx$$",
+          "Ahora se reconoce la forma de arcotangente después de la sustitución $u=x+3$. El resultado es $\\frac{1}{2}\\arctan\\left(\\frac{x+3}{2}\\right)+C$. Completar cuadrados no resuelve por sí solo toda integral, pero revela la geometría algebraica que la integral estaba escondiendo.",
+        ],
+      },
+      {
+        title: "Integración por partes",
+        body: [
+          "La integración por partes deshace la regla del producto. Cuando el integrando es un producto donde una parte se simplifica al derivar y la otra se integra razonablemente bien, podemos redistribuir el trabajo usando $\\int u\\,dv=uv-\\int v\\,du$.",
+          "La elección de $u$ importa porque $u$ será derivada. Conviene elegir una función que se vuelva más simple como $\\ln x$, $\\arctan x$ o un polinomio. La parte $dv$ debe ser algo que sepamos integrar sin crear un problema peor.",
+          "ILATE ayuda a elegir $u$: Inverse trigonometric, Logarithmic, Algebraic, Trigonometric, Exponential. Es una heurística, no una ley. Funciona porque las inversas trigonométricas y logaritmos suelen simplificarse al derivarse, mientras que exponenciales y trigonométricas suelen permanecer manejables al integrarse.",
+          "Ejemplo estándar: en $\\int x\\ln(x)\\,dx$, ILATE sugiere elegir $u=\\ln x$ porque el logaritmo se simplifica al derivarse. Tomamos $dv=x\\,dx$ porque es fácil de integrar. Entonces $du=\\frac{1}{x}\\,dx$ y $v=\\frac{x^2}{2}$.",
+          "$$\\int x\\ln(x)\\,dx=\\frac{x^2}{2}\\ln x-\\int \\frac{x^2}{2}\\cdot\\frac{1}{x}\\,dx$$",
+          "La integral restante es $\\frac{1}{2}\\int x\\,dx$, mucho más simple que el producto original. Así obtenemos $\\frac{x^2}{2}\\ln x-\\frac{x^2}{4}+C$.",
+          "La integración por partes también puede repetirse. En productos como polinomio por exponencial o polinomio por seno/coseno, cada derivada del polinomio baja el grado hasta llegar a cero. Allí aparece el método tabular como una forma ordenada de comprimir varias aplicaciones de la misma fórmula.",
+          "Para $\\int x^2e^x\\,dx$, el método tabular organiza tres columnas conceptuales. La columna de derivadas de $u$ es $x^2$, $2x$, $2$, $0$. La columna de integrales de $dv$ es $e^x$, $e^x$, $e^x$, $e^x$. La columna de signos alterna $+$, $-$, $+$.",
+          "La lectura diagonal multiplica cada derivada por la siguiente integral de la columna opuesta y aplica los signos: $+(x^2)(e^x)$, $-(2x)(e^x)$, $+(2)(e^x)$. Por eso:",
+          "$$\\int x^2e^x\\,dx=x^2e^x-2xe^x+2e^x+C$$",
+          "El método tabular funciona porque cada fila representa una nueva aplicación de integración por partes. Los signos alternantes vienen de la resta que aparece en la fórmula. Es especialmente útil para polinomio por exponencial y polinomio por seno o coseno.",
+        ],
+      },
+      {
+        title: "Integrales trigonométricas",
+        body: [
+          "Las integrales trigonométricas con productos y potencias se resuelven transformando la expresión con identidades. El objetivo es crear una sustitución clara o reducir potencias hasta llegar a integrales básicas.",
+          "Para productos de seno y coseno, la paridad guía el camino. Si seno tiene potencia impar, se guarda un factor $\\sin x\\,dx$ y se convierte el resto con $\\sin^2x=1-\\cos^2x$, de modo que $u=\\cos x$ pueda funcionar. Si coseno tiene potencia impar, se guarda $\\cos x\\,dx$ y se convierte el resto con $\\cos^2x=1-\\sin^2x$.",
+          "Si ambas potencias son pares, guardar un diferencial no simplifica directamente. Entonces se usan identidades de reducción de potencia para convertir $\\sin^2x$ y $\\cos^2x$ en expresiones con ángulo doble.",
+          "Para tangente y secante, si la potencia de secante es par, se guarda un factor $\\sec^2x\\,dx$ porque es el diferencial de $\\tan x$. Si la potencia de tangente es impar y hay secante presente, se guarda $\\sec x\\tan x\\,dx$ porque es el diferencial de $\\sec x$.",
+          "Ejemplo con potencia impar: $\\int \\sin^3(x)\\cos(x)\\,dx$ se reconoce porque $\\cos x\\,dx$ puede ser $du$ si tomamos $u=\\sin x$. Entonces $\\sin^3x$ se convierte en $u^3$ y la integral queda $\\int u^3\\,du=\\frac{u^4}{4}+C$, es decir $\\frac{\\sin^4x}{4}+C$.",
+          "Ejemplo con potencia par: $\\int \\cos^2(x)\\,dx$ no tiene un factor diferencial conveniente. Por eso se usa reducción de potencia: $\\cos^2x=\\frac{1+\cos(2x)}{2}$. La integral se vuelve $\\frac{x}{2}+\\frac{\\sin(2x)}{4}+C$.",
+          "Ejemplo tangente/secante: $\\int \\tan^3(x)\\sec^2(x)\\,dx$ muestra una elección natural porque $\\sec^2x\\,dx$ es el diferencial de $\\tan x$. Con $u=\\tan x$, queda $\\int u^3\\,du=\\frac{\\tan^4x}{4}+C$.",
+          "La advertencia principal es no aplicar identidades al azar. Cada identidad debe acercar la integral a una sustitución o a una forma básica; si solo hace la expresión más larga, probablemente no era el movimiento adecuado.",
+        ],
+      },
+      {
+        title: "Sustitución trigonométrica",
+        body: [
+          "La sustitución trigonométrica se usa cuando una raíz algebraica tiene una forma que coincide con identidades pitagóricas. No se introduce trigonometría por capricho: se introduce porque puede convertir una raíz como $\\sqrt{a^2-x^2}$ en una expresión sin raíz.",
+          "Para $\\sqrt{a^2-x^2}$ se usa $x=a\\sin\\theta$, porque $1-\sin^2\\theta=\\cos^2\\theta$. Para $\\sqrt{a^2+x^2}$ se usa $x=a\\tan\\theta$, porque $1+\tan^2\\theta=\\sec^2\\theta$. Para $\\sqrt{x^2-a^2}$ se usa $x=a\\sec\\theta$, porque $\\sec^2\\theta-1=\\tan^2\\theta$.",
+          "Después de integrar en términos de $\\theta$, hay que volver a $x$. Un triángulo rectángulo permite traducir las razones trigonométricas: si $x=a\\sin\\theta$, entonces $x$ puede verse como cateto opuesto y $a$ como hipotenusa, por lo que el otro cateto es $\\sqrt{a^2-x^2}$.",
+          "Ejemplo completo: en $\\int \\sqrt{9-x^2}\\,dx$, reconocemos $a^2-x^2$ con $a=3$. Elegimos $x=3\\sin\\theta$, de modo que $dx=3\\cos\\theta\\,d\\theta$ y $\\sqrt{9-x^2}=\\sqrt{9-9\\sin^2\\theta}=3\\cos\\theta$.",
+          "La integral se transforma en $\\int 9\\cos^2\\theta\\,d\\theta$. Usando $\\cos^2\\theta=\\frac{1+\cos(2\\theta)}{2}$, se obtiene $\\frac{9}{2}\\theta+\\frac{9}{4}\\sin(2\\theta)+C$.",
+          "Para regresar a $x$, el triángulo asociado a $x=3\\sin\\theta$ tiene hipotenusa $3$, cateto opuesto $x$ y cateto adyacente $\\sqrt{9-x^2}$. Así, $\\theta=\\arcsin(x/3)$ y $\\sin(2\\theta)=2\\sin\\theta\\cos\\theta=\\frac{2x\\sqrt{9-x^2}}{9}$.",
+          "El resultado final puede escribirse como $\\frac{x}{2}\\sqrt{9-x^2}+\\frac{9}{2}\\arcsin\\left(\\frac{x}{3}\\right)+C$.",
+          "La dificultad habitual no es la identidad, sino sostener todo el cambio de variable: sustituir $x$, sustituir $dx$, simplificar la raíz, integrar en $\\theta$ y regresar cuidadosamente a la variable original.",
+        ],
+      },
+      {
+        title: "Fracciones parciales",
+        body: [
+          "Las fracciones parciales se usan para integrar funciones racionales $P(x)/Q(x)$. La idea es descomponer una fracción compleja en piezas simples, porque esas piezas suelen integrarse con logaritmos, potencias o formas cuadráticas conocidas.",
+          "Primero se revisan los grados. Si el grado del numerador es mayor o igual que el del denominador, la fracción es impropia y se divide polinomialmente antes de descomponer. Solo después se trabaja con la parte propia.",
+          "Luego se factoriza el denominador. Factores lineales distintos producen términos $A/(x-a)$. Un factor lineal repetido $(x-a)^n$ exige una suma con todas las potencias desde $1$ hasta $n$. Un cuadrático irreducible usa numerador lineal $Ax+B$, y si se repite, cada potencia recibe su propio numerador lineal.",
+          "Ejemplo con factores lineales distintos: $\\int \\frac{1}{x^2-1}\\,dx$ usa $x^2-1=(x-1)(x+1)$, así que planteamos $\\frac{1}{x^2-1}=\\frac{A}{x-1}+\\frac{B}{x+1}$. Resolver da $A=\\frac12$ y $B=-\\frac12$, por lo que la integral produce $\\frac12\\ln|x-1|-\\frac12\\ln|x+1|+C$.",
+          "Ejemplo con factor repetido: $\\int \\frac{1}{(x-1)^2}\\,dx$ ya está asociado a una potencia repetida. No se usa solo $A/(x-1)$, porque el denominador tiene potencia dos. Aquí la integral se lee como $\\int (x-1)^{-2}\\,dx=-\\frac{1}{x-1}+C$.",
+          "Ejemplo con cuadrático irreducible: $\\int \\frac{1}{x^2+4}\\,dx$ no se factoriza en reales. Se reconoce como forma de arcotangente: $x^2+4=x^2+2^2$, así que el resultado es $\\frac12\\arctan(x/2)+C$.",
+          "Esta técnica no es solo álgebra. La descomposición cambia una función racional opaca por una suma de formas reconocibles: cada factor lineal conduce a logaritmos, cada potencia repetida a potencias negativas manejables, y cada cuadrático a una combinación que puede involucrar logaritmos o arcotangentes.",
+        ],
+      },
+    ],
+    formulas: [
+      "u=g(x),\\quad du=g'(x)\\,dx\\;\\text{→ planteamiento de sustitución}",
+      "\\int f(g(x))g'(x)\\,dx=\\int f(u)\\,du\\;\\text{→ regla de la cadena inversa}",
+      "\\int_a^b f(g(x))g'(x)\\,dx=\\int_{g(a)}^{g(b)} f(u)\\,du\\;\\text{→ sustitución definida}",
+      "\\frac{P(x)}{Q(x)}=S(x)+\\frac{R(x)}{Q(x)}\\;\\text{→ división polinomial}",
+      "\\deg(P)\\geq\\deg(Q)\\;\\text{→ dividir primero}",
+      "ax^2+bx+c=a\\left(x-h\\right)^2+k\\;\\text{→ forma de cuadrado completo}",
+      "x^2+bx=\\left(x+\\frac{b}{2}\\right)^2-\\frac{b^2}{4}\\;\\text{→ completar el cuadrado}",
+      "\\int u\\,dv=uv-\\int v\\,du\\;\\text{→ integración por partes}",
+      "\\int_a^b u\\,dv=\\left[uv\\right]_a^b-\\int_a^b v\\,du\\;\\text{→ partes definida}",
+      "(uv)'=u'v+uv'\\;\\text{→ origen en regla del producto}",
+      "\\sin^2 x+\\cos^2 x=1\\;\\text{→ identidad pitagórica}",
+      "\\tan^2 x+1=\\sec^2 x\\;\\text{→ identidad tangente/secante}",
+      "1+\\cot^2 x=\\csc^2 x\\;\\text{→ identidad cotangente/cosecante}",
+      "\\sin^2 x=\\frac{1-\\cos(2x)}{2}\\;\\text{→ reducción de potencia}",
+      "\\cos^2 x=\\frac{1+\\cos(2x)}{2}\\;\\text{→ reducción de potencia}",
+      "x=a\\sin\\theta\\;\\text{→ para }\\sqrt{a^2-x^2}",
+      "x=a\\tan\\theta\\;\\text{→ para }\\sqrt{a^2+x^2}",
+      "x=a\\sec\\theta\\;\\text{→ para }\\sqrt{x^2-a^2}",
+      "a^2-x^2=a^2\\cos^2\\theta\\;\\text{→ usando }x=a\\sin\\theta",
+      "a^2+x^2=a^2\\sec^2\\theta\\;\\text{→ usando }x=a\\tan\\theta",
+      "x^2-a^2=a^2\\tan^2\\theta\\;\\text{→ usando }x=a\\sec\\theta",
+      "\\frac{P(x)}{Q(x)}=S(x)+\\frac{R(x)}{Q(x)}\\;\\text{→ dividir si es impropia}",
+      "\\frac{P(x)}{(x-a)(x-b)}=\\frac{A}{x-a}+\\frac{B}{x-b}\\;\\text{→ factores lineales distintos}",
+      "\\frac{P(x)}{(x-a)^n}=\\frac{A_1}{x-a}+\\frac{A_2}{(x-a)^2}+\\cdots+\\frac{A_n}{(x-a)^n}\\;\\text{→ factor lineal repetido}",
+      "\\frac{P(x)}{x^2+bx+c}=\\frac{Ax+B}{x^2+bx+c}\\;\\text{→ factor cuadrático irreducible}",
+      "\\int \\frac{1}{x-a}\\,dx=\\ln|x-a|+C\\;\\text{→ integral de factor lineal}",
+    ],
+    definition: {
+      title: "Técnica de integración",
+      body: "Una técnica de integración es una transformación estructurada que conserva la integral mientras revela una forma más simple: una composición, un producto, una identidad, una raíz geométrica o una fracción racional descompuesta.",
+    },
+    examples: [
+      {
+        statement: "Calcula $\\int 2x\\cos(x^2)\\,dx$.",
+        steps: ["La estructura sugiere sustitución porque $x^2$ está dentro del coseno.", "Toma $u=x^2$, entonces $du=2x\\,dx$.", "Reescribimos toda la integral: $\\int\\cos u\\,du$.", "Integramos y regresamos a $x$."],
+        conclusion: "$\\sin(x^2)+C$.",
+      },
+      {
+        statement: "Calcula $\\int_0^1 u\\tan(u^2)\\,du$.",
+        steps: ["La composición es $u^2$ y su derivada es $2u$.", "Tomamos $w=u^2$, entonces $dw=2u\\,du$.", "Los límites cambian: $u=0\\to w=0$ y $u=1\\to w=1$.", "La integral queda $\\frac12\\int_0^1\\tan w\\,dw$."],
+        conclusion: "$\\frac12[-\\ln|\\cos w|]_0^1=-\\frac12\\ln(\\cos1)$.",
+      },
+      {
+        statement: "Calcula $\\int x\\ln(x)\\,dx$ por partes.",
+        steps: ["ILATE sugiere $u=\\ln x$ porque se simplifica al derivarse.", "Tomamos $dv=x\\,dx$, así $du=dx/x$ y $v=x^2/2$.", "Aplicamos $\\int u\\,dv=uv-\\int v\\,du$.", "La integral restante es $\\frac12\\int x\\,dx$."],
+        conclusion: "$\\frac{x^2}{2}\\ln x-\\frac{x^2}{4}+C$.",
+      },
+      {
+        statement: "Calcula $\\int x^2e^x\\,dx$ con método tabular.",
+        steps: ["Columna de derivadas: $x^2$, $2x$, $2$, $0$.", "Columna de integrales: $e^x$, $e^x$, $e^x$.", "Signos alternos: $+$, $-$, $+$.", "Multiplicamos diagonales: $x^2e^x-2xe^x+2e^x$."],
+        conclusion: "$x^2e^x-2xe^x+2e^x+C$.",
+      },
+      {
+        statement: "Calcula $\\int \\cos^5(mx)\\,dx$.",
+        steps: ["La potencia de coseno es impar, así que guardamos un factor $\\cos(mx)dx$.", "Escribimos $\\cos^4(mx)=(1-\\sin^2(mx))^2$.", "Tomamos $u=\\sin(mx)$, entonces $du=m\\cos(mx)dx$.", "Integramos $\\frac1m\\int(1-u^2)^2du$."],
+        conclusion: "$\\frac1m\\left(\\sin(mx)-\\frac{2}{3}\\sin^3(mx)+\\frac{1}{5}\\sin^5(mx)\\right)+C$.",
+      },
+      {
+        statement: "Calcula $\\int \\sec^4(5x)\\tan^2(5x)\\,dx$.",
+        steps: ["La potencia de secante es par, guardamos $\\sec^2(5x)dx$.", "Convertimos $\\sec^2(5x)=1+\\tan^2(5x)$.", "Tomamos $u=\\tan(5x)$, $du=5\\sec^2(5x)dx$.", "Queda $\\frac15\\int(1+u^2)u^2du$."],
+        conclusion: "$\\frac{1}{15}\\tan^3(5x)+\\frac{1}{25}\\tan^5(5x)+C$.",
+      },
+      {
+        statement: "Calcula $\\int \\frac{\\sqrt{9-x^2}}{x^2}\\,dx$ por sustitución trigonométrica.",
+        steps: ["Reconocemos $a^2-x^2$ y tomamos $x=3\\sin\\theta$.", "Entonces $dx=3\\cos\\theta d\\theta$ y $\\sqrt{9-x^2}=3\\cos\\theta$.", "La integral se transforma en $\\int\\cot^2\\theta d\\theta$.", "Usamos $\\cot^2\\theta=\\csc^2\\theta-1$ y regresamos con el triángulo."],
+        conclusion: "$-\\frac{\\sqrt{9-x^2}}{x}-\\arcsin(x/3)+C$.",
+      },
+      {
+        statement: "Calcula $\\int \\frac{1}{x^2-1}\\,dx$ con fracciones parciales.",
+        steps: ["Factorizamos $x^2-1=(x-1)(x+1)$.", "Planteamos $\\frac{1}{x^2-1}=\\frac{A}{x-1}+\\frac{B}{x+1}$.", "Resolver da $A=1/2$ y $B=-1/2$.", "Integramos las dos fracciones lineales."],
+        conclusion: "$\\frac12\\ln|x-1|-\\frac12\\ln|x+1|+C$.",
+      },
+      {
+        statement: "Calcula $\\int \\frac{x^2+1}{x-1}\\,dx$ usando división polinomial.",
+        steps: ["Como $\\deg(x^2+1)\\ge\\deg(x-1)$, dividimos primero.", "La división da $\\frac{x^2+1}{x-1}=x+1+\\frac{2}{x-1}$.", "Integramos el polinomio y el término logarítmico."],
+        conclusion: "$\\frac{x^2}{2}+x+2\\ln|x-1|+C$.",
+      },
+      {
+        statement: "Calcula $\\int\\frac{dx}{x^2+6x+13}$ completando cuadrados.",
+        steps: ["Completamos: $x^2+6x+13=(x+3)^2+4$.", "Tomamos $u=x+3$.", "Reconocemos $\\int\\frac{du}{u^2+2^2}$."],
+        conclusion: "$\\frac12\\arctan\\left(\\frac{x+3}{2}\\right)+C$.",
+      },
+    ],
+    exercises: [
+      { statement: "Sustitución: $\\int(9z+5)\\sqrt[5]{(3z+1)^2+4(z+1)}\\,dz$.", solution: "Use $u=(3z+1)^2+4(z+1)$, pues $du=2(3z+1)3+4=(18z+10)dz=2(9z+5)dz$." },
+      { statement: "Sustitución: $\\int\\frac{\\cos(2/x)}{x^2}dx$.", solution: "$-\\frac12\\sin(2/x)+C$." },
+      { statement: "Sustitución: $\\int x\\,3^{x^2}dx$.", solution: "$3^{x^2}/(2\\ln3)+C$." },
+      { statement: "Sustitución: $\\int\\frac{e^x}{1+2e^{2x}}dx$.", solution: "$\\frac1{\\sqrt2}\\arctan(\\sqrt2e^x)+C$." },
+      { statement: "Partes: $\\int x^2\\sin(3x)dx$.", solution: "Aplicar partes dos veces; una forma es $-\\frac{x^2\\cos3x}{3}+\\frac{2x\\sin3x}{9}+\\frac{2\\cos3x}{27}+C$." },
+      { statement: "Partes: $\\int e^x\\sin(2x)dx$.", solution: "$\\frac{e^x(\\sin2x-2\\cos2x)}{5}+C$." },
+      { statement: "Partes: $\\int\\arcsin(x)dx$.", solution: "$x\\arcsin x+\\sqrt{1-x^2}+C$." },
+      { statement: "Partes: $\\int x^{-2}\\arctan(x)dx$.", solution: "$-\\frac{\\arctan x}{x}+\\ln|x|-\\frac12\\ln(1+x^2)+C$." },
+      { statement: "Trigonométrica: $\\int\\sec^4(5x)\\tan^2(5x)dx$.", solution: "$\\tan^3(5x)/15+\\tan^5(5x)/25+C$." },
+      { statement: "Trigonométrica: $\\int\\cos^5(mx)dx$.", solution: "$\\frac1m(\\sin mx-\\frac23\\sin^3mx+\\frac15\\sin^5mx)+C$." },
+      { statement: "Trigonométrica: $\\int\\sec^3(3x)dx$.", solution: "$\\frac16\\sec(3x)\\tan(3x)+\\frac16\\ln|\\sec(3x)+\\tan(3x)|+C$." },
+      { statement: "Trigonométrica: $\\int\\cot^4(t)\\csc^4(t)dt$.", solution: "Use $u=\\cot t$, $du=-\\csc^2t dt$ y $\\csc^2t=1+u^2$; resultado $-u^5/5-u^7/7+C$." },
+      { statement: "Sustitución trigonométrica: $\\int\\frac{dx}{\\sqrt{e^{2x}-25}}$.", solution: "Use $u=e^x$ y luego secante; resultado $\\frac15\\operatorname{arcsec}(e^x/5)+C$." },
+      { statement: "Sustitución trigonométrica: $\\int\\frac{dx}{x(x^2-1)^{3/2}}$.", solution: "Use $x=\\sec\\theta$; resultado $-\\frac{\\sqrt{x^2-1}}{x}+C$." },
+      { statement: "Sustitución trigonométrica: $\\int\\frac{\\sqrt{9-x^2}}{x^2}dx$.", solution: "$-\\sqrt{9-x^2}/x-\\arcsin(x/3)+C$." },
+      { statement: "Sustitución trigonométrica: $\\int\\frac{x}{\\sqrt{3-2x-x^2}}dx$.", solution: "Complete cuadrado: $3-2x-x^2=4-(x+1)^2$; separe $x=(x+1)-1$." },
+      { statement: "Fracciones parciales: $\\int\\frac{ds}{6s^3+13s^2-5s}$.", solution: "Factorice $s(3s-1)(2s+5)$ y descomponga en lineales." },
+      { statement: "Fracciones parciales: $\\int\\frac{5^x}{(5^x-1)(5^x+1)}dx$.", solution: "Use $u=5^x$, $du=\\ln5\\,5^x dx$, luego fracciones parciales en $(u-1)(u+1)$." },
+      { statement: "Fracciones parciales: $\\int\\frac{x^2}{x^2+1}dx$.", solution: "$x-\\arctan x+C$." },
+      { statement: "Fracciones parciales: $\\int\\frac{x^4-2x^2+4x+1}{x^3-x^2-x+1}dx$.", solution: "Divida primero y factorice el denominador por agrupación: $(x-1)^2(x+1)$." },
+      { statement: "División polinomial: $\\int\\frac{x^2}{x^2+1}dx$.", solution: "$\\int(1-\\frac1{x^2+1})dx=x-\\arctan x+C$." },
+      { statement: "División polinomial: $\\int\\frac{x^3+1}{x+1}dx$.", solution: "Como $x^3+1=(x+1)(x^2-x+1)$, resultado $x^3/3-x^2/2+x+C$." },
+      { statement: "División polinomial: $\\int\\frac{2x^3-x+4}{x^2+1}dx$.", solution: "Divida: $2x^3-x+4=(x^2+1)(2x)+(-3x+4)$." },
+      { statement: "Completar cuadrados: $\\int\\frac{dx}{x^2+8x+25}$.", solution: "$\\frac13\\arctan((x+4)/3)+C$." },
+      { statement: "Completar cuadrados: $\\int\\frac{dx}{x^2-4x+13}$.", solution: "$\\frac13\\arctan((x-2)/3)+C$." },
+      { statement: "Completar cuadrados: $\\int\\frac{dx}{\\sqrt{9-(x-2)^2}}$.", solution: "$\\arcsin((x-2)/3)+C$." },
+      { statement: "Completar cuadrados: $\\int\\frac{x}{\\sqrt{3-2x-x^2}}dx$.", solution: "Use $3-2x-x^2=4-(x+1)^2$ y escriba $x=(x+1)-1$." },
+    ],
+  }),
+
+  M("calculo-1:aplicaciones-integracion", {
+    contextLabel: "Aplicaciones de la integración",
+    theory: [
+      "Las aplicaciones de la integral nacen de una idea simple: si una cantidad total puede verse como la suma de muchas contribuciones pequeñas, la integral es el lenguaje natural para medirla.",
+      "En geometría, esto se vuelve especialmente visual. Para calcular áreas de regiones curvas, no buscamos una fórmula cerrada desde el inicio; cortamos la región en rebanadas delgadas, medimos cada una y acumulamos.",
+    ],
+    theorySections: [
+      {
+        title: "Área entre curvas",
+        body: [
+          "El área bajo una curva mide acumulación desde el eje $x$. El área entre dos curvas mide acumulación de diferencias: en cada punto, la altura de una rebanada vertical es la distancia entre la curva superior y la curva inferior.",
+          "$$A=\\int_a^b\\bigl(f(x)-g(x)\\bigr)\\,dx\\quad(f(x)\\ge g(x))$$",
+          "Esta resta debe representar una distancia positiva. Por eso el primer paso no es integrar, sino entender la región: cuál curva está arriba, dónde empieza, dónde termina y si las curvas se cruzan dentro del intervalo.",
+          "La integral no está sumando valores de una sola función, sino espesores locales de una región. Cada rebanada vertical tiene altura superior menos inferior; al acumular todas esas alturas delgadas, obtenemos el área completa.",
+        ],
+      },
+      {
+        title: "Intersecciones y acumulación geométrica",
+        body: [
+          "Los puntos de intersección suelen determinar los límites de integración. Resolver $f(x)=g(x)$ no es un trámite algebraico separado: identifica los lugares donde la región se cierra o donde cambia su forma.",
+          "Si las curvas intercambian cuál está arriba, el área debe partirse en varias integrales. La integral definida por sí sola mide acumulación firmada; el área geométrica requiere acumular distancias, no cancelaciones.",
+          "Esta idea conecta con la interpretación fundacional: una región completa se obtiene sumando rebanadas pequeñas. Cada rebanada tiene una altura local, y la integral acumula esas alturas a lo largo del intervalo.",
+        ],
+      },
+      {
+        title: "Integrar respecto a x o respecto a y",
+        body: [
+          "Las rebanadas verticales producen integrales respecto a $x$: superior menos inferior. Las rebanadas horizontales producen integrales respecto a $y$: derecha menos izquierda.",
+          "$$A=\\int_c^d\\bigl(x_{\\mathrm{der}}(y)-x_{\\mathrm{izq}}(y)\\bigr)\\,dy$$",
+          "Elegir la variable de integración es una decisión geométrica. A veces una región que se parte en varias piezas con rebanadas verticales se describe con una sola integral horizontal. La opción más elegante suele ser la que sigue la forma natural de la región.",
+          "Integrar respecto a $y$ exige despejar las fronteras como funciones de $y$. No se piensa en arriba y abajo, sino en derecha e izquierda. Este cambio de mirada suele aclarar regiones encerradas por parábolas horizontales o curvas laterales.",
+        ],
+      },
+      {
+        title: "Área firmada y área total",
+        body: [
+          "La integral definida $\\int_a^b f(x)\\,dx$ mide área firmada: las regiones sobre el eje $x$ aportan positivo y las regiones bajo el eje aportan negativo. Por eso dos regiones geométricas pueden cancelarse en la integral neta.",
+          "El área geométrica total exige sumar magnitudes positivas. Si una función cruza el eje, se parte el intervalo en los ceros de la función o se integra $|f(x)|$ cuando esa formulación es adecuada.",
+          "Esta distinción es esencial en aplicaciones. Una integral de velocidad puede representar desplazamiento neto, mientras que la integral del valor absoluto de la velocidad representa distancia total recorrida.",
+        ],
+      },
+      {
+        title: "Interpretación más allá del área",
+        body: [
+          "El mismo razonamiento aparece fuera de la geometría. Si acumulamos velocidad obtenemos desplazamiento; si acumulamos una tasa de flujo obtenemos cantidad total; si acumulamos una densidad lineal obtenemos masa.",
+          "La integral definida permite pasar de una descripción local a una cantidad global. Esa transición, de lo pequeño a lo total, es la razón conceptual por la que las aplicaciones de integración son tan amplias.",
+        ],
+      },
+    ],
+    formulas: [
+      "A=\\int_a^b \\left(f(x)-g(x)\\right)\\,dx\\;\\text{→ superior menos inferior}",
+      "A=\\int_c^d \\left(R(y)-L(y)\\right)\\,dy\\;\\text{→ derecha menos izquierda}",
+      "f(x)=g(x)\\;\\text{→ puntos de intersección}",
+      "\\int_a^b f(x)\\,dx\\;\\text{→ área firmada}",
+      "\\int_a^b |f(x)|\\,dx\\;\\text{→ área geométrica total}",
+    ],
+    definition: {
+      title: "Aplicación integral",
+      body: "Una aplicación de la integral modela una cantidad total como acumulación continua de contribuciones locales, ya sean áreas, distancias, volúmenes, masas o cambios acumulados.",
+    },
+    examples: [
+      {
+        statement: "Área entre $y=x^2+2$ y $y=2x+5$.",
+        steps: ["Hallamos intersecciones: $x^2+2=2x+5$, así $x^2-2x-3=0$.", "Los puntos son $x=-1$ y $x=3$.", "En el intervalo, $2x+5$ queda arriba de $x^2+2$.", "Planteamos $A=\\int_{-1}^{3}[(2x+5)-(x^2+2)]dx$."],
+        conclusion: "$A=\\int_{-1}^{3}(-x^2+2x+3)dx=\\frac{32}{3}$.",
+      },
+      {
+        statement: "Área entre $y=\\cos(2x)$ y $y=\\sin x$ en sus intersecciones principales.",
+        steps: ["Resolvemos $\\cos(2x)=\\sin x$ usando $\\cos(2x)=1-2\\sin^2x$.", "Sea $u=\\sin x$: $1-2u^2=u$, así $2u^2+u-1=0$.", "En $[0,\\pi]$, las intersecciones relevantes son $x=\\pi/6$ y $x=5\\pi/6$.", "En ese intervalo $\\sin x$ queda arriba de $\\cos(2x)$."],
+        conclusion: "$A=\\int_{\\pi/6}^{5\\pi/6}(\\sin x-\cos2x)dx$.",
+      },
+      {
+        statement: "Área firmada bajo $y=\\cos^3x$ de $0$ a $3\\pi/2$.",
+        steps: ["La función es positiva en $[0,\\pi/2]$ y negativa en $[\\pi/2,3\\pi/2]$.", "Una primitiva es $\\sin x-\\frac{1}{3}\\sin^3x$.", "Evaluamos de $0$ a $3\\pi/2$ para el área firmada."],
+        conclusion: "$\\int_0^{3\\pi/2}\\cos^3x\\,dx=-\\frac{2}{3}$.",
+      },
+      {
+        statement: "Calcula $\\int_0^{2\\pi}|\\sin x-\cos x|dx$.",
+        steps: ["Las funciones se cruzan cuando $\\sin x=\cos x$, es decir $x=\\pi/4$ y $x=5\\pi/4$.", "El signo cambia en esos puntos.", "Como $\\sin x-\cos x=\\sqrt2\\sin(x-\\pi/4)$, el valor absoluto completa una onda positiva en longitud $2\\pi$."],
+        conclusion: "$\\int_0^{2\\pi}|\\sin x-\cos x|dx=4\\sqrt2$.",
+      },
+      {
+        statement: "Plantea el área entre $x=y^2$ y $x=2-y^2$ usando $dy$.",
+        steps: ["Las intersecciones satisfacen $y^2=2-y^2$, así que $y=\\pm1$.", "La frontera derecha es $x=2-y^2$ y la izquierda es $x=y^2$.", "Usamos derecha menos izquierda."],
+        conclusion: "$A=\\int_{-1}^{1}(2-2y^2)\\,dy$.",
+      },
+      {
+        statement: "Región que requiere partirse: área entre $y=x$ y $y=x^3$ en $[-1,1]$.",
+        steps: ["Intersecciones: $x^3=x$, entonces $x=-1,0,1$.", "En $[-1,0]$, $x^3$ está arriba de $x$.", "En $[0,1]$, $x$ está arriba de $x^3$.", "Partimos para evitar cancelación."],
+        conclusion: "$A=\\int_{-1}^{0}(x^3-x)dx+\\int_0^1(x-x^3)dx=\\frac12$.",
+      },
+      {
+        statement: "Área entre $f(x)=\\frac{2x^2}{3}+3x$ y $y=\\frac{x^2}{3}$ en $[0,1]$.",
+        steps: ["Restamos superior menos inferior.", "La diferencia es $\\frac{x^2}{3}+3x$, positiva en $[0,1]$.", "Integramos de $0$ a $1$."],
+        conclusion: "$A=\\int_0^1\\left(\\frac{x^2}{3}+3x\\right)dx=\\frac{1}{9}+\\frac{3}{2}=\\frac{29}{18}$.",
+      },
+      {
+        statement: "Área firmada de un semicírculo superior de radio $3$.",
+        steps: ["La gráfica $y=\\sqrt{9-x^2}$ en $[-3,3]$ es un semicírculo superior.", "La integral representa el área geométrica porque la función es no negativa.", "El área de un semicírculo es la mitad de $\\pi r^2$."],
+        conclusion: "$\\int_{-3}^{3}\\sqrt{9-x^2}dx=\\frac{9\\pi}{2}$.",
+      },
+      {
+        statement: "Demuestra que el área bajo $y=1/x$ en $[2^n,2^{n+1}]$ es constante.",
+        steps: ["Integramos: $\\int_{2^n}^{2^{n+1}}\\frac{1}{x}dx=\\ln x\\big|_{2^n}^{2^{n+1}}$.", "Evaluamos: $\\ln(2^{n+1})-\\ln(2^n)$.", "Usamos propiedades logarítmicas."],
+        conclusion: "El área es $\\ln2$, independiente de $n$.",
+      },
+      {
+        statement: "Explica por qué el área firmada puede ser cero aunque haya área geométrica positiva.",
+        steps: ["La integral firmada permite cancelación entre regiones positivas y negativas.", "Si las áreas sobre y bajo el eje son iguales, la suma neta es cero.", "El área total usa valor absoluto o particiones por signo."],
+        conclusion: "Área firmada cero no significa ausencia de región; significa cancelación neta.",
+      },
+    ],
+    exercises: [
+      { statement: "Plantea el área entre $y=x^2+2$ y $y=2x+5$.", solution: "$\\int_{-1}^{3}[(2x+5)-(x^2+2)]dx$." },
+      { statement: "Calcula el área entre $y=\\cos(2x)$ y $y=\\sin x$ entre $\\pi/6$ y $5\\pi/6$.", solution: "$\\int_{\\pi/6}^{5\\pi/6}(\\sin x-\cos2x)dx$." },
+      { statement: "Área firmada bajo $y=\\cos^3x$ de $0$ a $3\\pi/2$.", solution: "$-2/3$." },
+      { statement: "Calcula $\\int_0^{2\\pi}|\\sin x-\cos x|dx$.", solution: "$4\\sqrt2$." },
+      { statement: "Área entre $f(x)=2x^2/3+3x$ y $y=x^2/3$ en $[0,1]$.", solution: "$29/18$." },
+      { statement: "Encuentra el área entre dos curvas usando sus intersecciones como límites.", solution: "Resuelve $f(x)=g(x)$ y luego integra superior menos inferior en cada intervalo." },
+      { statement: "Explica cuándo cambia superior menos inferior.", solution: "Cambia cuando las curvas se cruzan o intercambian posición vertical." },
+      { statement: "Plantea un área respecto a $y$ para $x=y^2$ y $x=2-y^2$.", solution: "$\\int_{-1}^{1}[(2-y^2)-y^2]dy$." },
+      { statement: "Calcula área total desde una gráfica con partes positiva $3$ y negativa de magnitud $5$.", solution: "Área total $8$; área firmada $-2$." },
+      { statement: "Explica por qué el área firmada puede ser cero con área geométrica positiva.", solution: "Porque las partes positiva y negativa pueden cancelarse." },
+      { statement: "Calcula el área bajo $y=1/x$ en $[2^n,2^{n+1}]$.", solution: "$\\ln2$." },
+      { statement: "Plantea una región que se parte en dos integrales.", solution: "Si $f$ y $g$ se cruzan en $c$, use $\\int_a^c$ y $\\int_c^b$ con el orden correcto." },
+      { statement: "Compara $\\int f$ y $\\int |f|$ para una función que cambia de signo.", solution: "$\\int f$ es neta; $\\int|f|$ suma área total." },
+      { statement: "Encuentra límites de área resolviendo $f(x)=g(x)$.", solution: "Las soluciones son puntos de intersección y suelen dar los límites." },
+      { statement: "Explica por qué importan las intersecciones antes de integrar área.", solution: "Definen la región cerrada y señalan cambios de curva superior/inferior." },
     ],
   }),
 
