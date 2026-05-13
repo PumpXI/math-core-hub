@@ -53,8 +53,8 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.03 270);
 
-  /* Brand accent: green-700 (#15803D) */
-  --primary: oklch(0.53 0.15 150);
+  /* STEMLab Phase 2 accent: electric cyan */
+  --primary: oklch(0.78 0.14 215);
   --primary-foreground: oklch(0.99 0 0);
 
   /* Secondary: amber for highlights */
@@ -72,21 +72,21 @@
 
   --border: oklch(0.92 0.005 270);                /* #E5E7EB */
   --input: oklch(0.96 0.005 270);
-  --ring: oklch(0.53 0.15 150);
+  --ring: oklch(0.78 0.14 215);
 
   --sidebar: oklch(0.985 0.003 270);
   --sidebar-foreground: oklch(0.18 0.03 270);
-  --sidebar-primary: oklch(0.53 0.15 150);
+  --sidebar-primary: oklch(0.78 0.14 215);
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.96 0.005 270);
   --sidebar-accent-foreground: oklch(0.18 0.03 270);
   --sidebar-border: oklch(0.92 0.005 270);
-  --sidebar-ring: oklch(0.53 0.15 150);
+  --sidebar-ring: oklch(0.78 0.14 215);
 
-  --gradient-primary: linear-gradient(135deg, #15803D, #16A34A);
-  --gradient-hero: radial-gradient(1200px 600px at 80% -10%, rgba(22,163,74,0.10), transparent 60%),
-                   radial-gradient(900px 500px at -10% 20%, rgba(234,179,8,0.10), transparent 60%);
-  --shadow-glow: 0 10px 40px -15px rgba(22, 163, 74, 0.30);
+  --gradient-primary: linear-gradient(135deg, #22D3EE, #8B5CF6);
+  --gradient-hero: radial-gradient(1200px 600px at 80% -10%, rgba(34,211,238,0.14), transparent 60%),
+                   radial-gradient(900px 500px at -10% 20%, rgba(139,92,246,0.12), transparent 60%);
+  --shadow-glow: 0 10px 40px -15px rgba(34, 211, 238, 0.36);
 }
 
 @layer base {
@@ -112,6 +112,7 @@
   }
   .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
   .reveal.in { opacity: 1; transform: translateY(0); }
+  .premium-transition { transition: transform .45s cubic-bezier(.2,.8,.2,1), border-color .45s ease, background-color .45s ease, opacity .45s ease; }
 }
 
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }

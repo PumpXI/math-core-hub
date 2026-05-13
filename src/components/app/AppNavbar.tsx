@@ -23,16 +23,16 @@ export function AppNavbar() {
   const displayName = user?.firstName ?? user?.fullName ?? "Estudiante";
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#050711]/88 text-white backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-4 sm:px-6">
         <div className="flex items-center gap-6">
           <Logo to="/dashboard" />
         </div>
         <div className="flex items-center gap-3">
-          <Link to="/ai-tutor" className="text-sm text-muted-foreground hover:text-foreground hidden sm:inline">
+          <Link to="/ai-tutor" className="hidden text-sm text-slate-400 transition-colors hover:text-cyan-200 sm:inline">
             Tutor IA
           </Link>
-          <span className="hidden sm:block text-sm text-muted-foreground">
+          <span className="hidden text-sm text-slate-500 sm:block">
             Hola, {displayName}
           </span>
           <DropdownMenu>

@@ -2,10 +2,13 @@ import { Sparkles } from "lucide-react";
 import { AdvancedDifferentiationVisual } from "./AdvancedDifferentiationVisual";
 import { AlgebraicTechniquesVisual } from "./AlgebraicTechniquesVisual";
 import { AsymptoticInfinityVisual } from "./AsymptoticInfinityVisual";
+import { BasicIntegrationRulesVisual } from "./BasicIntegrationRulesVisual";
 import { DerivativeRulesVisual } from "./DerivativeRulesVisual";
 import { DerivativeTangentVisual } from "./DerivativeTangentVisual";
 import { FunctionAnalysisDerivativesVisual } from "./FunctionAnalysisDerivativesVisual";
+import { IntegrationApplicationsVisual } from "./IntegrationApplicationsVisual";
 import { IntegrationFoundationsVisual } from "./IntegrationFoundationsVisual";
+import { IntegrationTechniquesVisual } from "./IntegrationTechniquesVisual";
 import { LHopitalClearVisual } from "./LHopitalClearVisual";
 import { LimitsVisual } from "./LimitsVisual";
 import { OptimizationRelatedRatesVisual } from "./OptimizationRelatedRatesVisual";
@@ -43,6 +46,12 @@ export function TopicVisual({ topicKey, title }: TopicVisualProps) {
       return <LHopitalClearVisual title={title} />;
     case "calculo-1:fundamentos-integracion":
       return <IntegrationFoundationsVisual title={title} />;
+    case "calculo-1:reglas-basicas-integracion":
+      return <BasicIntegrationRulesVisual title={title} />;
+    case "calculo-1:tecnicas-integracion":
+      return <IntegrationTechniquesVisual title={title} />;
+    case "calculo-1:aplicaciones-integracion":
+      return <IntegrationApplicationsVisual title={title} />;
     default:
       return (
         <div className="rounded-2xl border-2 border-dashed border-border bg-muted/40 p-10 text-center text-sm text-muted-foreground">

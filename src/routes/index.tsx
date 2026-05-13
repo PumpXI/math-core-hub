@@ -3,8 +3,7 @@ import { useReveal } from "@/lib/reveal";
 import { SiteNavbar } from "@/components/site/SiteNavbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { BookOpen, Bot, PencilRuler, ArrowRight, Check, Sparkles, FlaskConical } from "lucide-react";
+import { ArrowRight, Check, Orbit, Sparkles } from "lucide-react";
 import { courses, getCourseTopics } from "@/lib/courses";
 
 export const Route = createFileRoute("/")({
@@ -22,11 +21,9 @@ export const Route = createFileRoute("/")({
 function Landing() {
   useReveal();
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen overflow-hidden bg-[#050711] text-white">
       <SiteNavbar />
       <Hero />
-      <Features />
-      <HowItWorks />
       <CoursesSection />
       <Pricing />
       <SiteFooter />
@@ -36,105 +33,69 @@ function Landing() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 pt-20 pb-24 grid gap-12 lg:grid-cols-2 lg:items-center">
-        <div className="reveal">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground">
-            <Sparkles className="h-3.5 w-3.5 text-[#15803D]" /> Nuevo · Tutor IA con razonamiento paso a paso
+    <section className="relative min-h-[calc(100vh-4rem)] overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_18%,rgba(34,211,238,0.24),transparent_34%),radial-gradient(circle_at_18%_40%,rgba(124,58,237,0.22),transparent_38%),linear-gradient(180deg,#050711_0%,#0b1022_58%,#050711_100%)]" />
+      <div className="absolute left-1/2 top-20 h-[520px] w-[520px] -translate-x-1/2 rounded-full border border-cyan-300/10" />
+      <div className="absolute left-1/2 top-32 h-[360px] w-[360px] -translate-x-1/2 rounded-full border border-violet-300/10" />
+      <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl items-center gap-12 px-6 py-20 lg:grid-cols-[0.95fr_1.05fr]">
+        <div className="reveal max-w-3xl">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs text-cyan-100/80 backdrop-blur-xl">
+            <Sparkles className="h-3.5 w-3.5 text-cyan-300" /> STEMLab · entorno matemático interactivo
           </span>
-          <h1 className="mt-5 text-5xl sm:text-6xl font-bold tracking-tight leading-[1.05]">
-            Domina las matemáticas <span className="text-grad-primary">universitarias</span>
+          <h1 className="mt-6 text-5xl font-semibold leading-[0.98] tracking-tight text-white sm:text-7xl">
+            Entra a un mundo donde la matemática se mueve.
           </h1>
-          <p className="mt-5 text-lg text-muted-foreground max-w-xl">
-            Teoría didáctica, ejemplos resueltos y un tutor con IA disponible 24/7. Diseñado para estudiantes de Costa Rica y Latinoamérica.
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+            STEMLab transforma cursos universitarios en laboratorios visuales, navegación inmersiva y experiencias conceptuales que se sienten vivas.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg" className="bg-[#15803D] hover:bg-[#166534] text-white glow">
-              <Link to="/register">Comenzar gratis <ArrowRight className="ml-1 h-4 w-4" /></Link>
+            <Button asChild size="lg" className="bg-cyan-300 text-slate-950 shadow-[0_0_40px_rgba(34,211,238,0.24)] hover:bg-cyan-200">
+              <Link to="/register">Entrar a STEMLab <ArrowRight className="ml-1 h-4 w-4" /></Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/ai-tutor">Ver demo</Link>
+            <Button asChild size="lg" variant="outline" className="border-white/15 bg-white/[0.04] text-white hover:bg-white/10 hover:text-white">
+              <Link to="/dashboard">Explorar cursos</Link>
             </Button>
           </div>
-          <div className="mt-8 flex items-center gap-6 text-xs text-muted-foreground">
-            <div>+5,000 estudiantes</div>
-            <div className="h-4 w-px bg-border" />
-            <div>UCR · TEC · UNA · UNED</div>
+          <div className="mt-10 flex flex-wrap gap-6 text-xs uppercase tracking-[0.22em] text-slate-400">
+            <span>Visual Labs</span>
+            <span>Universidad</span>
+            <span>Matemática viva</span>
           </div>
         </div>
 
-        <div className="reveal relative">
-          <div className="rounded-3xl bg-card border border-border p-6 shadow-xl animate-float">
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <FlaskConical className="h-4 w-4 text-[#15803D]" /> Cálculo 1 · Límites
+        <div className="reveal relative min-h-[440px]">
+          <div className="absolute inset-0 rounded-[2rem] border border-white/10 bg-white/[0.035] shadow-2xl backdrop-blur-xl" />
+          <div className="absolute inset-8 rounded-full border border-cyan-300/20" />
+          <div className="absolute inset-20 rounded-full border border-violet-300/20" />
+          <svg viewBox="0 0 560 420" className="relative h-full min-h-[440px] w-full">
+            <defs>
+              <linearGradient id="heroCurve" x1="0%" x2="100%" y1="0%" y2="0%">
+                <stop offset="0%" stopColor="#22d3ee" />
+                <stop offset="100%" stopColor="#8b5cf6" />
+              </linearGradient>
+            </defs>
+            <path d="M 42 258 C 120 132, 196 344, 276 210 C 354 80, 428 270, 520 150" fill="none" stroke="url(#heroCurve)" strokeWidth="5" strokeLinecap="round" />
+            <path d="M 70 304 C 158 190, 230 366, 306 238 C 382 108, 452 318, 520 206" fill="none" stroke="#38bdf8" strokeOpacity="0.22" strokeWidth="4" strokeLinecap="round" />
+            {Array.from({ length: 18 }, (_, i) => {
+              const x = 76 + i * 24;
+              const h = 44 + Math.sin(i * 0.8) * 24 + i * 1.2;
+              return <line key={i} x1={x} x2={x} y1={300 - h} y2={302} stroke={i % 3 === 0 ? "#22d3ee" : "#8b5cf6"} strokeOpacity="0.34" strokeWidth="3" strokeLinecap="round" />;
+            })}
+            <circle cx="276" cy="210" r="9" fill="#22d3ee" />
+            <circle cx="428" cy="270" r="7" fill="#a78bfa" />
+            <text x="52" y="74" fill="#e0f2fe" fontSize="18" fontWeight="600">Cálculo 1</text>
+            <text x="52" y="104" fill="#94a3b8" fontSize="13">límites · derivadas · integración</text>
+          </svg>
+          <div className="absolute bottom-8 left-8 right-8 rounded-2xl border border-white/10 bg-slate-950/70 p-4 backdrop-blur-xl">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <div className="text-xs uppercase tracking-[0.22em] text-cyan-200/70">Laboratorio activo</div>
+                <div className="mt-1 text-lg font-semibold text-white">Acumulación geométrica</div>
               </div>
-              <span>Tutor IA</span>
-            </div>
-            <div className="mt-4 space-y-3 text-sm">
-              <div className="rounded-2xl bg-muted p-3 max-w-[85%]">
-                ¿Cómo resuelvo lim<sub>x→0</sub> sin(x)/x?
-              </div>
-              <div className="rounded-2xl bg-[#15803D] text-white p-3 max-w-[90%] ml-auto">
-                Es un límite notable: vale 1. Te lo demuestro con el teorema del emparedado…
-              </div>
-              <div className="rounded-2xl bg-muted p-3 max-w-[60%]">¡Gracias! 🙌</div>
-            </div>
-            <div className="mt-5 rounded-2xl border border-dashed border-border p-6 text-center text-xs text-muted-foreground">
-              f(x) = sin(x)/x · gráfica interactiva
+              <Orbit className="h-6 w-6 text-cyan-300" />
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-function Features() {
-  const items = [
-    { icon: BookOpen, title: "Teoría didáctica", desc: "Explicaciones claras con notación formal y ejemplos visuales adaptados al currículo universitario." },
-    { icon: Bot, title: "Tutor con IA 24/7", desc: "Resuelve dudas paso a paso, en español, cuando lo necesites — sin esperar consultas." },
-    { icon: PencilRuler, title: "Ejercicios interactivos", desc: "Practica con problemas curados por nivel y recibe retroalimentación inmediata." },
-  ];
-  return (
-    <section className="surface-alt py-20">
-      <div className="mx-auto max-w-7xl px-6 grid gap-6 md:grid-cols-3">
-        {items.map(({ icon: Icon, title, desc }) => (
-          <Card key={title} className="reveal border-border shadow-sm">
-            <CardHeader>
-              <div className="grid h-10 w-10 place-items-center rounded-xl bg-grad-primary glow">
-                <Icon className="h-5 w-5 text-white" />
-              </div>
-              <CardTitle className="mt-4">{title}</CardTitle>
-              <CardDescription className="text-muted-foreground">{desc}</CardDescription>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function HowItWorks() {
-  const steps = [
-    { n: "01", t: "Elige tu curso", d: "Precálculo o Cálculo 1 según tu nivel actual." },
-    { n: "02", t: "Aprende con teoría y ejemplos", d: "Lecciones cortas con ejemplos resueltos y gráficas interactivas." },
-    { n: "03", t: "Practica con el tutor IA", d: "Resuelve ejercicios y pregúntale al tutor cuando te trabes." },
-  ];
-  return (
-    <section className="mx-auto max-w-7xl px-6 py-20">
-      <div className="reveal text-center max-w-2xl mx-auto">
-        <h2 className="text-4xl font-bold tracking-tight">Cómo funciona</h2>
-        <p className="mt-3 text-muted-foreground">Tres pasos para empezar a aprender hoy.</p>
-      </div>
-      <div className="mt-12 grid gap-6 md:grid-cols-3">
-        {steps.map((s) => (
-          <div key={s.n} className="reveal rounded-2xl border border-border bg-card p-6 shadow-sm">
-            <div className="text-grad-primary text-3xl font-bold">{s.n}</div>
-            <h3 className="mt-3 text-lg font-semibold">{s.t}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
-          </div>
-        ))}
       </div>
     </section>
   );
@@ -142,39 +103,47 @@ function HowItWorks() {
 
 function CoursesSection() {
   return (
-    <section id="cursos" className="surface-alt py-20">
+    <section id="cursos" className="relative py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="reveal flex items-end justify-between flex-wrap gap-4">
           <div>
-            <h2 className="text-4xl font-bold tracking-tight">Cursos disponibles</h2>
-            <p className="mt-2 text-muted-foreground">Diseñados con el currículo universitario costarricense.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-300/70">Course worlds</p>
+            <h2 className="mt-3 text-4xl font-semibold tracking-tight text-white">Elige tu entorno de estudio</h2>
+            <p className="mt-3 max-w-2xl text-slate-400">Cada curso tiene atmósfera, color y ritmo propio. No entras a una lista: entras a un mundo matemático.</p>
           </div>
-          <Button asChild variant="ghost"><Link to="/dashboard">Ver todos <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
+          <Button asChild variant="ghost" className="text-cyan-200 hover:bg-white/10 hover:text-white"><Link to="/dashboard">Ver dashboard <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
         </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-2 max-w-4xl">
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
           {courses.map((c) => {
-            const accent = c.slug === "precalculo" ? "border-t-amber-500" : "border-t-green-600";
-            const btnColor = c.slug === "precalculo"
-              ? "bg-amber-500 hover:bg-amber-600 text-white"
-              : "bg-[#15803D] hover:bg-[#166534] text-white";
+            const isCalc = c.slug === "calculo-1";
+            const glow = isCalc ? "from-cyan-400/30 via-blue-500/10 to-transparent" : "from-violet-500/30 via-fuchsia-500/10 to-transparent";
+            const accent = isCalc ? "text-cyan-200" : "text-violet-200";
             return (
-              <Card key={c.slug} className={`reveal border-t-4 ${accent} bg-card shadow-sm hover:shadow-md transition-shadow`}>
-                <CardHeader>
-                  <div className={`text-xs uppercase tracking-wider font-semibold ${c.color.text}`}>
+              <Link
+                key={c.slug}
+                to="/course/$courseSlug"
+                params={{ courseSlug: c.slug }}
+                className="reveal group relative min-h-[360px] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045] p-7 shadow-2xl transition duration-500 hover:-translate-y-1 hover:border-white/20"
+              >
+                <div className={`absolute inset-0 bg-gradient-to-br ${glow}`} />
+                <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full border border-white/10" />
+                <div className="absolute bottom-8 right-8 h-32 w-32 rounded-full border border-white/10 transition duration-500 group-hover:scale-110" />
+                <div className="relative flex h-full flex-col justify-between">
+                  <div>
+                    <div className={`text-xs font-semibold uppercase tracking-[0.24em] ${accent}`}>
                     {c.code} · {c.short}
                   </div>
-                  <CardTitle className="mt-1 text-2xl">{c.name}</CardTitle>
-                  <CardDescription>{c.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="text-xs text-muted-foreground">
-                    {getCourseTopics(c).length} temas · {c.modules.length} módulos
+                    <h3 className="mt-5 text-4xl font-semibold tracking-tight text-white">{c.name}</h3>
+                    <p className="mt-4 max-w-md text-sm leading-6 text-slate-300">{c.description}</p>
                   </div>
-                  <Button asChild className={`w-full ${btnColor}`}>
-                    <Link to="/course/$courseSlug" params={{ courseSlug: c.slug }}>Explorar curso</Link>
-                  </Button>
-                </CardContent>
-              </Card>
+                  <div className="flex items-end justify-between">
+                    <div className="text-sm text-slate-400">{getCourseTopics(c).length} temas · {c.modules.length} módulos</div>
+                    <span className="grid h-12 w-12 place-items-center rounded-full bg-white text-slate-950 transition group-hover:scale-105">
+                      <ArrowRight className="h-5 w-5" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
             );
           })}
         </div>
@@ -184,43 +153,34 @@ function CoursesSection() {
 }
 
 function Pricing() {
-  const plans = [
-    { name: "Plan Mensual", price: "₡8.900", per: "/mes", highlight: false, features: ["Acceso a Precálculo y Cálculo 1", "Tutor IA ilimitado", "Ejercicios con retroalimentación", "Cancela cuando quieras"] },
-    { name: "Plan Anual", price: "₡71.000", per: "/año", highlight: true, badge: "Ahorra 33%", features: ["Todo lo del Plan Mensual", "2 sesiones grupales al mes", "Acceso anticipado a nuevos cursos", "Certificado de finalización"] },
-  ];
+  const features = ["Acceso base mensual", "Un curso incluido", "+₡500 por curso adicional", "Preparado para SINPE Móvil"];
   return (
-    <section id="precios" className="mx-auto max-w-7xl px-6 py-20">
-      <div className="reveal text-center max-w-2xl mx-auto">
-        <h2 className="text-4xl font-bold tracking-tight">Precios simples</h2>
-        <p className="mt-3 text-muted-foreground">Empieza gratis. Mejora cuando estés listo.</p>
-      </div>
-      <div className="mt-12 grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-        {plans.map((p) => (
-          <Card key={p.name} className={`reveal relative bg-card shadow-sm ${p.highlight ? "border-2 border-[#15803D] glow" : "border-border"}`}>
-            {p.badge && (
-              <span className="absolute -top-3 right-6 rounded-full bg-[#15803D] px-3 py-1 text-xs text-white">{p.badge}</span>
-            )}
-            <CardHeader>
-              <CardTitle>{p.name}</CardTitle>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span className="text-4xl font-bold">{p.price}</span>
-                <span className="text-muted-foreground">{p.per}</span>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <ul className="space-y-2 text-sm">
-                {p.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-[#15803D]" /> {f}
-                  </li>
-                ))}
-              </ul>
-              <Button asChild className={`w-full ${p.highlight ? "bg-[#15803D] hover:bg-[#166534] text-white" : ""}`} variant={p.highlight ? "default" : "outline"}>
-                <Link to="/register">Suscribirme</Link>
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
+    <section id="precios" className="mx-auto max-w-7xl px-6 py-24">
+      <div className="reveal overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045] p-8 shadow-2xl md:p-12">
+        <div className="grid gap-10 md:grid-cols-[1fr_360px] md:items-end">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-300/70">Access</p>
+            <h2 className="mt-3 text-4xl font-semibold tracking-tight text-white">Acceso simple, sin tabla corporativa.</h2>
+            <p className="mt-4 max-w-2xl text-slate-400">Una experiencia premium debe sentirse clara desde el pago. La integración con SINPE Móvil queda preparada como siguiente etapa.</p>
+          </div>
+          <div className="rounded-3xl border border-cyan-300/20 bg-slate-950/70 p-6">
+            <div className="text-sm text-slate-400">Acceso mensual base</div>
+            <div className="mt-2 flex items-end gap-2">
+              <span className="text-5xl font-semibold text-white">₡2500</span>
+              <span className="pb-2 text-slate-400">/mes</span>
+            </div>
+            <ul className="mt-6 space-y-3 text-sm text-slate-300">
+              {features.map((feature) => (
+                <li key={feature} className="flex items-center gap-2">
+                  <Check className="h-4 w-4 text-cyan-300" /> {feature}
+                </li>
+              ))}
+            </ul>
+            <Button asChild className="mt-6 w-full bg-cyan-300 text-slate-950 hover:bg-cyan-200">
+              <Link to="/register">Solicitar acceso</Link>
+            </Button>
+          </div>
+        </div>
       </div>
     </section>
   );
