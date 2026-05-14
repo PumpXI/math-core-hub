@@ -44,8 +44,8 @@
   --radius: 0.75rem;
 
   /* STEMLab light theme */
-  --background: oklch(1 0 0);                     /* #FFFFFF */
-  --foreground: oklch(0.18 0.03 270);             /* #1A1A2E */
+  --background: oklch(1 0 0); /* #FFFFFF */
+  --foreground: oklch(0.18 0.03 270); /* #1A1A2E */
 
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.18 0.03 270);
@@ -58,10 +58,10 @@
   --primary-foreground: oklch(0.99 0 0);
 
   /* Secondary: amber for highlights */
-  --secondary: oklch(0.78 0.16 80);               /* #EAB308 */
+  --secondary: oklch(0.78 0.16 80); /* #EAB308 */
   --secondary-foreground: oklch(0.18 0.03 270);
 
-  --muted: oklch(0.97 0.005 270);                 /* #F8F9FA */
+  --muted: oklch(0.97 0.005 270); /* #F8F9FA */
   --muted-foreground: oklch(0.45 0.02 270);
 
   --accent: oklch(0.96 0.01 270);
@@ -70,7 +70,7 @@
   --destructive: oklch(0.6 0.22 25);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.92 0.005 270);                /* #E5E7EB */
+  --border: oklch(0.92 0.005 270); /* #E5E7EB */
   --input: oklch(0.96 0.005 270);
   --ring: oklch(0.78 0.14 215);
 
@@ -83,181 +83,565 @@
   --sidebar-border: oklch(0.92 0.005 270);
   --sidebar-ring: oklch(0.78 0.14 215);
 
-  --gradient-primary: linear-gradient(135deg, #22D3EE, #8B5CF6);
-  --gradient-hero: radial-gradient(1200px 600px at 80% -10%, rgba(34,211,238,0.14), transparent 60%),
-                   radial-gradient(900px 500px at -10% 20%, rgba(139,92,246,0.12), transparent 60%);
+  --gradient-primary: linear-gradient(135deg, #22d3ee, #8b5cf6);
+  --gradient-hero:
+    radial-gradient(1200px 600px at 80% -10%, rgba(34, 211, 238, 0.14), transparent 60%),
+    radial-gradient(900px 500px at -10% 20%, rgba(139, 92, 246, 0.12), transparent 60%);
   --shadow-glow: 0 10px 40px -15px rgba(34, 211, 238, 0.36);
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html, body { background-color: #FFFFFF; color: var(--color-foreground); font-family: var(--font-sans); }
-  body { background-image: var(--gradient-hero); background-attachment: fixed; }
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body {
+    background-color: #ffffff;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+  body {
+    background-image: var(--gradient-hero);
+    background-attachment: fixed;
+  }
 }
 
 @layer utilities {
-  .bg-grad-primary { background-image: var(--gradient-primary); }
+  .bg-grad-primary {
+    background-image: var(--gradient-primary);
+  }
   .text-grad-primary {
     background-image: var(--gradient-primary);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
-  .glow { box-shadow: var(--shadow-glow); }
-  .surface-alt { background-color: #F8F9FA; }
-  .glass {
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0,0,0,0.06);
+  .glow {
+    box-shadow: var(--shadow-glow);
   }
-  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .7s ease, transform .7s ease; }
-  .reveal.in { opacity: 1; transform: translateY(0); }
-  .premium-transition { transition: transform .45s cubic-bezier(.2,.8,.2,1), border-color .45s ease, background-color .45s ease, opacity .45s ease; }
+  .surface-alt {
+    background-color: #f8f9fa;
+  }
+  .glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s ease;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .premium-transition {
+    transition:
+      transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
+      border-color 0.45s ease,
+      background-color 0.45s ease,
+      opacity 0.45s ease;
+  }
+  .kepler-nav-glow {
+    position: relative;
+    isolation: isolate;
+    border-radius: 999px;
+    padding: 0.35rem 0.55rem;
+  }
+  .kepler-nav-glow::before {
+    content: "";
+    position: absolute;
+    inset: -0.45rem -0.65rem;
+    z-index: -1;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 20% 45%, rgba(34, 211, 238, 0.2), transparent 52%),
+      radial-gradient(circle at 76% 45%, rgba(168, 85, 247, 0.16), transparent 54%),
+      radial-gradient(circle at 50% 90%, rgba(250, 204, 21, 0.14), transparent 52%);
+    filter: blur(9px);
+    opacity: 0.72;
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease;
+  }
+  .kepler-nav-glow:hover::before {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  .kepler-access-glow {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.22) inset,
+      0 0 28px rgba(34, 211, 238, 0.28),
+      0 0 44px rgba(168, 85, 247, 0.16),
+      0 14px 32px rgba(15, 23, 42, 0.18);
+  }
+  .kepler-screen-glow {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    border: 1px solid rgba(15, 23, 42, 0.05);
+    box-shadow:
+      inset 0 0 34px rgba(34, 211, 238, 0.12),
+      inset 0 0 62px rgba(168, 85, 247, 0.09),
+      inset 0 0 92px rgba(250, 204, 21, 0.07);
+  }
 }
 
-@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-.animate-float { animation: float 6s ease-in-out infinite; }
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
 
 @keyframes landing-aura {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: .72; }
-  50% { transform: translate3d(18px, -14px, 0) scale(1.06); opacity: .92; }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.72;
+  }
+  50% {
+    transform: translate3d(18px, -14px, 0) scale(1.06);
+    opacity: 0.92;
+  }
 }
 
 @keyframes landing-orbit {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes landing-orbit-reverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 @keyframes landing-dash {
-  from { stroke-dashoffset: 0; }
-  to { stroke-dashoffset: -96; }
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -96;
+  }
 }
 
 @keyframes landing-float {
-  0%, 100% { transform: translateY(0); opacity: .86; }
-  50% { transform: translateY(-10px); opacity: 1; }
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.86;
+  }
+  50% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
 }
 
 @keyframes landing-pulse {
-  0%, 100% { transform: scale(1); opacity: .96; }
-  50% { transform: scale(1.045); opacity: 1; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.96;
+  }
+  50% {
+    transform: scale(1.045);
+    opacity: 1;
+  }
 }
 
 @keyframes landing-ribbon {
-  0%, 100% { stroke-width: 7; opacity: .92; }
-  50% { stroke-width: 9; opacity: 1; }
+  0%,
+  100% {
+    stroke-width: 7;
+    opacity: 0.92;
+  }
+  50% {
+    stroke-width: 9;
+    opacity: 1;
+  }
 }
 
 @keyframes landing-plane {
-  0%, 100% { transform: translate3d(0, 0, 0) skewX(-1deg); opacity: .9; }
-  50% { transform: translate3d(8px, -7px, 0) skewX(1deg); opacity: 1; }
+  0%,
+  100% {
+    transform: translate3d(-3px, 2px, 0) skewX(-1.4deg);
+    opacity: 0.88;
+  }
+  50% {
+    transform: translate3d(12px, -10px, 0) skewX(1.5deg);
+    opacity: 1;
+  }
 }
 
 @keyframes landing-depth-sweep {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(12px, -9px, 0) scale(1.015); }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(12px, -9px, 0) scale(1.015);
+  }
 }
 
 @keyframes landing-vector {
-  0%, 100% { transform: translate3d(0, 0, 0); opacity: .68; }
-  50% { transform: translate3d(10px, -5px, 0); opacity: 1; }
+  0%,
+  100% {
+    transform: translate3d(-3px, 2px, 0);
+    opacity: 0.62;
+  }
+  50% {
+    transform: translate3d(15px, -9px, 0);
+    opacity: 1;
+  }
 }
 
 @keyframes landing-atom-scene {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(0, -5px, 0) scale(1.018); }
+  0%,
+  100% {
+    transform: translate3d(-5px, 4px, 0) rotate(-2deg) scale(0.99);
+  }
+  50% {
+    transform: translate3d(8px, -11px, 0) rotate(2.4deg) scale(1.04);
+  }
 }
 
 @keyframes landing-atom-orbit {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.035);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
 }
 
 @keyframes landing-atom-orbit-reverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+  0% {
+    transform: rotate(360deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.965);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
 }
 
 @keyframes landing-atom-depth {
-  0%, 100% { opacity: .74; transform: rotate(-1deg) scale(1); }
-  50% { opacity: .96; transform: rotate(1.4deg) scale(1.025); }
+  0%,
+  100% {
+    opacity: 0.62;
+    transform: rotate(-5deg) scale(0.97);
+  }
+  50% {
+    opacity: 0.96;
+    transform: rotate(5.5deg) scale(1.06);
+  }
 }
 
 @keyframes landing-course-rise {
-  0%, 100% { transform: translateY(0); opacity: .16; }
-  50% { transform: translateY(-8px); opacity: .42; }
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.16;
+  }
+  50% {
+    transform: translateY(-8px);
+    opacity: 0.42;
+  }
 }
 
 @keyframes landing-course-wave {
-  0%, 100% { stroke-dashoffset: 0; opacity: .72; }
-  50% { stroke-dashoffset: -42; opacity: .98; }
+  0%,
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.72;
+  }
+  50% {
+    stroke-dashoffset: -42;
+    opacity: 0.98;
+  }
 }
 
 @keyframes landing-course-drift {
-  0%, 100% { transform: translate3d(-4px, 2px, 0); }
-  50% { transform: translate3d(5px, -4px, 0); }
+  0%,
+  100% {
+    transform: translate3d(-4px, 2px, 0);
+  }
+  50% {
+    transform: translate3d(5px, -4px, 0);
+  }
 }
 
 @keyframes landing-course-spin {
-  0%, 100% { transform: rotate(-2deg) scale(1); }
-  50% { transform: rotate(3deg) scale(1.03); }
+  0%,
+  100% {
+    transform: rotate(-2deg) scale(1);
+  }
+  50% {
+    transform: rotate(3deg) scale(1.03);
+  }
 }
 
 @keyframes landing-surface-turn {
-  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1deg) scale(1); }
-  50% { transform: translate3d(4px, -4px, 0) rotate(.8deg) scale(1.015); }
+  0% {
+    transform: translate3d(0, 0, 0) scaleX(1) skewY(0deg);
+  }
+  25% {
+    transform: translate3d(6px, 0, 0) scaleX(0.56) skewY(3deg);
+  }
+  50% {
+    transform: translate3d(0, 0, 0) scaleX(-1) skewY(0deg);
+  }
+  75% {
+    transform: translate3d(-6px, 0, 0) scaleX(-0.56) skewY(-3deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scaleX(1) skewY(0deg);
+  }
 }
 
 @keyframes landing-surface-fill {
-  0%, 100% { transform: translate3d(-1px, 1px, 0); opacity: .94; }
-  50% { transform: translate3d(2px, -2px, 0); opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes landing-surface-lines {
-  0%, 100% { transform: translate3d(2px, -1px, 0); opacity: .82; }
-  50% { transform: translate3d(-2px, 1px, 0); opacity: .98; }
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes landing-surface-breathe {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.56;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.92;
+  }
+}
+
+@keyframes landing-surface-shadow {
+  0%,
+  100% {
+    transform: translate3d(-14px, 7px, 0) scale(0.93);
+    opacity: 0.08;
+  }
+  50% {
+    transform: translate3d(14px, -4px, 0) scale(1.08);
+    opacity: 0.22;
+  }
+}
+
+@keyframes landing-surface-stroke {
+  0%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dashoffset: -48;
+  }
+}
+
+@keyframes landing-atom-field {
+  0%,
+  100% {
+    transform: rotate(-4deg) scale(0.98);
+    opacity: 0.74;
+  }
+  50% {
+    transform: rotate(4.8deg) scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes landing-nucleus-glow {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.38;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.66;
+  }
+}
+
+@keyframes landing-hero-scene-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-0.35deg) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0) rotate(0.42deg) scale(1.012);
+  }
+}
+
+@keyframes landing-atom-panel-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-0.28deg) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) rotate(0.34deg) scale(1.01);
+  }
 }
 
 @layer utilities {
-  .landing-aura { animation: landing-aura 13s ease-in-out infinite; }
-  .landing-aura-delay { animation-delay: -6s; }
-  .landing-logo-aura { animation: landing-pulse 5s ease-in-out infinite; }
-  .landing-orbit { animation: landing-orbit 30s linear infinite; }
-  .landing-orbit-slow { animation: landing-orbit-reverse 42s linear infinite; }
+  .landing-aura {
+    animation: landing-aura 13s ease-in-out infinite;
+  }
+  .landing-aura-delay {
+    animation-delay: -6s;
+  }
+  .landing-logo-aura {
+    animation: landing-pulse 5s ease-in-out infinite;
+  }
+  .landing-orbit {
+    animation: landing-orbit 30s linear infinite;
+  }
+  .landing-orbit-slow {
+    animation: landing-orbit-reverse 42s linear infinite;
+  }
   .landing-dash {
     stroke-dasharray: 22 18;
     animation: landing-dash 8s linear infinite;
   }
-  .landing-float { animation: landing-float 7s ease-in-out infinite; }
-  .landing-pulse { animation: landing-pulse 6s ease-in-out infinite; }
-  .landing-ribbon { animation: landing-ribbon 5s ease-in-out infinite; }
-  .landing-plane { animation: landing-plane 9s ease-in-out infinite; }
-  .landing-depth-sweep { animation: landing-depth-sweep 8s ease-in-out infinite; }
-  .landing-vector { animation: landing-vector 3.8s ease-in-out infinite; }
-  .landing-vector-field { animation: landing-depth-sweep 11s ease-in-out infinite reverse; }
-  .landing-atom-scene { animation: landing-atom-scene 8s ease-in-out infinite; }
+  .landing-float {
+    animation: landing-float 7s ease-in-out infinite;
+  }
+  .landing-pulse {
+    animation: landing-pulse 6s ease-in-out infinite;
+  }
+  .landing-ribbon {
+    animation: landing-ribbon 5s ease-in-out infinite;
+  }
+  .landing-plane {
+    animation: landing-plane 4.8s ease-in-out infinite;
+  }
+  .landing-depth-sweep {
+    animation: landing-depth-sweep 4.6s ease-in-out infinite;
+  }
+  .landing-vector {
+    animation: landing-vector 2.4s ease-in-out infinite;
+  }
+  .landing-vector-field {
+    animation: landing-depth-sweep 5.2s ease-in-out infinite reverse;
+  }
+  .landing-atom-scene {
+    animation: landing-atom-scene 4.2s ease-in-out infinite;
+  }
   .landing-atom-orbit-a,
   .landing-atom-orbit-b,
-  .landing-atom-orbit-c { transform-box: view-box; }
-  .landing-atom-orbit-a { animation: landing-atom-orbit 8s linear infinite; }
-  .landing-atom-orbit-b { animation: landing-atom-orbit-reverse 10.5s linear infinite; }
-  .landing-atom-orbit-c { animation: landing-atom-orbit 12s linear infinite; }
-  .landing-atom-depth { animation: landing-atom-depth 7s ease-in-out infinite; }
-  .landing-course-rise { animation: landing-course-rise 4.8s ease-in-out infinite; }
+  .landing-atom-orbit-c {
+    transform-box: view-box;
+  }
+  .landing-atom-orbit-a {
+    animation: landing-atom-orbit 3.2s linear infinite;
+  }
+  .landing-atom-orbit-b {
+    animation: landing-atom-orbit-reverse 4s linear infinite;
+  }
+  .landing-atom-orbit-c {
+    animation: landing-atom-orbit 4.7s linear infinite;
+  }
+  .landing-atom-depth {
+    animation: landing-atom-depth 3.8s ease-in-out infinite;
+  }
+  .landing-course-rise {
+    animation: landing-course-rise 4.8s ease-in-out infinite;
+  }
   .landing-course-wave {
     stroke-dasharray: 26 16;
     animation: landing-course-wave 7s ease-in-out infinite;
   }
-  .landing-course-drift { animation: landing-course-drift 7.5s ease-in-out infinite; }
-  .landing-course-spin { animation: landing-course-spin 8s ease-in-out infinite; }
-  .landing-surface-turn { animation: landing-surface-turn 10s ease-in-out infinite; }
-  .landing-surface-fill { animation: landing-surface-fill 8s ease-in-out infinite; }
-  .landing-surface-lines { animation: landing-surface-lines 7s ease-in-out infinite; }
+  .landing-course-drift {
+    animation: landing-course-drift 7.5s ease-in-out infinite;
+  }
+  .landing-course-spin {
+    animation: landing-course-spin 8s ease-in-out infinite;
+  }
+  .landing-surface-turn {
+    animation: landing-surface-turn 6.2s linear infinite;
+    transform-box: view-box;
+    transform-origin: 380px 308px;
+  }
+  .landing-surface-fill {
+    animation: landing-surface-fill 2.8s ease-in-out infinite;
+    transform-box: view-box;
+    transform-origin: 380px 330px;
+  }
+  .landing-surface-lines {
+    animation: landing-surface-lines 2.6s ease-in-out infinite;
+    transform-box: view-box;
+    transform-origin: 380px 330px;
+  }
+  .landing-surface-breathe {
+    animation: landing-surface-breathe 3.7s ease-in-out infinite;
+    transform-origin: 380px 348px;
+  }
+  .landing-surface-shadow {
+    animation: landing-surface-shadow 4.1s ease-in-out infinite;
+    transform-origin: 382px 414px;
+  }
+  .landing-surface-ring,
+  .landing-surface-radial {
+    animation: landing-surface-stroke 4.2s ease-in-out infinite;
+  }
+  .landing-surface-radial {
+    animation-duration: 3.6s;
+  }
+  .landing-atom-field {
+    animation: landing-atom-field 4.4s ease-in-out infinite;
+    transform-origin: 380px 222px;
+  }
+  .landing-atom-field-delay {
+    animation-delay: -2s;
+  }
+  .landing-nucleus-glow {
+    animation: landing-nucleus-glow 3.1s ease-in-out infinite;
+    transform-origin: 380px 220px;
+  }
+  .landing-hero-scene {
+    animation: landing-hero-scene-drift 5.8s ease-in-out infinite;
+    transform-origin: 50% 56%;
+  }
+  .landing-atom-panel {
+    animation: landing-atom-panel-drift 5.2s ease-in-out infinite;
+    transform-origin: 50% 50%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -286,10 +670,21 @@
   .landing-surface-turn,
   .landing-surface-fill,
   .landing-surface-lines,
+  .landing-surface-breathe,
+  .landing-surface-shadow,
+  .landing-surface-ring,
+  .landing-surface-radial,
+  .landing-atom-field,
+  .landing-nucleus-glow,
+  .landing-hero-scene,
+  .landing-atom-panel,
   .animate-float {
     animation: none !important;
     transition: none !important;
   }
 
-  .reveal { opacity: 1; transform: none; }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }

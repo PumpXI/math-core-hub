@@ -8,17 +8,17 @@ import { ArrowRight, Check, Sparkles } from "lucide-react";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "STEMLab - Entendé STEM de otra forma" },
+      { title: "Kepler - STEM que se ve, se entiende y se queda" },
       {
         name: "description",
         content:
-          "Una experiencia visual premium para entender matemáticas, física, química y futuras áreas STEM con intuición.",
+          "Kepler revela los patrones invisibles detrás de matemática, física y química con modelos visuales e interactivos.",
       },
-      { property: "og:title", content: "STEMLab - Entendé STEM de otra forma" },
+      { property: "og:title", content: "Kepler - STEM que se ve, se entiende y se queda" },
       {
         property: "og:description",
         content:
-          "STEMLab convierte conceptos difíciles en experiencias visuales, estructuradas y memorables.",
+          "Visualizá lo que normalmente solo te explican con símbolos: patrones, movimiento y estructura detrás de STEM.",
       },
     ],
   }),
@@ -29,18 +29,24 @@ const courseWorlds = [
   {
     name: "Matemáticas",
     state: "Beta disponible",
-    copy: "Cálculo, álgebra lineal y ecuaciones diferenciales como estructura visual.",
+    copy: "Cálculo, álgebra lineal y ecuaciones diferenciales como patrones visibles.",
     aura: "from-cyan-300/60 via-blue-400/25 to-transparent",
     accent: "#0891b2",
     visual: "calculus",
-    tracks: ["Cálculo I", "Cálculo II", "Cálculo III", "Álgebra lineal", "Ecuaciones diferenciales"],
+    tracks: [
+      "Cálculo I",
+      "Cálculo II",
+      "Cálculo III",
+      "Álgebra lineal",
+      "Ecuaciones diferenciales",
+    ],
     slug: "calculo-1",
     path: "M42 156 C102 42 164 250 224 126 C288 -4 342 208 432 70",
   },
   {
     name: "Precálculo",
     state: "Beta disponible",
-    copy: "Funciones, estructura, trigonometría y el lenguaje previo al cálculo.",
+    copy: "Funciones, trigonometría y estructura algebraica como modelos que se pueden ver.",
     aura: "from-violet-300/60 via-fuchsia-300/25 to-transparent",
     accent: "#7c3aed",
     visual: "precalculus",
@@ -51,7 +57,7 @@ const courseWorlds = [
   {
     name: "Física",
     state: "En diseño",
-    copy: "Física I, II y III como movimiento, campos, ondas, óptica y energía.",
+    copy: "Movimiento, campos, ondas, óptica y energía como trayectorias y relaciones visibles.",
     aura: "from-orange-300/60 via-rose-300/25 to-transparent",
     accent: "#ea580c",
     visual: "physics",
@@ -61,7 +67,7 @@ const courseWorlds = [
   {
     name: "Química",
     state: "En diseño",
-    copy: "General 1, General 2, Orgánica e Intensiva como estructura y reacción.",
+    copy: "Estructura molecular, reacción y equilibrio como patrones emergentes.",
     aura: "from-emerald-300/60 via-yellow-200/35 to-transparent",
     accent: "#16a34a",
     visual: "chemistry",
@@ -71,7 +77,7 @@ const courseWorlds = [
   {
     name: "Más áreas STEM",
     state: "Próximamente",
-    copy: "Computación, ingeniería, biología y nuevas áreas bajo la misma experiencia.",
+    copy: "Computación, ingeniería, biología y nuevas áreas con la misma lógica visual.",
     aura: "from-cyan-300/50 via-amber-200/35 to-violet-300/35",
     accent: "#111827",
     visual: "future",
@@ -82,20 +88,20 @@ const courseWorlds = [
 
 const differences = [
   {
-    title: "Entender antes de memorizar",
+    title: "Ver antes de memorizar",
     copy: "La estructura aparece primero: movimiento, forma, relación y después la fórmula.",
   },
   {
-    title: "Cursos como mundos",
-    copy: "No entrás a una lista de materiales. Entrás a una experiencia con ritmo, atmósfera y propósito.",
+    title: "Modelos como mundos",
+    copy: "No entrás a una lista de materiales. Entrás a experiencias donde cada concepto revela un patrón.",
   },
   {
-    title: "Intuición visual",
+    title: "Patrones visibles",
     copy: "Los conceptos se vuelven más claros porque los ves comportarse, cambiar y conectarse.",
   },
   {
-    title: "STEM más allá de matemáticas",
-    copy: "Cálculo es el inicio. Física, química y futuras áreas comparten una misma identidad visual.",
+    title: "STEM más allá de símbolos",
+    copy: "Matemática, física, química y futuras áreas comparten una misma identidad visual.",
   },
 ];
 
@@ -149,7 +155,10 @@ function pathFromSamples(samples: Array<{ x: number; y: number }>) {
 }
 
 function surfaceColor(z: number, r: number) {
-  const colorIndex = Math.max(0, Math.min(SURFACE_COLORS.length - 1, Math.floor(((z + 0.28) / 1.28) * SURFACE_COLORS.length)));
+  const colorIndex = Math.max(
+    0,
+    Math.min(SURFACE_COLORS.length - 1, Math.floor(((z + 0.28) / 1.28) * SURFACE_COLORS.length)),
+  );
   return SURFACE_COLORS[(colorIndex + Math.floor(r / 2.2)) % SURFACE_COLORS.length];
 }
 
@@ -289,6 +298,7 @@ function Landing() {
 
   return (
     <div className="min-h-screen overflow-hidden bg-[#fffdf8] text-slate-950">
+      <div aria-hidden="true" className="kepler-screen-glow" />
       <SiteNavbar />
       <main>
         <Hero />
@@ -314,30 +324,41 @@ function Hero() {
         <div className="reveal max-w-3xl">
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-950/10 bg-white/75 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-600 shadow-sm backdrop-blur-xl">
             <Sparkles className="h-3.5 w-3.5 text-cyan-600" />
-            Ciencia visual para estudiantes
+            Patrones invisibles, modelos visibles
           </span>
           <h1 className="mt-7 max-w-4xl text-5xl font-semibold leading-[0.94] tracking-tight text-slate-950 sm:text-7xl lg:text-8xl">
-            Dejá de memorizar. Empezá a entender.
+            Kepler
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-700 sm:text-xl">
-            STEMLab convierte conceptos difíciles en experiencias visuales, estructuradas y memorables para matemáticas,
-            física, química y futuras áreas STEM.
+            STEM que se ve, se entiende y se queda. Kepler convierte matemática, física y química en
+            modelos visuales para revelar el porqué detrás de cada fórmula.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg" className="bg-slate-950 text-white shadow-[0_18px_50px_rgba(15,23,42,0.2)] hover:bg-slate-800">
+            <Button
+              asChild
+              size="lg"
+              className="bg-slate-950 text-white shadow-[0_18px_50px_rgba(15,23,42,0.2)] hover:bg-slate-800"
+            >
               <Link to="/dashboard">
-                Explorar STEMLab <ArrowRight className="ml-2 h-4 w-4" />
+                Explorar Kepler <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-slate-950/15 bg-white/75 text-slate-950 hover:bg-white">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-slate-950/15 bg-white/75 text-slate-950 hover:bg-white"
+            >
               <a href="#como-funciona">Cómo funciona</a>
             </Button>
           </div>
           <div className="mt-12 grid max-w-xl grid-cols-3 gap-4 text-sm text-slate-600">
-            {["Visual", "Intuitivo", "STEM"].map((item) => (
+            {["Patrones", "Modelos", "STEM"].map((item) => (
               <div key={item} className="border-l border-slate-950/10 pl-3">
                 <span className="block font-semibold text-slate-950">{item}</span>
-                <span className="text-xs uppercase tracking-[0.18em] text-slate-500">con intención</span>
+                <span className="text-xs uppercase tracking-[0.18em] text-slate-500">
+                  en movimiento
+                </span>
               </div>
             ))}
           </div>
@@ -362,9 +383,16 @@ function PageAura() {
 
 function HeroMathScene() {
   return (
-    <div className="reveal relative min-h-[430px] sm:min-h-[570px]" aria-label="Superficie matematica animada sobre un plano 3D">
+    <div
+      className="reveal landing-hero-scene relative min-h-[430px] sm:min-h-[570px]"
+      aria-label="Superficie matematica animada sobre un plano 3D"
+    >
       <div className="absolute inset-4 rounded-[8px] bg-[radial-gradient(circle_at_48%_42%,rgba(255,255,255,0.88),rgba(255,255,255,0)_62%)]" />
-      <svg viewBox="0 0 760 620" className="relative h-full min-h-[430px] w-full sm:min-h-[570px]" aria-hidden="true">
+      <svg
+        viewBox="0 0 760 620"
+        className="relative h-full min-h-[430px] w-full sm:min-h-[570px]"
+        aria-hidden="true"
+      >
         <defs>
           <linearGradient id="surfaceAuraStroke" x1="8%" x2="92%" y1="6%" y2="90%">
             <stop offset="0%" stopColor="#06b6d4" />
@@ -384,7 +412,14 @@ function HeroMathScene() {
             <stop offset="50%" stopColor="#0f172a" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#0f172a" stopOpacity="0.06" />
           </linearGradient>
-          <filter id="landingSoftGlow">
+          <filter
+            id="landingSoftGlow"
+            x="-160"
+            y="-160"
+            width="1080"
+            height="940"
+            filterUnits="userSpaceOnUse"
+          >
             <feGaussianBlur stdDeviation="7" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -394,7 +429,12 @@ function HeroMathScene() {
         </defs>
 
         <g className="landing-plane" style={{ transformOrigin: "380px 432px" }}>
-          <path d="M94 458 L354 300 L702 405 L402 558 Z" fill="rgba(255,255,255,0.34)" stroke="#0f172a" strokeOpacity="0.08" />
+          <path
+            d="M94 458 L354 300 L702 405 L402 558 Z"
+            fill="rgba(255,255,255,0.34)"
+            stroke="#0f172a"
+            strokeOpacity="0.08"
+          />
           {CARTESIAN_PLANE.lines.map((line, index) => (
             <path
               key={`cartesian-${index}`}
@@ -407,13 +447,42 @@ function HeroMathScene() {
               strokeWidth={line.width}
             />
           ))}
-          <circle cx={CARTESIAN_PLANE.origin.x} cy={CARTESIAN_PLANE.origin.y} r="4" fill="#0f172a" fillOpacity="0.3" />
-          <circle cx={CARTESIAN_PLANE.zTip.x} cy={CARTESIAN_PLANE.zTip.y} r="5" fill="#0f172a" fillOpacity="0.28" />
+          <circle
+            cx={CARTESIAN_PLANE.origin.x}
+            cy={CARTESIAN_PLANE.origin.y}
+            r="4"
+            fill="#0f172a"
+            fillOpacity="0.3"
+          />
+          <circle
+            cx={CARTESIAN_PLANE.zTip.x}
+            cy={CARTESIAN_PLANE.zTip.y}
+            r="5"
+            fill="#0f172a"
+            fillOpacity="0.28"
+          />
         </g>
 
         <g className="landing-surface-turn" style={{ transformOrigin: "380px 308px" }}>
-          <ellipse cx="380" cy="348" rx="256" ry="184" fill="url(#surfaceCoreAura)" opacity="0.76" />
-          <ellipse cx="382" cy="414" rx="286" ry="86" fill="url(#surfaceAuraStroke)" opacity="0.14" filter="url(#landingSoftGlow)" />
+          <ellipse
+            className="landing-surface-breathe"
+            cx="380"
+            cy="348"
+            rx="256"
+            ry="184"
+            fill="url(#surfaceCoreAura)"
+            opacity="0.76"
+          />
+          <ellipse
+            className="landing-surface-shadow"
+            cx="382"
+            cy="414"
+            rx="286"
+            ry="86"
+            fill="url(#surfaceAuraStroke)"
+            opacity="0.14"
+            filter="url(#landingSoftGlow)"
+          />
 
           <g className="landing-surface-fill">
             {MEXICAN_HAT_SURFACE.patches.map((patch, index) => (
@@ -429,10 +498,11 @@ function HeroMathScene() {
             ))}
           </g>
 
-          <g className="landing-surface-lines">
+          <g className="landing-surface-lines" style={{ transformOrigin: "380px 330px" }}>
             {MEXICAN_HAT_SURFACE.ringLines.map((path, index) => (
               <path
                 key={`surface-ring-${index}`}
+                className="landing-surface-ring"
                 d={path.d}
                 fill="none"
                 stroke={path.color}
@@ -445,6 +515,7 @@ function HeroMathScene() {
             {MEXICAN_HAT_SURFACE.radialLines.map((path, index) => (
               <path
                 key={`surface-radial-${index}`}
+                className="landing-surface-radial"
                 d={path.d}
                 fill="none"
                 stroke={path.color}
@@ -465,9 +536,27 @@ function HeroMathScene() {
             [498, 430, 48, -24, "#f59e0b"],
             [584, 394, 42, -20, "#10b981"],
           ].map(([x, y, dx, dy, color], index) => (
-            <g key={`${x}-${y}`} className="landing-vector" style={{ animationDelay: `${index * 0.24}s` }}>
-              <line x1={x} y1={y} x2={Number(x) + Number(dx)} y2={Number(y) + Number(dy)} stroke={color} strokeWidth="2.4" strokeLinecap="round" />
-              <circle cx={Number(x) + Number(dx)} cy={Number(y) + Number(dy)} r="4" fill={color} filter="url(#landingSoftGlow)" />
+            <g
+              key={`${x}-${y}`}
+              className="landing-vector"
+              style={{ animationDelay: `${index * 0.24}s` }}
+            >
+              <line
+                x1={x}
+                y1={y}
+                x2={Number(x) + Number(dx)}
+                y2={Number(y) + Number(dy)}
+                stroke={color}
+                strokeWidth="2.4"
+                strokeLinecap="round"
+              />
+              <circle
+                cx={Number(x) + Number(dx)}
+                cy={Number(y) + Number(dy)}
+                r="4"
+                fill={color}
+                filter="url(#landingSoftGlow)"
+              />
             </g>
           ))}
         </g>
@@ -480,14 +569,16 @@ function HeroMathScene() {
             [632, 408, "#a855f7"],
             [252, 512, "#ec4899"],
           ].map(([cx, cy, color], index) => (
-            <g key={`${cx}-${cy}`} className="landing-float" style={{ animationDelay: `${index * 0.35}s` }}>
+            <g
+              key={`${cx}-${cy}`}
+              className="landing-float"
+              style={{ animationDelay: `${index * 0.35}s` }}
+            >
               <circle cx={cx} cy={cy} r="6" fill={color} filter="url(#landingSoftGlow)" />
               <circle cx={cx} cy={cy} r="17" fill="none" stroke={color} strokeOpacity="0.2" />
             </g>
           ))}
         </g>
-
-        <path d="M74 116 C154 72 214 136 284 98 C358 58 418 122 490 86 C560 50 612 100 692 72" fill="none" stroke="url(#depthFade)" strokeWidth="1.4" className="landing-dash" />
       </svg>
     </div>
   );
@@ -499,13 +590,15 @@ function StemShowcase() {
       <SectionAura side="left" />
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
         <div className="reveal">
-          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-700">Física y química bajo el mismo lenguaje</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-700">
+            Modelos para ver lo invisible
+          </p>
           <h2 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-            La ciencia se entiende mejor cuando se ve en movimiento.
+            La ciencia, por fin visual.
           </h2>
           <p className="mt-5 max-w-xl text-lg leading-8 text-slate-700">
-            Un sistema de fuerzas, una trayectoria y una estructura molecular no son ideas separadas: son patrones,
-            relaciones y cambios que podés aprender a reconocer.
+            Una fuerza, una trayectoria y una estructura molecular no son ideas separadas: son
+            patrones, relaciones y cambios que podés aprender a reconocer.
           </p>
         </div>
         <PhysicsChemistryScene />
@@ -527,10 +620,20 @@ function SectionAura({ side }: { side: "left" | "right" }) {
 
 function PhysicsChemistryScene() {
   return (
-    <div className="reveal relative overflow-hidden rounded-[8px] border border-slate-950/[0.04] bg-[#fffdf8]/35 p-2 shadow-[0_24px_90px_rgba(15,23,42,0.035)]">
-      <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_28%_28%,rgba(34,211,238,0.18),transparent_36%),radial-gradient(circle_at_72%_34%,rgba(168,85,247,0.16),transparent_36%),radial-gradient(circle_at_52%_76%,rgba(250,204,21,0.13),transparent_40%),radial-gradient(circle_at_78%_72%,rgba(34,197,94,0.12),transparent_36%),linear-gradient(180deg,rgba(255,253,248,0.12),rgba(255,253,248,0.62))]" />
-      <div aria-hidden="true" className="pointer-events-none absolute inset-x-8 bottom-2 h-px bg-gradient-to-r from-transparent via-slate-950/10 to-transparent" />
-      <svg viewBox="0 0 760 420" className="relative h-[360px] w-full sm:h-[420px]" aria-hidden="true">
+    <div className="reveal landing-atom-panel relative overflow-hidden rounded-[8px] p-2">
+      <div
+        aria-hidden="true"
+        className="absolute -inset-8 rounded-[26px] bg-[radial-gradient(circle_at_35%_35%,rgba(34,211,238,0.16),transparent_58%),radial-gradient(circle_at_70%_30%,rgba(168,85,247,0.14),transparent_56%),radial-gradient(circle_at_52%_76%,rgba(250,204,21,0.1),transparent_54%)] blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 rounded-[8px] bg-[radial-gradient(circle_at_28%_28%,rgba(34,211,238,0.16),transparent_36%),radial-gradient(circle_at_72%_34%,rgba(168,85,247,0.14),transparent_36%),radial-gradient(circle_at_52%_76%,rgba(250,204,21,0.12),transparent_40%),radial-gradient(circle_at_78%_72%,rgba(34,197,94,0.1),transparent_36%),linear-gradient(180deg,rgba(255,253,248,0.2),rgba(255,253,248,0.52))]"
+      />
+      <svg
+        viewBox="0 0 760 420"
+        className="relative h-[360px] w-full sm:h-[420px]"
+        aria-hidden="true"
+      >
         <defs>
           <linearGradient id="atomOrbitStroke" x1="0%" x2="100%">
             <stop offset="0%" stopColor="#06b6d4" />
@@ -545,7 +648,14 @@ function PhysicsChemistryScene() {
             <stop offset="82%" stopColor="#06b6d4" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
           </radialGradient>
-          <filter id="sceneGlow">
+          <filter
+            id="sceneGlow"
+            x="-120"
+            y="-120"
+            width="1000"
+            height="720"
+            filterUnits="userSpaceOnUse"
+          >
             <feGaussianBlur stdDeviation="6" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
@@ -554,12 +664,38 @@ function PhysicsChemistryScene() {
           </filter>
         </defs>
 
-        <path d="M82 332 C178 286 276 344 382 306 C490 268 580 292 684 238" fill="none" stroke="#0f172a" strokeOpacity="0.08" strokeWidth="2" className="landing-dash" />
-        <ellipse cx="380" cy="222" rx="278" ry="132" fill="none" stroke="#0f172a" strokeOpacity="0.055" />
-        <ellipse cx="380" cy="222" rx="214" ry="92" fill="none" stroke="#0f172a" strokeOpacity="0.045" />
+        <ellipse
+          className="landing-atom-field"
+          cx="380"
+          cy="222"
+          rx="278"
+          ry="132"
+          fill="none"
+          stroke="#0f172a"
+          strokeOpacity="0.055"
+        />
+        <ellipse
+          className="landing-atom-field landing-atom-field-delay"
+          cx="380"
+          cy="222"
+          rx="214"
+          ry="92"
+          fill="none"
+          stroke="#0f172a"
+          strokeOpacity="0.045"
+        />
 
         <g className="landing-atom-scene" style={{ transformOrigin: "380px 218px" }}>
-          <ellipse cx="380" cy="220" rx="150" ry="150" fill="url(#atomNucleusGlow)" opacity="0.52" filter="url(#sceneGlow)" />
+          <ellipse
+            className="landing-nucleus-glow"
+            cx="380"
+            cy="220"
+            rx="150"
+            ry="150"
+            fill="url(#atomNucleusGlow)"
+            opacity="0.52"
+            filter="url(#sceneGlow)"
+          />
 
           {[
             [-16, 12, "#06b6d4", 18],
@@ -579,15 +715,53 @@ function PhysicsChemistryScene() {
               opacity={index < 5 ? "0.86" : "0.64"}
               filter="url(#sceneGlow)"
               transform={`translate(${Number(tx)} ${Number(ty)})`}
-            />
+            >
+              <animateTransform
+                attributeName="transform"
+                additive="sum"
+                type="translate"
+                values={`0 0; ${index % 2 === 0 ? 3 : -3} ${index % 3 === 0 ? -2 : 2}; 0 0`}
+                dur={`${2.6 + index * 0.18}s`}
+                begin={`${index * -0.28}s`}
+                repeatCount="indefinite"
+              />
+            </circle>
           ))}
 
           {[
-            { className: "landing-atom-orbit-a", angle: -18, scale: 0.42, radius: 214, color: "#06b6d4", delay: "0s", size: 8 },
-            { className: "landing-atom-orbit-b", angle: 62, scale: 0.36, radius: 202, color: "#a855f7", delay: "-2.8s", size: 7 },
-            { className: "landing-atom-orbit-c", angle: -72, scale: 0.34, radius: 188, color: "#22c55e", delay: "-4.6s", size: 7 },
+            {
+              className: "landing-atom-orbit-a",
+              angle: -18,
+              scale: 0.42,
+              radius: 214,
+              color: "#06b6d4",
+              delay: "0s",
+              size: 8,
+            },
+            {
+              className: "landing-atom-orbit-b",
+              angle: 62,
+              scale: 0.36,
+              radius: 202,
+              color: "#a855f7",
+              delay: "-2.8s",
+              size: 7,
+            },
+            {
+              className: "landing-atom-orbit-c",
+              angle: -72,
+              scale: 0.34,
+              radius: 188,
+              color: "#22c55e",
+              delay: "-4.6s",
+              size: 7,
+            },
           ].map((orbit) => (
-            <g key={orbit.className} className={orbit.className} style={{ transformOrigin: "380px 220px", animationDelay: orbit.delay }}>
+            <g
+              key={orbit.className}
+              className={orbit.className}
+              style={{ transformOrigin: "380px 220px", animationDelay: orbit.delay }}
+            >
               <g transform={`translate(380 220) rotate(${orbit.angle}) scale(1 ${orbit.scale})`}>
                 <circle
                   cx="0"
@@ -608,17 +782,32 @@ function PhysicsChemistryScene() {
                   strokeWidth="24"
                 />
                 <g transform={`translate(${orbit.radius} 0) scale(1 ${1 / orbit.scale})`}>
-                  <circle r={orbit.size + 9} fill={orbit.color} opacity="0.14" filter="url(#sceneGlow)" />
+                  <circle
+                    r={orbit.size + 9}
+                    fill={orbit.color}
+                    opacity="0.14"
+                    filter="url(#sceneGlow)"
+                  />
                   <circle r={orbit.size} fill={orbit.color} filter="url(#sceneGlow)" />
-                  <circle r={orbit.size + 3} fill="none" stroke={orbit.color} strokeOpacity="0.22" />
+                  <circle
+                    r={orbit.size + 3}
+                    fill="none"
+                    stroke={orbit.color}
+                    strokeOpacity="0.22"
+                  />
                 </g>
               </g>
             </g>
           ))}
 
           <g className="landing-atom-depth" style={{ transformOrigin: "380px 220px" }}>
-            <path d="M192 220 C262 150 504 150 568 220 C504 290 262 290 192 220" fill="none" stroke="#0f172a" strokeOpacity="0.12" strokeWidth="1.4" />
-            <path d="M252 112 C346 178 414 262 508 328" fill="none" stroke="#ffffff" strokeOpacity="0.62" strokeWidth="3" strokeLinecap="round" />
+            <path
+              d="M192 220 C262 150 504 150 568 220 C504 290 262 290 192 220"
+              fill="none"
+              stroke="#0f172a"
+              strokeOpacity="0.12"
+              strokeWidth="1.4"
+            />
           </g>
         </g>
       </svg>
@@ -632,9 +821,11 @@ function WhyDifferent() {
       <SectionAura side="right" />
       <div className="mx-auto max-w-7xl">
         <div className="reveal max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-violet-700">No es otra plataforma de cursos</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-violet-700">
+            No es otra plataforma de cursos
+          </p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-            Para estudiantes que quieren entender de verdad.
+            Para estudiantes que quieren entender el porqué.
           </h2>
         </div>
         <div className="mt-12 grid gap-px overflow-hidden rounded-[8px] border border-slate-950/10 bg-slate-950/10 md:grid-cols-2">
@@ -653,8 +844,12 @@ function WhyDifferent() {
                 }`}
               />
               <div className="relative">
-                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">0{index + 1}</div>
-                <h3 className="mt-8 text-2xl font-semibold tracking-tight text-slate-950">{item.title}</h3>
+                <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                  0{index + 1}
+                </div>
+                <h3 className="mt-8 text-2xl font-semibold tracking-tight text-slate-950">
+                  {item.title}
+                </h3>
                 <p className="mt-4 max-w-md leading-7 text-slate-700">{item.copy}</p>
               </div>
             </article>
@@ -672,12 +867,18 @@ function CourseWorlds() {
       <div className="mx-auto max-w-7xl">
         <div className="reveal flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-700">Mundos de aprendizaje</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-700">
+              Mapas de aprendizaje
+            </p>
             <h2 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-              Cada área se siente como una entrada a un universo STEM.
+              Cada área revela una estructura distinta de STEM.
             </h2>
           </div>
-          <Button asChild variant="outline" className="border-slate-950/15 bg-white/75 text-slate-950 hover:bg-white">
+          <Button
+            asChild
+            variant="outline"
+            className="border-slate-950/15 bg-white/75 text-slate-950 hover:bg-white"
+          >
             <Link to="/dashboard">
               Ver cursos <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
@@ -713,18 +914,28 @@ function CourseWorldCard({ course }: { course: (typeof courseWorlds)[number] }) 
   return (
     <article className="reveal group relative h-full min-h-[430px] overflow-hidden rounded-[8px] border border-slate-950/10 bg-white/88 p-5 shadow-[0_20px_70px_rgba(15,23,42,0.07)] backdrop-blur transition duration-500 hover:-translate-y-1 hover:border-slate-950/20">
       <div aria-hidden="true" className={`absolute inset-0 bg-gradient-to-br ${course.aura}`} />
-      <div aria-hidden="true" className="absolute -right-16 -top-16 h-44 w-44 rounded-full border border-slate-950/10 transition duration-700 group-hover:scale-110" />
+      <div
+        aria-hidden="true"
+        className="absolute -right-16 -top-16 h-44 w-44 rounded-full border border-slate-950/10 transition duration-700 group-hover:scale-110"
+      />
       <div className="relative flex h-full flex-col justify-between">
         <div>
           <div className="flex items-center justify-between gap-3">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">{course.state}</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-600">
+              {course.state}
+            </span>
             <span className="h-2 w-2 rounded-full" style={{ backgroundColor: course.accent }} />
           </div>
-          <h3 className="mt-8 text-3xl font-semibold tracking-tight text-slate-950">{course.name}</h3>
+          <h3 className="mt-8 text-3xl font-semibold tracking-tight text-slate-950">
+            {course.name}
+          </h3>
           <p className="mt-4 text-sm leading-6 text-slate-700">{course.copy}</p>
           <div className="mt-5 flex min-h-[58px] flex-wrap content-start gap-2">
             {course.tracks.map((track) => (
-              <span key={track} className="rounded-full border border-slate-950/10 bg-white/60 px-2.5 py-1 text-[11px] font-medium text-slate-600 shadow-sm backdrop-blur">
+              <span
+                key={track}
+                className="rounded-full border border-slate-950/10 bg-white/60 px-2.5 py-1 text-[11px] font-medium text-slate-600 shadow-sm backdrop-blur"
+              >
                 {track}
               </span>
             ))}
@@ -737,151 +948,8 @@ function CourseWorldCard({ course }: { course: (typeof courseWorlds)[number] }) 
   );
 }
 
-function CourseVisualDefs() {
-  return (
-    <defs>
-      <filter id="courseGlow">
-        <feGaussianBlur stdDeviation="5" result="blur" />
-        <feMerge>
-          <feMergeNode in="blur" />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-    </defs>
-  );
-}
-
 function CourseWorldVisual({ course }: { course: (typeof courseWorlds)[number] }) {
-  if (course.visual === "calculus") {
-    return (
-      <svg viewBox="0 0 460 220" className="mt-8 h-36 w-full" aria-hidden="true">
-        <CourseVisualDefs />
-        <circle cx="232" cy="112" r="84" fill="none" stroke="#0f172a" strokeOpacity="0.07" />
-        <circle cx="232" cy="112" r="122" fill="none" stroke={course.accent} strokeOpacity="0.09" />
-        {[
-          [94, 112, "∫", "#06b6d4", 50],
-          [204, 92, "lim", "#2563eb", 32],
-          [310, 122, "d/dx", "#8b5cf6", 28],
-          [236, 168, "Ax=b", "#ec4899", 26],
-          [344, 62, "y′", "#f59e0b", 30],
-        ].map(([x, y, symbol, color, size], index) => (
-          <text
-            key={String(symbol)}
-            x={Number(x)}
-            y={Number(y)}
-            fill={String(color)}
-            fillOpacity="0.82"
-            fontSize={Number(size)}
-            fontWeight="700"
-            textAnchor="middle"
-            className={index % 2 === 0 ? "landing-course-drift" : "landing-float"}
-            style={{ animationDelay: `${index * 0.16}s` }}
-          >
-            {symbol}
-          </text>
-        ))}
-      </svg>
-    );
-  }
-
-  if (course.visual === "precalculus") {
-    return (
-      <svg viewBox="0 0 460 220" className="mt-8 h-36 w-full" aria-hidden="true">
-        <CourseVisualDefs />
-        <g className="landing-course-drift">
-          <ellipse cx="238" cy="112" rx="166" ry="78" fill="#ffffff" fillOpacity="0.18" stroke={course.accent} strokeOpacity="0.3" strokeWidth="2.4" />
-          <ellipse cx="214" cy="112" rx="112" ry="54" fill="#8b5cf6" fillOpacity="0.08" stroke="#8b5cf6" strokeOpacity="0.24" strokeWidth="2" />
-          <ellipse cx="252" cy="112" rx="84" ry="42" fill="#06b6d4" fillOpacity="0.08" stroke="#06b6d4" strokeOpacity="0.24" strokeWidth="2" />
-          <ellipse cx="278" cy="112" rx="48" ry="25" fill="#f59e0b" fillOpacity="0.1" stroke="#f59e0b" strokeOpacity="0.28" strokeWidth="2" />
-        </g>
-        {[
-          [92, 116, "ℝ", "#7c3aed", 38],
-          [178, 116, "ℚ", "#8b5cf6", 34],
-          [250, 116, "ℤ", "#06b6d4", 32],
-          [304, 116, "ℕ", "#f59e0b", 30],
-        ].map(([x, y, symbol, color, size], index) => (
-          <text
-            key={String(symbol)}
-            x={Number(x)}
-            y={Number(y)}
-            fill={String(color)}
-            fillOpacity="0.86"
-            fontSize={Number(size)}
-            fontWeight="800"
-            textAnchor="middle"
-            className="landing-float"
-            style={{ animationDelay: `${index * 0.18}s` }}
-          >
-            {symbol}
-          </text>
-        ))}
-        <path d="M74 176 C120 148 166 188 212 156 C258 124 306 166 366 128" fill="none" stroke="#ec4899" strokeOpacity="0.28" strokeWidth="3" strokeLinecap="round" className="landing-course-wave" />
-      </svg>
-    );
-  }
-
-  if (course.visual === "physics") {
-    return (
-      <svg viewBox="0 0 460 220" className="mt-8 h-36 w-full" aria-hidden="true">
-        <CourseVisualDefs />
-        <path d="M64 172 H398" stroke="#0f172a" strokeOpacity="0.1" strokeWidth="2" />
-        <g className="landing-course-drift">
-          <rect x="186" y="100" width="88" height="58" rx="8" fill="#ffffff" fillOpacity="0.72" stroke="#0f172a" strokeOpacity="0.56" strokeWidth="2" />
-          <rect x="194" y="108" width="72" height="42" rx="6" fill="#f97316" fillOpacity="0.1" />
-        </g>
-        {[
-          [230, 100, 230, 46, "#2563eb"],
-          [230, 158, 230, 202, "#64748b"],
-          [274, 129, 344, 92, "#f97316"],
-          [186, 129, 126, 150, "#06b6d4"],
-        ].map(([x1, y1, x2, y2, color], index) => (
-          <g key={`${x2}-${y2}`} className="landing-vector" style={{ animationDelay: `${index * 0.18}s` }}>
-            <line x1={Number(x1)} y1={Number(y1)} x2={Number(x2)} y2={Number(y2)} stroke={String(color)} strokeWidth="4" strokeLinecap="round" />
-            <circle cx={Number(x2)} cy={Number(y2)} r="5" fill={String(color)} filter="url(#courseGlow)" />
-          </g>
-        ))}
-        <path d="M76 54 C118 28 150 82 192 54 S272 28 314 54 S384 82 426 54" fill="none" stroke="#a855f7" strokeOpacity="0.24" strokeWidth="3" strokeLinecap="round" className="landing-course-wave" />
-      </svg>
-    );
-  }
-
-  if (course.visual === "chemistry") {
-    return (
-      <svg viewBox="0 0 460 220" className="mt-8 h-36 w-full" aria-hidden="true">
-        <CourseVisualDefs />
-        <g className="landing-course-spin" style={{ transformOrigin: "230px 112px" }}>
-          <path d="M116 112 L174 72 L236 112 L304 72 L366 112 M236 112 L236 168 M174 72 L174 150 M304 72 L304 150" fill="none" stroke="#0f172a" strokeOpacity="0.1" strokeWidth="13" strokeLinejoin="round" strokeLinecap="round" />
-          <path d="M116 112 L174 72 L236 112 L304 72 L366 112 M236 112 L236 168 M174 72 L174 150 M304 72 L304 150" fill="none" stroke={course.accent} strokeOpacity="0.7" strokeWidth="3.2" strokeLinejoin="round" strokeLinecap="round" />
-          {[
-            [116, 112, "#22c55e", 8],
-            [174, 72, "#06b6d4", 9],
-            [236, 112, "#f59e0b", 11],
-            [304, 72, "#8b5cf6", 9],
-            [366, 112, "#22c55e", 8],
-            [236, 168, "#ec4899", 7],
-            [174, 150, "#06b6d4", 6],
-            [304, 150, "#f59e0b", 6],
-          ].map(([cx, cy, color, radius], index) => (
-            <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={radius} fill={String(color)} filter="url(#courseGlow)" className="landing-float" style={{ animationDelay: `${index * 0.12}s` }} />
-          ))}
-        </g>
-      </svg>
-    );
-  }
-
-  return (
-    <svg viewBox="0 0 460 220" className="mt-8 h-36 w-full" aria-hidden="true">
-      <CourseVisualDefs />
-      <g className="landing-course-drift">
-        <path d={course.path} fill="none" stroke="#0f172a" strokeOpacity="0.1" strokeWidth="16" strokeLinecap="round" />
-        <path d={course.path} fill="none" stroke={course.accent} strokeOpacity="0.72" strokeWidth="4" strokeLinecap="round" className="landing-dash" />
-        {[82, 164, 246, 328, 410].map((cx, index) => (
-          <circle key={cx} cx={cx} cy={index % 2 === 0 ? 132 : 84} r={index === 2 ? 9 : 6} fill={SURFACE_COLORS[index % SURFACE_COLORS.length]} filter="url(#courseGlow)" />
-        ))}
-        <path d="M82 132 L164 84 L246 132 L328 84 L410 132" fill="none" stroke="#0f172a" strokeOpacity="0.12" strokeWidth="2" />
-      </g>
-    </svg>
-  );
+  return <div className="mt-8 h-36 w-full" aria-hidden="true" />;
 }
 
 function PricingAccess() {
@@ -890,17 +958,25 @@ function PricingAccess() {
       <SectionAura side="right" />
       <div className="mx-auto max-w-7xl">
         <div className="reveal relative overflow-hidden rounded-[8px] border border-slate-950/10 bg-white/88 p-8 text-slate-950 shadow-[0_28px_90px_rgba(15,23,42,0.08)] backdrop-blur md:p-12">
-          <div aria-hidden="true" className="landing-aura absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_35%_35%,rgba(34,211,238,0.32),transparent_58%),radial-gradient(circle_at_70%_70%,rgba(168,85,247,0.24),transparent_58%)] blur-2xl" />
-          <div aria-hidden="true" className="landing-aura landing-aura-delay absolute -bottom-20 left-1/4 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_45%_45%,rgba(250,204,21,0.28),transparent_60%),radial-gradient(circle_at_68%_52%,rgba(16,185,129,0.2),transparent_62%)] blur-2xl" />
+          <div
+            aria-hidden="true"
+            className="landing-aura absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_35%_35%,rgba(34,211,238,0.32),transparent_58%),radial-gradient(circle_at_70%_70%,rgba(168,85,247,0.24),transparent_58%)] blur-2xl"
+          />
+          <div
+            aria-hidden="true"
+            className="landing-aura landing-aura-delay absolute -bottom-20 left-1/4 h-80 w-80 rounded-full bg-[radial-gradient(circle_at_45%_45%,rgba(250,204,21,0.28),transparent_60%),radial-gradient(circle_at_68%_52%,rgba(16,185,129,0.2),transparent_62%)] blur-2xl"
+          />
 
           <div className="relative grid gap-10 lg:grid-cols-[1fr_390px] lg:items-end">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-700">Precio y acceso</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-700">
+                Precio y acceso
+              </p>
               <h2 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">
                 Un acceso mensual claro. Sin cargos escondidos.
               </h2>
               <p className="mt-5 max-w-xl text-lg leading-8 text-slate-700">
-                Pagás por SINPE Móvil y accedés a tus cursos. Simple, local y pensado para estudiantes.
+                Pagás por SINPE Móvil y accedés a Kepler. Simple, local y pensado para estudiantes.
               </p>
             </div>
 
@@ -910,7 +986,9 @@ function PricingAccess() {
                 <span className="text-6xl font-semibold tracking-tight text-slate-950">₡2500</span>
                 <span className="pb-2 text-slate-600">al mes</span>
               </div>
-              <p className="mt-3 text-sm leading-6 text-slate-700">Incluye 1 curso. Cada curso extra suma ₡500 al mes.</p>
+              <p className="mt-3 text-sm leading-6 text-slate-700">
+                Incluye 1 curso. Cada curso extra suma ₡500 al mes.
+              </p>
               <ul className="mt-6 space-y-3 text-sm text-slate-700">
                 {pricingFeatures.map((feature) => (
                   <li key={feature} className="flex gap-3">
@@ -934,22 +1012,29 @@ function SinpeFlow() {
   const steps = [
     ["1", "Elegís tu acceso", "Seleccionás el curso incluido y cualquier curso extra."],
     ["2", "Pagás por SINPE Móvil", "Un pago mensual sencillo, local y transparente."],
-    ["3", "Se activa tu acceso", "Entrás directo a tus mundos de aprendizaje STEM."],
+    ["3", "Se activa tu acceso", "Entrás directo a tus modelos visuales de aprendizaje STEM."],
   ];
 
   return (
     <section className="px-4 py-20 sm:px-6">
       <div className="mx-auto max-w-7xl">
         <div className="reveal max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-emerald-700">SINPE Móvil</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-emerald-700">
+            SINPE Móvil
+          </p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
             Local, transparente y profesional.
           </h2>
         </div>
         <div className="mt-10 grid gap-4 md:grid-cols-3">
           {steps.map(([number, title, copy]) => (
-            <article key={number} className="reveal rounded-[8px] border border-slate-950/10 bg-white/82 p-6 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur">
-              <div className="grid h-10 w-10 place-items-center rounded-full bg-slate-950 text-sm font-semibold text-white">{number}</div>
+            <article
+              key={number}
+              className="reveal rounded-[8px] border border-slate-950/10 bg-white/82 p-6 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur"
+            >
+              <div className="grid h-10 w-10 place-items-center rounded-full bg-slate-950 text-sm font-semibold text-white">
+                {number}
+              </div>
               <h3 className="mt-8 text-2xl font-semibold tracking-tight text-slate-950">{title}</h3>
               <p className="mt-3 leading-7 text-slate-700">{copy}</p>
             </article>
@@ -964,14 +1049,17 @@ function FinalCta() {
   return (
     <section className="px-4 py-24 sm:px-6">
       <div className="reveal relative mx-auto max-w-7xl overflow-hidden rounded-[8px] border border-slate-950/10 bg-white p-8 text-center shadow-[0_28px_90px_rgba(15,23,42,0.08)] md:p-14">
-        <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(34,211,238,0.26),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(168,85,247,0.2),transparent_34%),radial-gradient(circle_at_50%_100%,rgba(250,204,21,0.22),transparent_38%),radial-gradient(circle_at_30%_82%,rgba(16,185,129,0.16),transparent_36%)]" />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(34,211,238,0.26),transparent_34%),radial-gradient(circle_at_82%_18%,rgba(168,85,247,0.2),transparent_34%),radial-gradient(circle_at_50%_100%,rgba(250,204,21,0.22),transparent_38%),radial-gradient(circle_at_30%_82%,rgba(16,185,129,0.16),transparent_36%)]"
+        />
         <div className="relative mx-auto max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-500">STEMLab</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-500">Kepler</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
-            Convertí lo difícil en algo intuitivo.
+            Convertí conceptos abstractos en ideas visibles.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-700">
-            Empezá con una experiencia diseñada para ver, sentir y entender la estructura detrás de STEM.
+            Aprendé desde modelos, movimiento y patrones; no desde bloques de texto.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg" className="bg-slate-950 text-white hover:bg-slate-800">
@@ -979,7 +1067,12 @@ function FinalCta() {
                 Solicitar acceso <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-slate-950/15 bg-white/70 text-slate-950 hover:bg-white">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-slate-950/15 bg-white/70 text-slate-950 hover:bg-white"
+            >
               <a href="#cursos">Explorar mundos</a>
             </Button>
           </div>
