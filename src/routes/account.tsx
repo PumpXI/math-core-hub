@@ -1,24 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useUser } from "@clerk/clerk-react";
 import { AppNavbar } from "@/components/app/AppNavbar";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Protected } from "@/components/auth/Protected";
 import { CreditCard, Mail, User as UserIcon, Calendar } from "lucide-react";
 
 export const Route = createFileRoute("/account")({
   head: () => ({ meta: [{ title: "Mi cuenta — STEMLab" }] }),
-  component: () => (
-    <Protected>
-      <AccountPage />
-    </Protected>
-  ),
+  component: AccountPage,
 });
 
 function AccountPage() {
-  const { user } = useUser();
-
   // Placeholder subscription data
   const subscription = {
     active: true,
@@ -42,21 +34,14 @@ function AccountPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center gap-4">
-              {user?.imageUrl && (
-                <img
-                  src={user.imageUrl}
-                  alt={user.fullName ?? "Avatar"}
-                  className="h-16 w-16 rounded-full border border-border"
-                />
-              )}
               <div>
                 <div className="flex items-center gap-2 text-foreground">
                   <UserIcon className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">{user?.fullName ?? user?.firstName ?? "Usuario"}</span>
+                  <span className="font-medium">Estudiante</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
                   <Mail className="h-4 w-4" />
-                  <span>{user?.primaryEmailAddress?.emailAddress}</span>
+                  <span>Acceso local de desarrollo</span>
                 </div>
               </div>
             </div>

@@ -117,3 +117,179 @@
 
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 .animate-float { animation: float 6s ease-in-out infinite; }
+
+@keyframes landing-aura {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: .72; }
+  50% { transform: translate3d(18px, -14px, 0) scale(1.06); opacity: .92; }
+}
+
+@keyframes landing-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes landing-orbit-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes landing-dash {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -96; }
+}
+
+@keyframes landing-float {
+  0%, 100% { transform: translateY(0); opacity: .86; }
+  50% { transform: translateY(-10px); opacity: 1; }
+}
+
+@keyframes landing-pulse {
+  0%, 100% { transform: scale(1); opacity: .96; }
+  50% { transform: scale(1.045); opacity: 1; }
+}
+
+@keyframes landing-ribbon {
+  0%, 100% { stroke-width: 7; opacity: .92; }
+  50% { stroke-width: 9; opacity: 1; }
+}
+
+@keyframes landing-plane {
+  0%, 100% { transform: translate3d(0, 0, 0) skewX(-1deg); opacity: .9; }
+  50% { transform: translate3d(8px, -7px, 0) skewX(1deg); opacity: 1; }
+}
+
+@keyframes landing-depth-sweep {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(12px, -9px, 0) scale(1.015); }
+}
+
+@keyframes landing-vector {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: .68; }
+  50% { transform: translate3d(10px, -5px, 0); opacity: 1; }
+}
+
+@keyframes landing-atom-scene {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -5px, 0) scale(1.018); }
+}
+
+@keyframes landing-atom-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes landing-atom-orbit-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes landing-atom-depth {
+  0%, 100% { opacity: .74; transform: rotate(-1deg) scale(1); }
+  50% { opacity: .96; transform: rotate(1.4deg) scale(1.025); }
+}
+
+@keyframes landing-course-rise {
+  0%, 100% { transform: translateY(0); opacity: .16; }
+  50% { transform: translateY(-8px); opacity: .42; }
+}
+
+@keyframes landing-course-wave {
+  0%, 100% { stroke-dashoffset: 0; opacity: .72; }
+  50% { stroke-dashoffset: -42; opacity: .98; }
+}
+
+@keyframes landing-course-drift {
+  0%, 100% { transform: translate3d(-4px, 2px, 0); }
+  50% { transform: translate3d(5px, -4px, 0); }
+}
+
+@keyframes landing-course-spin {
+  0%, 100% { transform: rotate(-2deg) scale(1); }
+  50% { transform: rotate(3deg) scale(1.03); }
+}
+
+@keyframes landing-surface-turn {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(-1deg) scale(1); }
+  50% { transform: translate3d(4px, -4px, 0) rotate(.8deg) scale(1.015); }
+}
+
+@keyframes landing-surface-fill {
+  0%, 100% { transform: translate3d(-1px, 1px, 0); opacity: .94; }
+  50% { transform: translate3d(2px, -2px, 0); opacity: 1; }
+}
+
+@keyframes landing-surface-lines {
+  0%, 100% { transform: translate3d(2px, -1px, 0); opacity: .82; }
+  50% { transform: translate3d(-2px, 1px, 0); opacity: .98; }
+}
+
+@layer utilities {
+  .landing-aura { animation: landing-aura 13s ease-in-out infinite; }
+  .landing-aura-delay { animation-delay: -6s; }
+  .landing-logo-aura { animation: landing-pulse 5s ease-in-out infinite; }
+  .landing-orbit { animation: landing-orbit 30s linear infinite; }
+  .landing-orbit-slow { animation: landing-orbit-reverse 42s linear infinite; }
+  .landing-dash {
+    stroke-dasharray: 22 18;
+    animation: landing-dash 8s linear infinite;
+  }
+  .landing-float { animation: landing-float 7s ease-in-out infinite; }
+  .landing-pulse { animation: landing-pulse 6s ease-in-out infinite; }
+  .landing-ribbon { animation: landing-ribbon 5s ease-in-out infinite; }
+  .landing-plane { animation: landing-plane 9s ease-in-out infinite; }
+  .landing-depth-sweep { animation: landing-depth-sweep 8s ease-in-out infinite; }
+  .landing-vector { animation: landing-vector 3.8s ease-in-out infinite; }
+  .landing-vector-field { animation: landing-depth-sweep 11s ease-in-out infinite reverse; }
+  .landing-atom-scene { animation: landing-atom-scene 8s ease-in-out infinite; }
+  .landing-atom-orbit-a,
+  .landing-atom-orbit-b,
+  .landing-atom-orbit-c { transform-box: view-box; }
+  .landing-atom-orbit-a { animation: landing-atom-orbit 8s linear infinite; }
+  .landing-atom-orbit-b { animation: landing-atom-orbit-reverse 10.5s linear infinite; }
+  .landing-atom-orbit-c { animation: landing-atom-orbit 12s linear infinite; }
+  .landing-atom-depth { animation: landing-atom-depth 7s ease-in-out infinite; }
+  .landing-course-rise { animation: landing-course-rise 4.8s ease-in-out infinite; }
+  .landing-course-wave {
+    stroke-dasharray: 26 16;
+    animation: landing-course-wave 7s ease-in-out infinite;
+  }
+  .landing-course-drift { animation: landing-course-drift 7.5s ease-in-out infinite; }
+  .landing-course-spin { animation: landing-course-spin 8s ease-in-out infinite; }
+  .landing-surface-turn { animation: landing-surface-turn 10s ease-in-out infinite; }
+  .landing-surface-fill { animation: landing-surface-fill 8s ease-in-out infinite; }
+  .landing-surface-lines { animation: landing-surface-lines 7s ease-in-out infinite; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .landing-aura,
+  .landing-logo-aura,
+  .landing-orbit,
+  .landing-orbit-slow,
+  .landing-dash,
+  .landing-float,
+  .landing-pulse,
+  .landing-ribbon,
+  .landing-plane,
+  .landing-depth-sweep,
+  .landing-vector,
+  .landing-vector-field,
+  .landing-atom-scene,
+  .landing-atom-orbit-a,
+  .landing-atom-orbit-b,
+  .landing-atom-orbit-c,
+  .landing-atom-depth,
+  .landing-course-rise,
+  .landing-course-wave,
+  .landing-course-drift,
+  .landing-course-spin,
+  .landing-surface-turn,
+  .landing-surface-fill,
+  .landing-surface-lines,
+  .animate-float {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal { opacity: 1; transform: none; }
+}

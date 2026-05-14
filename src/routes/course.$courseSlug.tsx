@@ -6,7 +6,6 @@ import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CircleCheck, CircleDot, Circle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Protected } from "@/components/auth/Protected";
 
 export const Route = createFileRoute("/course/$courseSlug")({
   loader: ({ params }) => {
@@ -20,7 +19,7 @@ export const Route = createFileRoute("/course/$courseSlug")({
       { name: "description", content: loaderData?.course.description ?? "" },
     ],
   }),
-  component: () => (<Protected><CourseLayout /></Protected>),
+  component: CourseLayout,
 });
 
 // Layout que decide si mostrar la página del curso o el tema hijo

@@ -1,20 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { SignIn } from "@clerk/clerk-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteNavbar } from "@/components/site/SiteNavbar";
-import { clerkAppearance } from "@/lib/clerkAppearance";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/login/$")({
   component: () => (
     <div className="min-h-screen bg-background">
       <SiteNavbar />
       <main className="mx-auto flex max-w-md flex-col items-center px-4 py-16">
-        <SignIn
-          appearance={clerkAppearance}
-          routing="path"
-          path="/login"
-          signUpUrl="/register"
-          forceRedirectUrl="/dashboard"
-        />
+        <Button asChild>
+          <Link to="/dashboard">Entrar a STEMLab</Link>
+        </Button>
       </main>
     </div>
   ),

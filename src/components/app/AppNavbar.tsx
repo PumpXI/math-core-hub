@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Logo } from "@/components/site/Logo";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,17 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useUser, useClerk } from "@clerk/clerk-react";
 import { CreditCard, LogOut, User } from "lucide-react";
 
 export function AppNavbar() {
-  const { user } = useUser();
-  const { signOut } = useClerk();
   const navigate = useNavigate();
 
-  const initials =
-    (user?.firstName?.[0] ?? "") + (user?.lastName?.[0] ?? "") || "U";
-  const displayName = user?.firstName ?? user?.fullName ?? "Estudiante";
+  const initials = "E";
+  const displayName = "Estudiante";
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#050711]/88 text-white backdrop-blur-xl">
@@ -39,9 +35,8 @@ export function AppNavbar() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Avatar className="h-8 w-8">
-                  {user?.imageUrl && <AvatarImage src={user.imageUrl} alt={displayName} />}
                   <AvatarFallback className="bg-grad-primary text-white text-xs">
-                    {initials.toUpperCase()}
+                    {initials}
                   </AvatarFallback>
                 </Avatar>
               </Button>
@@ -49,9 +44,9 @@ export function AppNavbar() {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
                 <div className="flex flex-col">
-                  <span className="font-medium">{user?.fullName ?? displayName}</span>
+                  <span className="font-medium">{displayName}</span>
                   <span className="text-xs text-muted-foreground truncate">
-                    {user?.primaryEmailAddress?.emailAddress}
+                    Acceso local de desarrollo
                   </span>
                 </div>
               </DropdownMenuLabel>
@@ -64,10 +59,10 @@ export function AppNavbar() {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => signOut(() => navigate({ to: "/" }))}
+                onClick={() => navigate({ to: "/" })}
                 className="text-destructive focus:text-destructive"
               >
-                <LogOut className="mr-2 h-4 w-4" /> Cerrar sesión
+                <LogOut className="mr-2 h-4 w-4" /> Volver al inicio
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

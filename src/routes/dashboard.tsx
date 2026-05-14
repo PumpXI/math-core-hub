@@ -1,22 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useUser } from "@clerk/clerk-react";
 import { AppNavbar } from "@/components/app/AppNavbar";
 import { AppSidebar } from "@/components/app/AppSidebar";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { courses, getCourseTopics } from "@/lib/courses";
 import { ArrowRight, PlayCircle, Sparkles } from "lucide-react";
-import { Protected } from "@/components/auth/Protected";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — STEMLab" }, { name: "description", content: "Tu panel de aprendizaje en STEMLab." }] }),
-  component: () => (<Protected><Dashboard /></Protected>),
+  component: Dashboard,
 });
 
 function Dashboard() {
-  // Obtenemos el usuario actual desde Clerk
-  const { user } = useUser();
-  const nombre = user?.firstName ?? user?.username ?? "estudiante";
+  const nombre = "estudiante";
 
   return (
     <div className="min-h-screen bg-[#050711] text-white">

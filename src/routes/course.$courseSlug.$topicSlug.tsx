@@ -4,7 +4,6 @@ import { AppSidebar } from "@/components/app/AppSidebar";
 import { getCourse, getTopic } from "@/lib/courses";
 import { getTopicContent } from "@/lib/topicContent";
 import { TopicBody } from "@/components/topic/TopicBody";
-import { Protected } from "@/components/auth/Protected";
 
 export const Route = createFileRoute("/course/$courseSlug/$topicSlug")({
   loader: ({ params }) => {
@@ -26,11 +25,7 @@ export const Route = createFileRoute("/course/$courseSlug/$topicSlug")({
     ],
   }),
 
-  component: () => (
-    <Protected>
-      <TopicPage />
-    </Protected>
-  ),
+  component: TopicPage,
 });
 
 function TopicPage() {
