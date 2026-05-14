@@ -4,9 +4,10 @@ type LogoProps = {
   to?: string;
   surface?: "light" | "dark";
   brandName?: string;
+  showText?: boolean;
 };
 
-export function Logo({ to = "/", surface = "dark", brandName = "STEMLab" }: LogoProps) {
+export function Logo({ to = "/", surface = "dark", brandName = "STEMLab", showText = true }: LogoProps) {
   const isDark = surface === "dark";
   const isKepler = brandName === "Kepler";
 
@@ -70,7 +71,7 @@ export function Logo({ to = "/", surface = "dark", brandName = "STEMLab" }: Logo
           </svg>
         )}
       </span>
-      <span className="text-lg text-current">{brandName}</span>
+      {showText ? <span className="text-lg text-current">{brandName}</span> : null}
     </Link>
   );
 }

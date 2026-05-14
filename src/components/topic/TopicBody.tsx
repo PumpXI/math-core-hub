@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
@@ -40,6 +41,7 @@ export function TopicBody({
   topicDescription,
   content,
   accent,
+  accentStyle,
 }: {
   courseSlug: string;
   topicSlug: string;
@@ -47,6 +49,7 @@ export function TopicBody({
   topicDescription: string;
   content: TopicContent | undefined;
   accent: string;
+  accentStyle?: CSSProperties;
 }) {
   const [tab, setTab] = useState<string>("teoria");
   const c = content;
@@ -55,7 +58,7 @@ export function TopicBody({
   const hasTheorySections = Boolean(c?.theorySections?.length);
 
   return (
-    <Tabs value={tab} onValueChange={setTab} className="w-full">
+    <Tabs value={tab} onValueChange={setTab} className="w-full" style={accentStyle}>
       <TabsList className="grid grid-cols-5 max-w-4xl">
         <TabsTrigger value="teoria" className={accent}>Teoría</TabsTrigger>
         <TabsTrigger value="ejemplos" className={accent}>Ejemplos</TabsTrigger>
@@ -90,11 +93,23 @@ export function TopicBody({
             {c.formulas.length > 0 && (
               <FormulaGrid formulas={c.formulas} />
             )}
-            <div className="mt-2 rounded-xl border-l-4 border-[#15803D] bg-green-50 p-4">
-              <div className="flex items-center gap-2 text-sm font-semibold text-[#14532D]">
+            <div
+              className="mt-2 rounded-xl border-l-4 p-4"
+              style={{
+                borderLeftColor: "var(--course-accent)",
+                backgroundColor: "color-mix(in srgb, var(--course-accent) 14%, white)",
+              }}
+            >
+              <div
+                className="flex items-center gap-2 text-sm font-semibold"
+                style={{ color: "color-mix(in srgb, var(--course-accent) 82%, #0f172a)" }}
+              >
                 <BookOpen className="h-4 w-4" /> {c.definition.title}
               </div>
-              <p className="mt-1 text-sm text-[#14532D]/90">
+              <p
+                className="mt-1 text-sm"
+                style={{ color: "color-mix(in srgb, var(--course-accent) 74%, #0f172a)" }}
+              >
                 <MathMarkdown text={c.definition.body} />
               </p>
             </div>
@@ -121,12 +136,24 @@ export function TopicBody({
                 <ol className="space-y-2">
                   {ex.steps.map((s, k) => (
                     <li key={k} className="rounded-md border border-border bg-background p-2.5 text-muted-foreground flex items-start gap-2">
-                      <span className="mt-0.5 shrink-0 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#15803D] text-[10px] font-bold text-white">{k + 1}</span>
+                      <span
+                        className="mt-0.5 shrink-0 inline-flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                        style={{ backgroundColor: "var(--course-accent)" }}
+                      >
+                        {k + 1}
+                      </span>
                       <MathMarkdown text={s} />
                     </li>
                   ))}
                 </ol>
-                <div className="rounded-md bg-green-50 border border-green-200 p-2.5 text-[#14532D]">
+                <div
+                  className="rounded-md border p-2.5"
+                  style={{
+                    borderColor: "color-mix(in srgb, var(--course-accent) 32%, white)",
+                    backgroundColor: "color-mix(in srgb, var(--course-accent) 13%, white)",
+                    color: "color-mix(in srgb, var(--course-accent) 82%, #0f172a)",
+                  }}
+                >
                   <span className="font-semibold">Conclusión: </span>
                   <MathMarkdown text={ex.conclusion} />
                 </div>
@@ -177,24 +204,45 @@ function VisualLabShell({
   isPlaceholder: boolean;
 }) {
   return (
-    <section className="overflow-hidden rounded-2xl border border-emerald-200/80 bg-gradient-to-br from-emerald-950 via-[#0f2f24] to-slate-950 text-white shadow-lg">
+    <section
+      className="overflow-hidden rounded-2xl border text-white shadow-lg"
+      style={{
+        borderColor: "color-mix(in srgb, var(--course-accent) 45%, white)",
+        background:
+          "linear-gradient(135deg, color-mix(in srgb, var(--course-accent) 72%, #020617) 0%, #0f172a 55%, color-mix(in srgb, var(--course-accent) 32%, #0b1220) 100%)",
+      }}
+    >
       <div className="border-b border-white/10 bg-white/[0.03] px-5 py-4 md:px-7">
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-3">
-            <div className="rounded-xl border border-emerald-300/30 bg-emerald-400/15 p-2.5 text-emerald-200 shadow-sm shadow-emerald-950/30">
+            <div
+              className="rounded-xl p-2.5 shadow-sm"
+              style={{
+                border: "1px solid color-mix(in srgb, var(--course-accent) 35%, white)",
+                backgroundColor: "color-mix(in srgb, var(--course-accent) 18%, transparent)",
+                color: "color-mix(in srgb, var(--course-accent) 35%, white)",
+                boxShadow: "0 4px 16px color-mix(in srgb, var(--course-accent) 30%, #020617)",
+              }}
+            >
               <FlaskConical className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-200/80">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-white/75">
                 Visual Lab
               </div>
               <h2 className="mt-1 text-xl font-semibold md:text-2xl">{title}</h2>
-              <p className="mt-1 max-w-3xl text-sm leading-relaxed text-emerald-50/70">
+              <p className="mt-1 max-w-3xl text-sm leading-relaxed text-white/75">
                 {description}
               </p>
             </div>
           </div>
-          <div className="rounded-full border border-emerald-300/25 bg-emerald-300/10 px-3 py-1 text-xs font-medium text-emerald-100">
+          <div
+            className="rounded-full px-3 py-1 text-xs font-medium text-white"
+            style={{
+              border: "1px solid color-mix(in srgb, var(--course-accent) 35%, white)",
+              backgroundColor: "color-mix(in srgb, var(--course-accent) 16%, transparent)",
+            }}
+          >
             Experiencia conceptual
           </div>
         </div>
@@ -243,7 +291,13 @@ function FormulaGrid({ formulas }: { formulas: string[] }) {
   return (
     <section className="pt-3">
       <div className="mb-3 flex items-center gap-2">
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#15803D]/10 text-[#15803D]">
+        <span
+          className="inline-flex h-8 w-8 items-center justify-center rounded-lg"
+          style={{
+            backgroundColor: "color-mix(in srgb, var(--course-accent) 15%, white)",
+            color: "color-mix(in srgb, var(--course-accent) 82%, #0f172a)",
+          }}
+        >
           <Sparkles className="h-4 w-4" />
         </span>
         <div>
@@ -255,13 +309,31 @@ function FormulaGrid({ formulas }: { formulas: string[] }) {
         {formulas.map((formula, index) => (
           <div
             key={index}
-            className="group overflow-hidden rounded-xl border border-green-200/70 border-t-4 border-t-[#15803D] bg-gradient-to-br from-green-50/80 via-white to-emerald-50/60 shadow-sm transition-colors hover:border-green-300"
+            className="group overflow-hidden rounded-xl border-t-4 shadow-sm transition-colors"
+            style={{
+              borderColor: "color-mix(in srgb, var(--course-accent) 30%, white)",
+              borderTopColor: "var(--course-accent)",
+              background:
+                "linear-gradient(135deg, color-mix(in srgb, var(--course-accent) 10%, white) 0%, white 55%, color-mix(in srgb, var(--course-accent) 7%, white) 100%)",
+            }}
           >
-            <div className="flex items-center justify-between gap-2 border-b border-green-100/80 px-3 py-2">
-              <span className="rounded-full bg-[#15803D]/10 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-[#14532D]">
+            <div
+              className="flex items-center justify-between gap-2 px-3 py-2"
+              style={{ borderBottom: "1px solid color-mix(in srgb, var(--course-accent) 20%, white)" }}
+            >
+              <span
+                className="rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide"
+                style={{
+                  backgroundColor: "color-mix(in srgb, var(--course-accent) 14%, white)",
+                  color: "color-mix(in srgb, var(--course-accent) 85%, #0f172a)",
+                }}
+              >
                 Fórmula
               </span>
-              <span className="h-1.5 w-1.5 rounded-full bg-[#15803D]/60" />
+              <span
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: "color-mix(in srgb, var(--course-accent) 60%, white)" }}
+              />
             </div>
             <div className="max-w-full overflow-x-auto px-4 py-4 text-center text-[0.92rem] [scrollbar-width:thin] sm:px-5 [&_.katex-display]:my-0 [&_.katex-display]:min-w-max">
               <div className="inline-block min-w-full px-3">
@@ -300,7 +372,11 @@ function PlaceholderCard({
         para este tema. Disponible próximamente.
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        <Button onClick={onAskAI} className="bg-[#15803D] hover:bg-[#166534] text-white">
+        <Button
+          onClick={onAskAI}
+          className="text-white"
+          style={{ backgroundColor: "var(--course-accent)" }}
+        >
           <Sparkles className="mr-1.5 h-4 w-4" /> Pregúntale al tutor IA sobre este tema
         </Button>
         <span className="text-xs text-muted-foreground">El tutor ya conoce el contexto del tema.</span>

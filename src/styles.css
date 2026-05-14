@@ -189,6 +189,62 @@
       inset 0 0 62px rgba(168, 85, 247, 0.09),
       inset 0 0 92px rgba(250, 204, 21, 0.07);
   }
+  .kepler-edge-aura {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .kepler-edge-aura::before {
+    content: "";
+    position: absolute;
+    inset: -6% -4%;
+    background:
+      radial-gradient(circle at 12% -2%, rgba(59, 130, 246, 0.22), transparent 26%),
+      radial-gradient(circle at 50% -6%, rgba(168, 85, 247, 0.2), transparent 28%),
+      radial-gradient(circle at 90% 0%, rgba(34, 211, 238, 0.2), transparent 28%),
+      radial-gradient(circle at -2% 35%, rgba(16, 185, 129, 0.16), transparent 24%),
+      radial-gradient(circle at 102% 36%, rgba(249, 115, 22, 0.14), transparent 24%),
+      radial-gradient(circle at 8% 98%, rgba(236, 72, 153, 0.14), transparent 22%),
+      radial-gradient(circle at 52% 102%, rgba(234, 179, 8, 0.14), transparent 24%),
+      radial-gradient(circle at 92% 100%, rgba(99, 102, 241, 0.14), transparent 22%);
+    filter: blur(30px);
+    opacity: 0.88;
+  }
+  .kepler-edge-aura::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255, 253, 248, 0.06), rgba(255, 253, 248, 0.22));
+  }
+  .kepler-home-aura {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .kepler-home-aura::before {
+    content: "";
+    position: absolute;
+    inset: -8% -6%;
+    background:
+      radial-gradient(circle at 8% -4%, rgba(180, 139, 52, 0.2), transparent 32%),
+      radial-gradient(circle at 50% -8%, rgba(30, 58, 138, 0.18), transparent 36%),
+      radial-gradient(circle at 94% 0%, rgba(107, 114, 128, 0.14), transparent 30%),
+      radial-gradient(circle at -2% 48%, rgba(100, 116, 139, 0.14), transparent 32%),
+      radial-gradient(circle at 102% 42%, rgba(30, 58, 138, 0.14), transparent 32%),
+      radial-gradient(circle at 12% 102%, rgba(180, 139, 52, 0.13), transparent 34%),
+      radial-gradient(circle at 88% 102%, rgba(75, 85, 99, 0.12), transparent 32%);
+    filter: blur(32px);
+  }
+  .kepler-home-aura::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(252, 251, 247, 0.04), rgba(252, 251, 247, 0.3));
+  }
 }
 
 @keyframes float {

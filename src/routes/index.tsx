@@ -3,22 +3,22 @@ import { useReveal } from "@/lib/reveal";
 import { SiteNavbar } from "@/components/site/SiteNavbar";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Kepler - STEM que se ve, se entiende y se queda" },
+      { title: "Kepler - STEM universitario para avanzar con claridad" },
       {
         name: "description",
         content:
-          "Kepler revela los patrones invisibles detrás de matemática, física y química con modelos visuales e interactivos.",
+          "Kepler te ayuda a entender y dominar Matemática Universitaria, Física General y Química con rutas claras, práctica progresiva y enfoque universitario.",
       },
-      { property: "og:title", content: "Kepler - STEM que se ve, se entiende y se queda" },
+      { property: "og:title", content: "Kepler - STEM universitario para avanzar con claridad" },
       {
         property: "og:description",
         content:
-          "Visualizá lo que normalmente solo te explican con símbolos: patrones, movimiento y estructura detrás de STEM.",
+          "Dominá las materias que frenan tu carrera con una experiencia STEM universitaria premium.",
       },
     ],
   }),
@@ -27,51 +27,47 @@ export const Route = createFileRoute("/")({
 
 const courseWorlds = [
   {
-    name: "Matemáticas",
+    name: "Matemática Universitaria",
     state: "Beta disponible",
-    copy: "Cálculo, álgebra lineal y ecuaciones diferenciales como patrones visibles.",
+    copy: "Desde precálculo hasta integrales: funciones, límites, derivadas y álgebra para construir base y avanzar con seguridad.",
     aura: "from-cyan-300/60 via-blue-400/25 to-transparent",
     accent: "#0891b2",
     visual: "calculus",
     tracks: [
+      "Precálculo",
+      "Funciones",
+      "Límites",
       "Cálculo I",
-      "Cálculo II",
-      "Cálculo III",
-      "Álgebra lineal",
-      "Ecuaciones diferenciales",
+      "Derivadas",
+      "Integrales",
+      "Álgebra",
     ],
     slug: "calculo-1",
     path: "M42 156 C102 42 164 250 224 126 C288 -4 342 208 432 70",
   },
   {
-    name: "Precálculo",
-    state: "Beta disponible",
-    copy: "Funciones, trigonometría y estructura algebraica como modelos que se pueden ver.",
-    aura: "from-violet-300/60 via-fuchsia-300/25 to-transparent",
-    accent: "#7c3aed",
-    visual: "precalculus",
-    tracks: ["Reales", "Enteros", "Racionales", "Naturales"],
-    slug: "precalculo",
-    path: "M40 146 C98 86 144 84 188 132 S288 190 346 88 S422 108 448 52",
-  },
-  {
     name: "Física",
     state: "En diseño",
-    copy: "Movimiento, campos, ondas, óptica y energía como trayectorias y relaciones visibles.",
+    copy: "Recorridos universitarios progresivos para construir intuición física, resolver problemas y rendir mejor.",
     aura: "from-orange-300/60 via-rose-300/25 to-transparent",
     accent: "#ea580c",
     visual: "physics",
-    tracks: ["Física I", "Física II", "Física III"],
+    tracks: ["Física General I", "Física General II", "Física General III"],
     path: "M54 76 L132 162 L230 94 L318 174 L416 72",
   },
   {
     name: "Química",
     state: "En diseño",
-    copy: "Estructura molecular, reacción y equilibrio como patrones emergentes.",
+    copy: "Fundamentos, profundidad y entrenamiento aplicado para entender química con criterio universitario.",
     aura: "from-emerald-300/60 via-yellow-200/35 to-transparent",
     accent: "#16a34a",
     visual: "chemistry",
-    tracks: ["General 1", "General 2", "Orgánica", "Intensiva"],
+    tracks: [
+      "Química General I",
+      "Química General II",
+      "Química Intensiva",
+      "Química Orgánica",
+    ],
     path: "M74 132 L150 82 L228 132 L304 80 L388 132",
   },
   {
@@ -88,20 +84,20 @@ const courseWorlds = [
 
 const differences = [
   {
-    title: "Ver antes de memorizar",
-    copy: "La estructura aparece primero: movimiento, forma, relación y después la fórmula.",
+    title: "Ruta académica, no respuestas sueltas",
+    copy: "Kepler organiza cada tema en secuencia pedagógica: teoría, ejemplos, práctica y evaluación para construir dominio real.",
   },
   {
-    title: "Modelos como mundos",
-    copy: "No entrás a una lista de materiales. Entrás a experiencias donde cada concepto revela un patrón.",
+    title: "Visual Lab donde más importa",
+    copy: "La intuición se construye con experiencias interactivas dentro del módulo, conectadas con ejercicios tipo examen.",
   },
   {
-    title: "Patrones visibles",
-    copy: "Los conceptos se vuelven más claros porque los ves comportarse, cambiar y conectarse.",
+    title: "Tutor AI con contexto del curso",
+    copy: "No es un chat genérico: el tutor acompaña tu avance dentro del contenido y te guía según el punto exacto donde te trabaste.",
   },
   {
-    title: "STEM más allá de símbolos",
-    copy: "Matemática, física, química y futuras áreas comparten una misma identidad visual.",
+    title: "Pensado para aprobar y entender",
+    copy: "Todo está diseñado para estudiantes universitarios STEM que necesitan claridad, práctica y progreso medible semana a semana.",
   },
 ];
 
@@ -297,8 +293,9 @@ function Landing() {
   useReveal();
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[#fffdf8] text-slate-950">
+    <div className="relative min-h-screen overflow-x-clip bg-[#fffdf8] text-slate-950">
       <div aria-hidden="true" className="kepler-screen-glow" />
+      <div aria-hidden="true" className="kepler-edge-aura" />
       <SiteNavbar />
       <main>
         <Hero />
@@ -323,15 +320,13 @@ function Hero() {
       <div className="relative mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
         <div className="reveal max-w-3xl">
           <span className="inline-flex items-center gap-2 rounded-full border border-slate-950/10 bg-white/75 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-slate-600 shadow-sm backdrop-blur-xl">
-            <Sparkles className="h-3.5 w-3.5 text-cyan-600" />
-            Patrones invisibles, modelos visibles
           </span>
           <h1 className="mt-7 max-w-4xl text-5xl font-semibold leading-[0.94] tracking-tight text-slate-950 sm:text-7xl lg:text-8xl">
-            Kepler
+            Dominá las materias que frenan tu carrera.
           </h1>
           <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-700 sm:text-xl">
-            STEM que se ve, se entiende y se queda. Kepler convierte matemática, física y química en
-            modelos visuales para revelar el porqué detrás de cada fórmula.
+            Entendé lo que en clase nunca quedó claro y avanzá con confianza en Matemática
+            Universitaria, Física General y Química.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <Button
@@ -353,7 +348,7 @@ function Hero() {
             </Button>
           </div>
           <div className="mt-12 grid max-w-xl grid-cols-3 gap-4 text-sm text-slate-600">
-            {["Patrones", "Modelos", "STEM"].map((item) => (
+            {["Claridad", "Práctica", "Dominio"].map((item) => (
               <div key={item} className="border-l border-slate-950/10 pl-3">
                 <span className="block font-semibold text-slate-950">{item}</span>
                 <span className="text-xs uppercase tracking-[0.18em] text-slate-500">
@@ -591,19 +586,89 @@ function StemShowcase() {
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[0.92fr_1.08fr]">
         <div className="reveal">
           <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-700">
-            Modelos para ver lo invisible
+            Cómo funciona
           </p>
           <h2 className="mt-4 max-w-2xl text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-            La ciencia, por fin visual.
+            Una ruta académica clara, de intuición a examen.
           </h2>
           <p className="mt-5 max-w-xl text-lg leading-8 text-slate-700">
-            Una fuerza, una trayectoria y una estructura molecular no son ideas separadas: son
-            patrones, relaciones y cambios que podés aprender a reconocer.
+            Cada módulo combina explicación guiada, ejemplos resueltos y práctica progresiva para que
+            entiendas de verdad y rindas mejor.
           </p>
         </div>
-        <PhysicsChemistryScene />
+        <ModulePreviewCard />
       </div>
     </section>
+  );
+}
+
+function ModulePreviewCard() {
+  const lessons = [
+    { name: "Teoría guiada", tag: "Base conceptual" },
+    { name: "Ejemplos resueltos", tag: "Paso a paso" },
+    { name: "Ejercicios progresivos", tag: "Práctica" },
+    { name: "Visual Lab de límites", tag: "Intuición" },
+    { name: "Tutor AI del módulo", tag: "Soporte" },
+    { name: "Ejercicios tipo examen", tag: "Evaluación" },
+  ];
+
+  return (
+    <article className="reveal relative overflow-hidden rounded-[10px] border border-slate-950/12 bg-white/95 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.1)] sm:p-7">
+      <div
+        aria-hidden="true"
+        className="absolute -inset-10 -z-10 rounded-[40px] bg-[radial-gradient(circle_at_24%_24%,rgba(34,211,238,0.2),transparent_52%),radial-gradient(circle_at_78%_26%,rgba(99,102,241,0.2),transparent_52%),radial-gradient(circle_at_58%_82%,rgba(16,185,129,0.14),transparent_54%),radial-gradient(circle_at_18%_78%,rgba(249,115,22,0.14),transparent_56%),radial-gradient(circle_at_82%_82%,rgba(236,72,153,0.14),transparent_56%)] blur-3xl"
+      />
+      <div className="relative">
+        <div className="flex flex-wrap items-center gap-2 text-xs font-medium text-slate-600">
+          <span className="rounded-full border border-slate-950/12 bg-slate-950/5 px-2.5 py-1">
+            Vista de módulo
+          </span>
+          <span className="rounded-full border border-cyan-800/20 bg-cyan-100/70 px-2.5 py-1 text-cyan-900">
+            42% completado
+          </span>
+        </div>
+        <h3 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950">Módulo 1 · Límites</h3>
+        <p className="mt-3 max-w-xl text-sm leading-7 text-slate-700">
+          Construí la idea de límite paso a paso, desde la intuición hasta los ejercicios tipo
+          examen.
+        </p>
+
+        <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-slate-950/10">
+          <div className="h-full w-[42%] rounded-full bg-gradient-to-r from-cyan-500 via-blue-600 to-violet-500" />
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <span className="rounded-full border border-slate-950/10 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700">
+            Teoría
+          </span>
+          <span className="rounded-full border border-slate-950/10 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700">
+            Ejemplos
+          </span>
+          <span className="rounded-full border border-slate-950/10 bg-white px-2.5 py-1 text-[11px] font-medium text-slate-700">
+            Ejercicios
+          </span>
+          <span className="rounded-full border border-violet-200 bg-violet-50 px-2.5 py-1 text-[11px] font-medium text-violet-800">
+            Visual Lab
+          </span>
+          <span className="rounded-full border border-cyan-200 bg-cyan-50 px-2.5 py-1 text-[11px] font-medium text-cyan-800">
+            Tutor AI
+          </span>
+        </div>
+
+        <div className="mt-6 grid gap-2">
+          {lessons.map((lesson) => (
+            <div
+              key={lesson.name}
+              className="rounded-[8px] border border-slate-950/8 bg-[#fffdf8] px-3 py-2.5"
+            >
+              <div>
+                <span className="text-sm text-slate-800">{lesson.name}</span>
+                <span className="ml-2 text-xs text-slate-500">{lesson.tag}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -618,215 +683,21 @@ function SectionAura({ side }: { side: "left" | "right" }) {
   );
 }
 
-function PhysicsChemistryScene() {
-  return (
-    <div className="reveal landing-atom-panel relative overflow-hidden rounded-[8px] p-2">
-      <div
-        aria-hidden="true"
-        className="absolute -inset-8 rounded-[26px] bg-[radial-gradient(circle_at_35%_35%,rgba(34,211,238,0.16),transparent_58%),radial-gradient(circle_at_70%_30%,rgba(168,85,247,0.14),transparent_56%),radial-gradient(circle_at_52%_76%,rgba(250,204,21,0.1),transparent_54%)] blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 rounded-[8px] bg-[radial-gradient(circle_at_28%_28%,rgba(34,211,238,0.16),transparent_36%),radial-gradient(circle_at_72%_34%,rgba(168,85,247,0.14),transparent_36%),radial-gradient(circle_at_52%_76%,rgba(250,204,21,0.12),transparent_40%),radial-gradient(circle_at_78%_72%,rgba(34,197,94,0.1),transparent_36%),linear-gradient(180deg,rgba(255,253,248,0.2),rgba(255,253,248,0.52))]"
-      />
-      <svg
-        viewBox="0 0 760 420"
-        className="relative h-[360px] w-full sm:h-[420px]"
-        aria-hidden="true"
-      >
-        <defs>
-          <linearGradient id="atomOrbitStroke" x1="0%" x2="100%">
-            <stop offset="0%" stopColor="#06b6d4" />
-            <stop offset="52%" stopColor="#06b6d4" />
-            <stop offset="74%" stopColor="#a855f7" />
-            <stop offset="100%" stopColor="#f59e0b" />
-          </linearGradient>
-          <radialGradient id="atomNucleusGlow" cx="50%" cy="45%" r="55%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.96" />
-            <stop offset="32%" stopColor="#fde68a" stopOpacity="0.86" />
-            <stop offset="58%" stopColor="#ec4899" stopOpacity="0.42" />
-            <stop offset="82%" stopColor="#06b6d4" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
-          </radialGradient>
-          <filter
-            id="sceneGlow"
-            x="-120"
-            y="-120"
-            width="1000"
-            height="720"
-            filterUnits="userSpaceOnUse"
-          >
-            <feGaussianBlur stdDeviation="6" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
-        <ellipse
-          className="landing-atom-field"
-          cx="380"
-          cy="222"
-          rx="278"
-          ry="132"
-          fill="none"
-          stroke="#0f172a"
-          strokeOpacity="0.055"
-        />
-        <ellipse
-          className="landing-atom-field landing-atom-field-delay"
-          cx="380"
-          cy="222"
-          rx="214"
-          ry="92"
-          fill="none"
-          stroke="#0f172a"
-          strokeOpacity="0.045"
-        />
-
-        <g className="landing-atom-scene" style={{ transformOrigin: "380px 218px" }}>
-          <ellipse
-            className="landing-nucleus-glow"
-            cx="380"
-            cy="220"
-            rx="150"
-            ry="150"
-            fill="url(#atomNucleusGlow)"
-            opacity="0.52"
-            filter="url(#sceneGlow)"
-          />
-
-          {[
-            [-16, 12, "#06b6d4", 18],
-            [14, -12, "#ec4899", 17],
-            [12, 18, "#f59e0b", 15],
-            [-18, -16, "#8b5cf6", 14],
-            [2, 2, "#22c55e", 16],
-            [30, 4, "#2563eb", 11],
-            [-34, 6, "#f97316", 10],
-          ].map(([tx, ty, color, radius], index) => (
-            <circle
-              key={`nucleus-${index}`}
-              cx="380"
-              cy="220"
-              r={Number(radius)}
-              fill={String(color)}
-              opacity={index < 5 ? "0.86" : "0.64"}
-              filter="url(#sceneGlow)"
-              transform={`translate(${Number(tx)} ${Number(ty)})`}
-            >
-              <animateTransform
-                attributeName="transform"
-                additive="sum"
-                type="translate"
-                values={`0 0; ${index % 2 === 0 ? 3 : -3} ${index % 3 === 0 ? -2 : 2}; 0 0`}
-                dur={`${2.6 + index * 0.18}s`}
-                begin={`${index * -0.28}s`}
-                repeatCount="indefinite"
-              />
-            </circle>
-          ))}
-
-          {[
-            {
-              className: "landing-atom-orbit-a",
-              angle: -18,
-              scale: 0.42,
-              radius: 214,
-              color: "#06b6d4",
-              delay: "0s",
-              size: 8,
-            },
-            {
-              className: "landing-atom-orbit-b",
-              angle: 62,
-              scale: 0.36,
-              radius: 202,
-              color: "#a855f7",
-              delay: "-2.8s",
-              size: 7,
-            },
-            {
-              className: "landing-atom-orbit-c",
-              angle: -72,
-              scale: 0.34,
-              radius: 188,
-              color: "#22c55e",
-              delay: "-4.6s",
-              size: 7,
-            },
-          ].map((orbit) => (
-            <g
-              key={orbit.className}
-              className={orbit.className}
-              style={{ transformOrigin: "380px 220px", animationDelay: orbit.delay }}
-            >
-              <g transform={`translate(380 220) rotate(${orbit.angle}) scale(1 ${orbit.scale})`}>
-                <circle
-                  cx="0"
-                  cy="0"
-                  r={orbit.radius}
-                  fill="none"
-                  stroke="url(#atomOrbitStroke)"
-                  strokeOpacity="0.34"
-                  strokeWidth="2.1"
-                />
-                <circle
-                  cx="0"
-                  cy="0"
-                  r={orbit.radius - 28}
-                  fill="none"
-                  stroke={orbit.color}
-                  strokeOpacity="0.08"
-                  strokeWidth="24"
-                />
-                <g transform={`translate(${orbit.radius} 0) scale(1 ${1 / orbit.scale})`}>
-                  <circle
-                    r={orbit.size + 9}
-                    fill={orbit.color}
-                    opacity="0.14"
-                    filter="url(#sceneGlow)"
-                  />
-                  <circle r={orbit.size} fill={orbit.color} filter="url(#sceneGlow)" />
-                  <circle
-                    r={orbit.size + 3}
-                    fill="none"
-                    stroke={orbit.color}
-                    strokeOpacity="0.22"
-                  />
-                </g>
-              </g>
-            </g>
-          ))}
-
-          <g className="landing-atom-depth" style={{ transformOrigin: "380px 220px" }}>
-            <path
-              d="M192 220 C262 150 504 150 568 220 C504 290 262 290 192 220"
-              fill="none"
-              stroke="#0f172a"
-              strokeOpacity="0.12"
-              strokeWidth="1.4"
-            />
-          </g>
-        </g>
-      </svg>
-    </div>
-  );
-}
-
 function WhyDifferent() {
   return (
     <section className="relative px-4 py-24 sm:px-6">
       <SectionAura side="right" />
       <div className="mx-auto max-w-7xl">
         <div className="reveal max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-violet-700">
-            No es otra plataforma de cursos
-          </p>
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-violet-700">Identidad Kepler</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-5xl">
-            Para estudiantes que quieren entender el porqué.
+            Kepler no compite con un chat. Resuelve el proceso completo de estudiar STEM.
           </h2>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-700">
+            ChatGPT o Claude pueden responder preguntas. Kepler te lleva por una secuencia académica
+            diseñada para entender, practicar y sostener resultados en materias universitarias
+            difíciles.
+          </p>
         </div>
         <div className="mt-12 grid gap-px overflow-hidden rounded-[8px] border border-slate-950/10 bg-slate-950/10 md:grid-cols-2">
           {differences.map((item, index) => (
@@ -1012,7 +883,7 @@ function SinpeFlow() {
   const steps = [
     ["1", "Elegís tu acceso", "Seleccionás el curso incluido y cualquier curso extra."],
     ["2", "Pagás por SINPE Móvil", "Un pago mensual sencillo, local y transparente."],
-    ["3", "Se activa tu acceso", "Entrás directo a tus modelos visuales de aprendizaje STEM."],
+    ["3", "Se activa tu acceso", "Entrás directo a tu ruta de estudio STEM y empezás a avanzar."],
   ];
 
   return (
@@ -1056,10 +927,10 @@ function FinalCta() {
         <div className="relative mx-auto max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.26em] text-slate-500">Kepler</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-tight text-slate-950 sm:text-6xl">
-            Convertí conceptos abstractos en ideas visibles.
+            Entendé en serio. Practicá mejor. Avanzá más rápido.
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-8 text-slate-700">
-            Aprendé desde modelos, movimiento y patrones; no desde bloques de texto.
+            La plataforma STEM universitaria para superar materias difíciles con claridad y método.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg" className="bg-slate-950 text-white hover:bg-slate-800">

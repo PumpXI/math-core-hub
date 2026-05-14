@@ -1,26 +1,23 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppNavbar } from "@/components/app/AppNavbar";
-import { AppSidebar } from "@/components/app/AppSidebar";
 import { getCourse, getTopic } from "@/lib/courses";
 import { getTopicContent } from "@/lib/topicContent";
 import { TopicBody } from "@/components/topic/TopicBody";
+import { getContrastTextClass, getCourseAccentHex } from "@/lib/coursePalette";
 
 export const Route = createFileRoute("/course/$courseSlug/$topicSlug")({
   loader: ({ params }) => {
     const course = getCourse(params.courseSlug);
     const topic = getTopic(params.courseSlug, params.topicSlug);
-
-    if (!course || !topic) throw notFound();
-
-    return { course, topic };
+    return { course, topic, courseSlug: params.courseSlug, topicSlug: params.topicSlug };
   },
 
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.topic.title ?? "Tema"} — STEMLab` },
+      { title: `${loaderData?.topic.title ?? "Tema"} — Kepler` },
       {
         name: "description",
-        content: loaderData?.topic.description ?? "",
+        content: loaderData?.topic?.description ?? "Contenido en producción.",
       },
     ],
   }),
@@ -29,26 +26,48 @@ export const Route = createFileRoute("/course/$courseSlug/$topicSlug")({
 });
 
 function TopicPage() {
-  const { course, topic } = Route.useLoaderData() as {
-    course: import("@/lib/courses").Course;
-    topic: import("@/lib/courses").Topic;
+  const { course, topic, courseSlug, topicSlug } = Route.useLoaderData() as {
+    course?: import("@/lib/courses").Course;
+    topic?: import("@/lib/courses").Topic;
+    courseSlug: string;
+    topicSlug: string;
   };
 
-  const content = getTopicContent(course.slug, topic.slug);
+  if (!course || !topic) {
+    return (
+      <div className="min-h-screen">
+        <AppNavbar />
+        <div className="mx-auto max-w-[1400px] px-4 py-8 sm:px-8">
+          <nav className="text-xs text-muted-foreground">
+            <Link to="/dashboard" className="hover:text-foreground">Dashboard</Link>
+            {" / "}
+            <Link to="/course/$courseSlug" params={{ courseSlug }} className="hover:text-foreground">
+              {courseSlug}
+            </Link>
+            {" / "}
+            <span className="text-foreground">{topicSlug}</span>
+          </nav>
+          <section className="mt-6 rounded-2xl border border-slate-950/10 bg-white p-8 shadow-sm">
+            <h1 className="text-3xl font-bold tracking-tight">Contenido en producción</h1>
+            <p className="mt-3 text-muted-foreground">
+              Este tema todavía no está publicado. Pronto vas a poder estudiarlo desde aquí.
+            </p>
+          </section>
+        </div>
+      </div>
+    );
+  }
 
-  const accent =
-    course.slug === "precalculo"
-      ? "data-[state=active]:bg-amber-500 data-[state=active]:text-white"
-      : "data-[state=active]:bg-[#15803D] data-[state=active]:text-white";
+  const content = getTopicContent(course.slug, topic.slug);
+  const accentHex = getCourseAccentHex(course.slug);
+  const accentTextClass = getContrastTextClass(accentHex);
+  const accent = `data-[state=active]:bg-[var(--course-accent)] data-[state=active]:${accentTextClass}`;
 
   return (
     <div className="min-h-screen">
       <AppNavbar />
-
-      <div className="mx-auto flex max-w-[1400px]">
-        <AppSidebar />
-
-        <main className="flex-1 px-4 sm:px-8 py-8 space-y-6">
+      <div className="mx-auto max-w-[1400px]">
+        <main className="px-4 py-8 sm:px-8 space-y-6">
           <nav className="text-xs text-muted-foreground">
             <Link
               to="/dashboard"
@@ -91,6 +110,7 @@ function TopicPage() {
             topicDescription={topic.description}
             content={content}
             accent={accent}
+            accentStyle={{ ["--course-accent" as string]: accentHex }}
           />
         </main>
       </div>
